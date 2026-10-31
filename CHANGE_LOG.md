@@ -2,6 +2,12 @@
 
 Notable changes to AnoMech. Versions match the plugin version shown in `/xlplugins`.
 
+## [0.5.3.2] - 2026-10-31
+
+### Fixed
+
+- **Bowels of Agony (LB3): the tanks no longer run back to the wall during Thunder III.** About a second after heading in, both tanks turned back toward the wall with the rest of the party. The main tank only reached Exdeath about 3s before the buster, and the off-tank cut across him before being sent back out. Now the main tank goes straight in and stays on Exdeath until the swap, and the off-tank waits 12y out, as in the logged pulls. This also applies in Full phase. The death recap no longer tells a Thunder III tank to be back at the wall.
+
 ## [0.5.3.1] - 2026-10-30
 
 ### Fixed

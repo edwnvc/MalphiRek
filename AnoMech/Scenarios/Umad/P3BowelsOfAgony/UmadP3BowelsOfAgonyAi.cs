@@ -41,7 +41,7 @@ public sealed class UmadP3BowelsOfAgonyAi(UmadP3BowelsOfAgonyAi.Strat strat) : I
         ai.Move(30.6f, Lb3TakeBossesToTheWindAndRangedToTheShortCrystal, arrivalTime: 40.0f, settleFraction: 0.5f, cue: UmadP3BowelsOfAgonyPlaybook.Lb3Setup(state));
         ai.Move(42.3f, Lb3OffTankLeavesExdeathForTheWall, arrivalTime: 47.5f, cue: UmadP3BowelsOfAgonyPlaybook.Lb3ThunderAoe(state));
         ai.Move(43.5f, () => Lb3ResolveSpots(state.ShortElement), arrivalTime: 48.6f, cue: UmadP3BowelsOfAgonyPlaybook.Lb3Resolve(state, state.ShortElement));
-        ai.Move(50.4f, Lb3RegroupAtTheWall, arrivalTime: 52.5f, cue: UmadP3BowelsOfAgonyPlaybook.Lb3Regroup);
+        ai.Move(50.4f, Lb3AllButTheThunderTanksRegroupAtTheWall, arrivalTime: 52.5f, cue: UmadP3BowelsOfAgonyPlaybook.Lb3Regroup);
         ai.Move(61.8f, Lb3TanksToTheWindAndRangedToTheLongCrystal, arrivalTime: 65.8f, cue: UmadP3BowelsOfAgonyPlaybook.Lb3PreImplosion(state));
         ai.Move(66.5f, () => Lb3ImplosionSpots(firstHit: true), arrivalTime: 71.5f, cue: UmadP3BowelsOfAgonyPlaybook.Implosion(state, strat, firstHit: true));
         ai.Move(72.1f, () => Lb3ImplosionSpots(firstHit: false), arrivalTime: 73.7f, cue: UmadP3BowelsOfAgonyPlaybook.Implosion(state, strat, firstHit: false));
@@ -178,10 +178,12 @@ public sealed class UmadP3BowelsOfAgonyAi(UmadP3BowelsOfAgonyAi.Strat strat) : I
         return AiMove.Create(coords).NaturalOrder();
     }
 
-    private IAiMove Lb3RegroupAtTheWall()
+    private IAiMove Lb3AllButTheThunderTanksRegroupAtTheWall()
     {
+        var (first, second) = ThunderRoles;
         var coords = new Vector2?[8];
-        foreach (var role in WallSix) coords[(int)role] = WallStackSpot(role);
+        foreach (var role in WallSix)
+            if (role != first && role != second) coords[(int)role] = WallStackSpot(role);
         return AiMove.Create(coords).NaturalOrder();
     }
 
