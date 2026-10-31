@@ -2,6 +2,12 @@
 
 Notable changes to AnoMech. Versions match the plugin version shown in `/xlplugins`.
 
+## [0.5.3.3] - 2026-10-31
+
+### Fixed
+
+- **The Multiplayer button is back.** It had been missing since 0.5.2.0, though `/ano mp` still opened multiplayer.
+
 ## [0.5.3.2] - 2026-10-31
 
 ### Fixed
