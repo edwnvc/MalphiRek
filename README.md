@@ -1,127 +1,70 @@
+# ![MalphiRek](images/icon.png) MalphiRek
 
-# ![AnoMech](images/icon.png) AnoMech
-
-*Another FFXIV mechanics simulator*
+*Plugin para treinar mecânicas nas lutas do jogo aclamado pela crítica, Final Fantasy XIV - Dawntrail™.*
 
 ---
- 
-Simulate FFXIV raid mechanics client-side for solo practice. Go to any Inn, open the plugin with `/anomech` and start practicing!
 
-Thanks to improvemnts by [WorstAquaPlayer](https://github.com/WorstAquaPlayer) plugin is quite stable now! No more 
-crashes after training session.
+O MalphiRek simula mecânicas de ultimates direto no seu cliente, para você treinar sozinho na inn.
+Ele cria um grupo de bots e os chefes, roda os casts, VFX, tethers e marcadores como na luta real, e
+os bots fazem as mecânicas junto com você.
 
-**WARNING!!!**
+A diferença para o projeto original: **Splatoon e BossMod funcionam dentro da simulação.**
 
-**You are cut off from server traffic while in the sim zone.** To keep the
-fake zone stable, the plugin firewalls incoming packets from the server.  
-While simulating:
-  * Players joining or leaving your party will not appear in the party list
-  until you leave the sim zone.
-  * Ready checks will not pop.
- 
+## Compatibilidade com outros plugins
 
+Enquanto um cenário roda, o MalphiRek faz o jogo parecer uma luta de verdade para os outros plugins:
 
-## Installation
+| O quê | Como fica |
+|---|---|
+| Zona | O Dalamud passa a ler a zona da ultimate (não a inn), então layouts e scripts presos à zona ativam |
+| Combate e duty | "Em combate" e "em duty" ficam ligados durante o cenário; a cada reinício o combate cai por alguns frames, para os scripts resetarem |
+| Grupo | Listas de prioridade e scripts enxergam os bots, mesmo se você estiver em grupo cross-world |
+| Fase (scene) | A scene da fase é aplicada (TOP P5 = 6, P6 = 7, Dancing Mad P2 = 7, P3 = 8) |
+| BossMod | O módulo da luta é levado para a fase em que o cenário começa, em vez de começar do P1 |
 
-See: https://github.com/anomek/MyDalamudPlugins
+Tudo isso fica em `/anomech` → engrenagem → **Splatoon / BossMod compatibility** (ligado por padrão).
+Desligar volta ao comportamento original.
 
-## Beta: Advanced Simulation Resolution
+### O que já foi testado no jogo
 
-The simulator now includes a beta feature that properly resolves most skills, triggers, and gauges during simulation.
-As this feature is still in beta, some edge cases and less common interactions may not yet resolve correctly.
+- **Dancing Mad P3 Black Hole:** Splatoon (lista de prioridade e scripts desenhando no chão) e Boss Mod
+  (módulo começa no Earthquake e acompanha a luta até os Lasers).
 
+### Limitações conhecidas
 
-## Currently implemented 
-All using default NA pf strats unless noted otherwise:
-- Dancing Mad (Ultimate)
-    - P1 Tele-trouncing _by [Evernow](https://github.com/Evernow)_
-    - P2 Forsaken
-      - NA
-        - [Kroxy-Rinon 341 (Center/N Stacks) melee adjust](https://raidplan.io/plan/UATE__aDcw1-bgVv)
-        - [South Adjust 341](https://raidplan.io/plan/uq7zdjvuu7uuw8fj)
-        - diamond markers or week one positions
-      - EU _by [Wydox](https://github.com/Wydox)_
-        - [\[LPDU\] Buddies](https://raidplan.io/plan/142oXOZpPc_jh3dd)
-        - [\[Old\] p3Z Buddy Meow](https://raidplan.io/plan/lZWqxfxvyhF9sp3Z)
-        - [\[Old\] zP6 South adjust](https://raidplan.io/plan/rtc1FcuZFMuyBzP6)
-      - JP _by [altair9x](https://github.com/altair9x)_
-        - [Yan](https://yan-flash.com/ultimate/yosei-ranbu#ult-phase-2)
-    - P3 Limit Cut _by [Evernow](https://github.com/Evernow)_
-    - P3 Black Hole _old bh (single tethers, n/s stomps)_
-      - D>S>A
-      - S>D>A _by [Evernow](https://github.com/Evernow)_
-    - P4 Kefka Says
-      - kefkabin
-      - kefkabin, gazes: supports N / DPS S _by [Evernow](https://github.com/Evernow)_
-    - P5 Flood _by [Evernow](https://github.com/Evernow)_
-    - P5 Exaflares _by [Wydox](https://github.com/Wydox)_
-    - P5 Celestriad _by [RoarkGit](https://github.com/RoarkGit)_
-    - P5 Forsaken Null _no ai or damage_
-- Futures Rewritten (Ultimate) _by [grayparser](https://github.com/grayparser)_
-    - P2 Diamond Dust 
-    - P2 Light Rampant
-    - P3 Ultimate Relativity
-    - P3 Apocalypse 
-    - P4 Darklit Dragonsong
-      - NA
-      - NA, you take Somber Dance
-    - P4 Crystallize Time 
-    - P5 Fulgent Blade
-    - P5 Paradise Regained 
-- The Omega Protocol (Ultimate)
-    - P2 Party Synergy
-      - NA pf
-      - LPDU _by [Quantumlyy](https://github.com/Quantumlyy)_
-    - P5 Delta
-    - P5 Sigma
-    - P5 Omega
-    - P6 Exasquares / Wave Cannon 2
-- The Weapon's Refrain (Ultimate) _by [WorstAquaPlayer](https://github.com/WorstAquaPlayer)_
-    - Ultimate Predaction
-    - Ultimate Suppression
-- The Unending Coil of Bahamut (Ultimate) _by [RoarkGit](https://github.com/RoarkGit)_
-    - Exaflares
+- **BossMod só é posicionado no Black Hole por enquanto.** Nos outros cenários o Splatoon funciona,
+  mas o BossMod começa do P1. Cada cenário precisa do seu mapeamento (`BossModStart`).
+- **BossMod Reborn não tem módulo da Dancing Mad**; nessa luta só o Boss Mod normal funciona.
+- Plugins que contam tempo a partir do início do combate (ex.: DMU Mits) mostram a timeline do P1,
+  porque o cenário começa no meio da luta.
+- Ainda não testado: TOP, FRU, UWU, UCOB e multiplayer.
 
-## Details
+## ⚠️ Atenção
 
-* Spawns fake party members and boss NPCs into the live game client
-* Drives their positions, cast bars, tethers, and VFX so mechanics play out visually
-* Your fake party members are full fledged bots that will do mechanics.  
-  Some scanarios also have solo mode where you can practice without disctractions.
+**Na zona simulada você fica sem tráfego do servidor.** Para a zona falsa ficar estável, o plugin
+bloqueia os pacotes do servidor: entradas e saídas do grupo e ready checks só aparecem quando você sair.
 
+## Cenários
 
-## How to help
-1. Please provide feedback and report any issues in scenarios: bad timing, damage, config not working at it supposed
-2. Bot AI currently only covers strategies from my region. Adding strategies for other regions requires little coding.
-   Feel free to create pull request or contact me.
-3. Adding new scenario is more involved. `tools/parser.py` generates a baseline scenario from a log, which still
-   needs randomization, mechanic-failure logic and bot AI added by hand.
-4. Plugin-development or reverse-engineering help, and improvement ideas, are also welcome.
+Dancing Mad (Ultimate), Futures Rewritten (Ultimate), The Omega Protocol (Ultimate),
+The Weapon's Refrain (Ultimate) e The Unending Coil of Bahamut (Ultimate). Abra `/anomech` na inn para
+ver a lista completa.
 
+## Instalação (desenvolvimento)
 
-## Known issues
-* Visuals should closely match retail, but damage snapshot timings are best guesses
-* In scenarios for Top Omega Protocol (Ultimate):
-  * Tether distance threshold are very rough estimations
-* Not all skills will resolve properly
+1. `dotnet build -c Release` na raiz do repositório.
+2. No jogo: `/xlsettings` → **Experimental** → **Dev Plugin Locations** → adicione o caminho do
+   `AnoMech.dll` gerado em `AnoMech/bin/Release/`.
+3. Desative qualquer outra versão do AnoMech: as duas usam o mesmo nome interno.
 
-#  Acknowledgments
+> Não substitua a DLL com uma simulação rodando: o Dalamud recarrega o plugin, e a proteção do
+> AnoMech fecha o jogo por segurança.
 
-Thanks for contributors:
-* [WorstAquaPlayer](https://github.com/WorstAquaPlayer) - rewriting core & fixing crashes, extra scenarios
-* [Wydox](https://github.com/Wydox) - core improvements, extra scenarios and strategies
-* [Evernow](https://github.com/Evernow) - multiplayer (WIP), core improvements, extra scenarions and strategies
-* [RoarkGit](https://github.com/RoarkGit) - win streaks, extra scenarios
-* [grayparser](https://github.com/grayparser) - core improvements, extra scenarios
-* [altair9x](https://github.com/altair9x) - extra strategies
-* [Quantumlyy](https://github.com/Quantumlyy) - extra strategies
-* [Linqx](https://github.com/Linqx) - success/failure checkmarks
+## Créditos e licença
 
-AnoMech leans heavily on the work of other Dalamud plugins. Huge thanks to their authors!  
-Without them, the following would not be possible:
+O MalphiRek é uma versão modificada do [AnoMech](https://github.com/anomek/AnoMech), de
+[Anomek](https://github.com/anomek) e colaboradores, a partir do fork de
+[shifusen329](https://github.com/shifusen329/AnoMech). A integração com Splatoon e BossMod partiu do
+trabalho de [cidoliveira](https://github.com/cidoliveira/AnoMech).
 
-AnoMech's zone changes are built on **Hyperborea**, which served as the baseline for loading a solo duty arena.                                                                                                                                                                                   
-[Evernow](https://github.com/Evernow) has since improved that code and made it safer to use.                                                                                                                                                                                                      
-
-**FFXIV-RaidsRewritten** and **bossmod** were the initial inspiration for the project, though neither is part of the                                                                                                                                                                              
-codebase anymore.
+Distribuído sob a [GNU AGPL-3.0](LICENSE.md), como o original.
