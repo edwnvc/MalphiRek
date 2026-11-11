@@ -40,7 +40,8 @@ public interface ITetherEnd
 
 // What dynamic ends need to look up: the party (proximity queries) and the
 // channeling id (to skip members already holding a parallel tether of the same id).
-public readonly record struct TetherContext(CharacterFind<SimCharacter> Party, ushort TetherId, Rng Rng);
+// HoldsTether: whether a member is already an end of another live tether with this id.
+public readonly record struct TetherContext(CharacterFind<SimCharacter> Party, ushort TetherId, Rng Rng, Func<SimCharacter, bool> HoldsTether);
 
 // Internal — scenarios express a fixed end by passing the SimCharacter directly
 // (see the SimWorld.Tether overloads); this is just the ITetherEnd wrapper.
@@ -88,7 +89,10 @@ public sealed class PassableEnd : DynamicEnd
 
     public override SimCharacter? Resolve(SimCharacter? self, SimCharacter? other, TetherContext ctx)
     {
-        if (self is null) return initial ?? ctx.Party.RandomMember(ctx.Rng);
+        // Parallel tethers seed onto different members: when the anchor hosts the VFX (black
+        // holes) HasTetherInSlot0 can't see the holder, so nothing else keeps one member from
+        // starting out with several.
+        if (self is null) return initial ?? ctx.Party.RandomMember(ctx.Rng, c => !ctx.HoldsTether(c));
         var holder = self;
         if (!holder.IsAlive()) return holder;
         if (other is null || !other.IsAlive()) return holder;   // anchor gone → don't migrate

@@ -233,6 +233,13 @@ public sealed class CharacterFind<T> where T : IPositioned
         return pool.Count == 0 ? default : pool[rng.Next(pool.Count)];
     }
 
+    // As RandomMember, among those passing `where`; falls back to anyone when none do.
+    public T? RandomMember(Rng rng, Func<T, bool> where)
+    {
+        var pool = source().Where(where).ToList();
+        return pool.Count == 0 ? RandomMember(rng) : pool[rng.Next(pool.Count)];
+    }
+
     // size is extra dimension, that's not present in game data.
     // Exact interpretation depends on spell type
     // cones -> halfAngleRad default PI/6

@@ -45,6 +45,20 @@ public class TetherEndTests
     }
 
     [Test]
+    public void UnseededParallelTethersStartOnDifferentMembers()
+    {
+        for (var seed = 0; seed < 50; seed++)
+        {
+            world.Reseed(seed);
+            var tethers = new[] { Hole(-17f, 0f), Hole(0f, -17f), Hole(17f, 0f) }
+                .Select(h => world.Tether(h, End.Passable(), UmadConstants.TetherId.GrabbyTether))
+                .ToList();
+            Assert.That(tethers.Select(t => t.B).Distinct().Count(), Is.EqualTo(3), $"seed {seed}");
+            foreach (var t in tethers) t.Despawn();
+        }
+    }
+
+    [Test]
     public void AMemberHoldingOneBlackHoleTetherTakesASecondBySteppingIntoItsLine()
     {
         var holder = world.Party.Get(PartyRole.MainTank)!;
