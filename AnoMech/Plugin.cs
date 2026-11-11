@@ -6,6 +6,8 @@ using AnoMech.Core.Native.Implementations.Interop;
 using AnoMech.Core.Native.Implementations.Pointers;
 using AnoMech.Core.Native.Interfaces;
 using AnoMech.Multiplayer;
+using AnoMech.Integrations.BossMod;
+using AnoMech.Integrations.Splatoon;
 using AnoMech.Windows;
 using Dalamud.Game.Command;
 using Dalamud.Game.DutyState;
@@ -55,6 +57,8 @@ public sealed class Plugin : IDalamudPlugin
     // Plugin-lifetime singletons, static like the PluginServices above so sim code reaches them
     // without a Plugin reference.
     internal static LogManager LogManager { get; private set; } = null!;
+    internal static SplatoonCompat SplatoonCompat { get; private set; } = null!;
+    internal static BossModBridge BossModBridge { get; } = new();
     private ConfigWindow ConfigWindow { get; init; }
     private MainWindow MainWindow { get; init; }
     private FailureBanner? FailureBanner { get; init; }
@@ -79,6 +83,7 @@ public sealed class Plugin : IDalamudPlugin
 
             GameNatives.Install();
             opcodeUpdater = new OpcodeUpdater();
+            SplatoonCompat = new SplatoonCompat();
             Game = new Game();
             Practice = new PracticeLoop(Game);
             Game.World.NaturalBotTiming = Config.NaturalBotTiming;
@@ -193,6 +198,8 @@ public sealed class Plugin : IDalamudPlugin
         TimelineDebug.Shutdown();
         Multiplayer?.Dispose();
         Game?.Dispose();
+        // After Game, whose teardown can still be mid-run: the pre-run conditions go back last.
+        SplatoonCompat?.Dispose();
         Natives.Dispose();
         opcodeUpdater?.Dispose();
         LogManager?.Dispose();
@@ -225,6 +232,10 @@ public sealed class Plugin : IDalamudPlugin
         catch (Exception e) { DiagnosticLog.Warn($"[Plugin] Runs.Tick threw: {e}"); }
         try { Game.Tick(fw->FrameDeltaTime); }
         catch (Exception e) { DiagnosticLog.Warn($"[Plugin] Game.Tick threw: {e}"); }
+        try { SplatoonCompat.Tick(); }
+        catch (Exception e) { DiagnosticLog.Warn($"[Plugin] SplatoonCompat.Tick threw: {e}"); }
+        try { BossModBridge.Tick(fw->FrameDeltaTime); }
+        catch (Exception e) { DiagnosticLog.Warn($"[Plugin] BossModBridge.Tick threw: {e}"); }
 #if DEBUG
         try { DamageDebugWindow.Instance?.Tick(fw->FrameDeltaTime); }
         catch (Exception e) { DiagnosticLog.Warn($"[Plugin] DamageDebugWindow.Tick threw: {e}"); }
@@ -246,6 +257,9 @@ public sealed class Plugin : IDalamudPlugin
     private void OnTerritoryChanged(uint territory)
     {
         ZoneControl.NoteTerritoryChanged(territory);
+        // The sim's own sync of Dalamud's territory (ZoneControl.TrySetClientTerritory), not a
+        // real zone-in: leave the windows and the instance log alone.
+        if (ZoneControl.Current is { IsActive: true }) return;
         var row = DataManager.GetExcelSheet<TerritoryType>()?.GetRowOrDefault(territory);
         var isInn = row?.TerritoryIntendedUse.RowId == 2; // TerritoryIntendedUse.Inn
         if (!isInn)

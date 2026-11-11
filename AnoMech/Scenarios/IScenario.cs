@@ -33,6 +33,9 @@ public interface IScenario : IWorldEventListener
     // How far into that track the real fight is when this scenario starts.
     float BgmSecondsAtStart => 0f;
 
+    // Where this scenario begins in BossMod's module for the fight; null leaves BossMod alone.
+    AnoMech.Integrations.BossMod.BossModStart? BossModStart => null;
+
     void Run(SimWorld world, int? selectedAi);
     void Tick(float delta, float elapsed) { }
 

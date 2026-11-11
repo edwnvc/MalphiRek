@@ -104,6 +104,17 @@ public class Configuration : IPluginConfiguration
     // the sim zone leaks back to the server.
     public bool SafeMode { get; set; } = true;
 
+    // While a scenario runs, hold the encounter state Splatoon and BossMod gate on (zone, combat,
+    // duty, env scene; see Integrations/Splatoon/SplatoonCompat).
+    public bool SplatoonCompat { get; set; } = true;
+
+    // Env scene forced for every phase; SplatoonCompat.SceneOverrideOff uses each phase's own.
+    public int SplatoonSceneOverride { get; set; } = Integrations.Splatoon.SplatoonCompat.SceneOverrideOff;
+
+    // Under SplatoonCompat: move BossMod's fight module to where the scenario starts (see
+    // Integrations/BossMod/BossModBridge).
+    public bool SyncBossModModule { get; set; } = true;
+
     // The below exists just to make saving less cumbersome
     public void Save()
     {

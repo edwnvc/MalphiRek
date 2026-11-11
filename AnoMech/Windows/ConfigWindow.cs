@@ -109,6 +109,30 @@ public class ConfigWindow : Window, IDisposable
             Plugin.LogManager.OpenLogsFolder();
 
         ImGui.Separator();
+        var compat = configuration.SplatoonCompat;
+        if (ImGui.Checkbox("Splatoon / BossMod compatibility", ref compat))
+        {
+            configuration.SplatoonCompat = compat;
+            configuration.Save();
+        }
+        if (ImGui.IsItemHovered())
+            ImGui.SetTooltip(
+                "While a scenario runs, reports the fight's zone, flags you as in combat and in duty\n" +
+                "and sets the phase scene, so Splatoon layouts/scripts and BossMod modules activate\n" +
+                "and reset between pulls. Takes effect on the next zone-in.");
+        if (configuration.SplatoonCompat)
+        {
+            var syncBossMod = configuration.SyncBossModModule;
+            if (ImGui.Checkbox("Move BossMod's module to the scenario's start", ref syncBossMod))
+            {
+                configuration.SyncBossModModule = syncBossMod;
+                configuration.Save();
+            }
+            if (Plugin.BossModBridge.LastResult is { } bossModResult)
+                ImGui.TextDisabled($"BossMod: {bossModResult}");
+        }
+
+        ImGui.Separator();
         DrawMultiplayerServer();
 
 #if DEBUG

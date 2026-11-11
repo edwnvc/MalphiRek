@@ -18,6 +18,9 @@ public interface IPhase
     // aggregated from the replay's single MapEffect packets between the snapshot and the phase
     // start.
     IReadOnlyDictionary<byte, ushort> ArenaMapEffectOverrides => ImmutableDictionary<byte, ushort>.Empty;
+    // The env scene the server has set by the time this phase plays, which scripts and layouts
+    // gate on (see SplatoonCompat); null leaves the zone's own value.
+    byte? EnvScene => null;
 
     // Optional phase-wide setup, between zone and scenario Run. Default no-op.
     void Run(SimWorld world) { }
@@ -29,13 +32,14 @@ public sealed class Phase : IPhase
     private readonly Action<SimWorld>? init;
 
     public Phase(IZone zone, string name, byte? weather, ushort bgm, Action<SimWorld>? init = null,
-        IReadOnlyDictionary<byte, ushort>? arenaMapEffectOverrides = null)
+        IReadOnlyDictionary<byte, ushort>? arenaMapEffectOverrides = null, byte? envScene = null)
     {
         Zone = zone;
         Name = name;
         Weather = weather;
         Bgm = bgm;
         ArenaMapEffectOverrides = arenaMapEffectOverrides ?? ImmutableDictionary<byte, ushort>.Empty;
+        EnvScene = envScene;
         this.init = init;
     }
 
@@ -44,6 +48,7 @@ public sealed class Phase : IPhase
     public byte? Weather { get; }
     public ushort Bgm { get; }
     public IReadOnlyDictionary<byte, ushort> ArenaMapEffectOverrides { get; }
+    public byte? EnvScene { get; }
 
     public void Run(SimWorld world) => init?.Invoke(world);
 }
