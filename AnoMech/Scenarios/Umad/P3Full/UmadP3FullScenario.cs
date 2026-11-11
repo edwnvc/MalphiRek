@@ -22,6 +22,7 @@ public sealed class UmadP3FullScenario : IMultiplayerReplayable
 {
     public string Name => "Full phase";
     public IPhase Phase => UmadZone.P3;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart => bowels.BossModStart;
     public float BgmSecondsAtStart => bowels.BgmSecondsAtStart;
     public bool SupportsSolo => true;
     public bool SupportsMultiplayer => true;

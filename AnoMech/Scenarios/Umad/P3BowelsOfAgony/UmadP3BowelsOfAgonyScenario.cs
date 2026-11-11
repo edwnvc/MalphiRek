@@ -23,6 +23,12 @@ public sealed class UmadP3BowelsOfAgonyScenario : IMultiplayerReplayable
 {
     public string Name => "Bowels of Agony";
     public IPhase Phase => UmadZone.P3;
+
+    // Boss Mod's UMADStates P3: 0x0 activates the Kefka indicator, 0x100 waits for the Definition of
+    // Insanity cast this scenario opens with; Firewall and Bowels of Agony (whose states switch on
+    // the Entropy/Fluid and crystal bait components) then follow from the fight's own casts.
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } =
+        new("BossMod.Dawntrail.Ultimate.UMAD.UMAD", Phase: 2, StatePath: [0x02000000, 0x02000100]);
     public float BgmSecondsAtStart => Constants.BgmSecondsAtStart;
     public bool SupportsSolo => true;
     public bool SupportsMultiplayer => true;
