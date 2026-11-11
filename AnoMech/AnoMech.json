@@ -1,9 +1,9 @@
 {
-    "Author": "Anomek",
+    "Author": "edwnvc",
     "Name": "MalphiRek",
     "MinimumDalamudVersion": "15.0.3.5",
-    "Punchline": "Another FFXIV mechanics simulator. Go to an inn and start practice.",
-    "Description": "Spawns fake party members and bosses client-side so you can practice raid mechanics without a full party.",
+    "Punchline": "Eu amo treinar ultimates.",
+    "Description": "Plugin para treinar as mecânicas mais cabulosas desse jogo lindo.",
     "RepoUrl": "https://github.com/edwnvc/MalphiRek",
     "IconUrl": "https://raw.githubusercontent.com/edwnvc/MalphiRek/master/images/icon.png",
     "Tags": [
