@@ -530,7 +530,7 @@ public sealed class UmadP1TeleTrouncingScenario : IMultiplayerReplayable
                 if (adx * adx + adz * adz > ArrowCollideDistance * ArrowCollideDistance) continue;
                 DiagnosticLog.Info(
                     $"[UmadP1TeleTrouncing] Two arrows collided at t={elapsed:F2}s -- ({a.Position.X:F1},{a.Position.Z:F1}) and ({b.Position.X:F1},{b.Position.Z:F1}), {MathF.Sqrt(adx * adx + adz * adz):F1}y apart -- poofing both.");
-                NoteArrowSoakFailure($"two arrows collided and vanished unused at t={elapsed:F2}s -- ({a.Position.X:F1},{a.Position.Z:F1}) and ({b.Position.X:F1},{b.Position.Z:F1})");
+                NoteArrowSoakFailure($"duas flechas colidiram e sumiram sem uso em t={elapsed:F2}s -- ({a.Position.X:F1},{a.Position.Z:F1}) and ({b.Position.X:F1},{b.Position.Z:F1})");
                 RemoveArrow(a);
                 RemoveArrow(b);
                 break;
@@ -543,7 +543,7 @@ public sealed class UmadP1TeleTrouncingScenario : IMultiplayerReplayable
             var lifespan = arrowLifespan.GetValueOrDefault(arrow) - delta;
             if (lifespan <= 0f)
             {
-                NoteArrowSoakFailure($"the arrow at ({arrow.Position.X:F1},{arrow.Position.Z:F1}) expired unused at t={elapsed:F2}s ({ArrowLifespanAfterSpawn:F2}s after it spawned)");
+                NoteArrowSoakFailure($"a flecha em ({arrow.Position.X:F1},{arrow.Position.Z:F1}) expirou sem uso em t={elapsed:F2}s ({ArrowLifespanAfterSpawn:F2}s depois de aparecer)");
                 RetireArrow(arrow);
                 continue;
             }
@@ -578,7 +578,7 @@ public sealed class UmadP1TeleTrouncingScenario : IMultiplayerReplayable
                     $"[UmadP1TeleTrouncing] {role} used an arrow at t={elapsed:F2}s ({(elapsed < ConfusedChaseStart ? "BEFORE confused-chase start" : "during/after confused-chase")}, {(confused ? "Confused" : "NOT Confused")}) -- "
                     + $"member at ({member.Position.X:F1},{member.Position.Z:F1}), arrow at ({arrow.Position.X:F1},{arrow.Position.Z:F1}).");
                 if (confused) arrowsSoakedByConfused++;
-                else NoteArrowSoakFailure($"{role} used the arrow at ({arrow.Position.X:F1},{arrow.Position.Z:F1}) at t={elapsed:F2}s while not Confused");
+                else NoteArrowSoakFailure($"{role} usou a flecha em ({arrow.Position.X:F1},{arrow.Position.Z:F1}) em t={elapsed:F2}s sem estar Confused");
                 UseArrow(role, member, arrow);
                 RetireArrow(arrow);
                 break;
@@ -601,19 +601,19 @@ public sealed class UmadP1TeleTrouncingScenario : IMultiplayerReplayable
     {
         arrowSoakFailures.Add(what);
         DiagnosticLog.Warn($"[UmadP1TeleTrouncing] Arrow-soak failure {arrowSoakFailures.Count}: {what}.");
-        world.Fail($"Arrow soak failed: {what}");
+        world.Fail($"Soak das flechas falhou: {what}");
     }
 
     private void JudgeArrowSoaks()
     {
-        var summary = $"{arrowsSoakedByConfused}/{arrowsPlaced} arrows soaked by Confused players";
+        var summary = $"{arrowsSoakedByConfused}/{arrowsPlaced} flechas pegas por jogadores Confused";
         if (!ArrowSoakFailed)
         {
             DiagnosticLog.Info($"[UmadP1TeleTrouncing] Arrow soaks passed: {summary}.");
             return;
         }
         DiagnosticLog.Warn($"[UmadP1TeleTrouncing] Arrow soaks FAILED ({summary}): {string.Join("; ", arrowSoakFailures)}.");
-        if (arrowSoakFailures.Count == 0) world.Fail($"Arrow soak failed: only {summary}");
+        if (arrowSoakFailures.Count == 0) world.Fail($"Soak das flechas falhou: só {summary}");
     }
 
     private void PlayFireLine()

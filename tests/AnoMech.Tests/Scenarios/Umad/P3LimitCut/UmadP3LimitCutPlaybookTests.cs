@@ -50,7 +50,7 @@ public class UmadP3LimitCutPlaybookTests
     [Test]
     public void ChargeTextMatchesTheBotsWallSpot()
     {
-        string[] words = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"];
+        string[] words = ["sul", "sudeste", "leste", "nordeste", "norte", "noroeste", "oeste", "sudoeste"];
         foreach (var (state, context) in States())
             foreach (var role in UmadP1Roles.All)
             {
@@ -60,7 +60,7 @@ public class UmadP3LimitCutPlaybookTests
                 lean = MathF.IEEERemainder(lean, 2f * MathF.PI);
                 Assert.That(MathF.Abs(lean), Is.EqualTo(MathF.PI / 8f).Within(1e-4f), context);
                 var why = UmadP3LimitCutPlaybook.Charges(state).Why(role);
-                Assert.That(why, Does.Contain($"half-step {(lean < 0f ? "clockwise" : "counterclockwise")} of the {words[across]} spot"), $"{role}, {context}");
+                Assert.That(why, Does.Contain($"meio passo no sentido {(lean < 0f ? "horário" : "anti-horário")} do ponto {words[across]}"), $"{role}, {context}");
             }
     }
 }

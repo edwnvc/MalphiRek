@@ -28,7 +28,7 @@ internal static class UmadP5FloodMitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(SGE, Holos, -11.00f, "Ultima Repeater (before the scenario)", [Flood1]),
+        new(SGE, Holos, -11.00f, "Ultima Repeater (antes do cenário)", [Flood1]),
         new(WHM, Temperance, 4.83f, "Chaotic Flood", [Flood1, Flood4]),
         new(AST, NeutralSect, 4.83f, "Chaotic Flood", []),
         new(SCH, Expedient, 4.83f, "Chaotic Flood", [Flood1, Flood4]),

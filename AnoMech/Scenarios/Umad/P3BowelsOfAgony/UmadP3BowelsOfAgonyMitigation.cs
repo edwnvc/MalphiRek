@@ -62,8 +62,8 @@ internal static class UmadP3BowelsOfAgonyMitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(SCH, SacredSoil, 18.40f, "Bowels of Agony (early, so it's back for the short elements)", [Bowels]),
-        new(SGE, Kerachole, 18.40f, "Bowels of Agony (early, so it's back for the short elements)", [Bowels]),
+        new(SCH, SacredSoil, 18.40f, "Bowels of Agony (cedo, para voltar a tempo dos elementos curtos)", [Bowels]),
+        new(SGE, Kerachole, 18.40f, "Bowels of Agony (cedo, para voltar a tempo dos elementos curtos)", [Bowels]),
         new(MT, MitActionId.Reprisal, 28.48f, "Bowels of Agony", [Bowels]),
         new(WHM, PlenaryIndulgence, 28.48f, "Bowels of Agony", [Bowels]),
         new(AST, CollectiveUnconscious, 28.48f, "Bowels of Agony", [Bowels]),
@@ -73,13 +73,13 @@ internal static class UmadP3BowelsOfAgonyMitigation
         new(SCH, DeploymentTactics, 47.61f, "Stray Flames/Tsunami", [ShortElement, ShortCrystal]),
         new(SCH, SacredSoil, 48.50f, "Stray Flames/Tsunami", [ShortElement, ShortCrystal]),
         new(SGE, Zoe, 47.31f, "Stray Flames/Tsunami", []),
-        new(SGE, EukrasianPrognosisII, 47.61f, "Stray Flames/Tsunami (Zoe shields)", [ShortElement, ShortCrystal]),
+        new(SGE, EukrasianPrognosisII, 47.61f, "Stray Flames/Tsunami (escudos com Zoe)", [ShortElement, ShortCrystal]),
         new(SGE, Kerachole, 48.50f, "Stray Flames/Tsunami", [ShortElement, ShortCrystal]),
 
-        new(OT, MitActionId.Reprisal, 57.65f, "Thunder III (Exdeath's autos)", [], On: UmadMitigation.Exdeath),
+        new(OT, MitActionId.Reprisal, 57.65f, "Thunder III (autos do Exdeath)", [], On: UmadMitigation.Exdeath),
         new(SCH, Expedient, 57.65f, "Thunder III", [Thunder1, Thunder2, LongElement, LongCrystal]),
         new(SGE, Holos, 57.65f, "Thunder III", [Thunder1, Thunder2, LongElement, LongCrystal]),
-        new(D4, Addle, 57.65f, "Thunder III (Exdeath's autos)", [], On: UmadMitigation.Exdeath),
+        new(D4, Addle, 57.65f, "Thunder III (autos do Exdeath)", [], On: UmadMitigation.Exdeath),
 
         new(OT, PartyMit, 74.62f, "Stray Flames/Tsunami", [LongElement, LongCrystal]),
         new(WHM, Temperance, 74.62f, "Stray Flames/Tsunami", [LongElement, LongCrystal]),

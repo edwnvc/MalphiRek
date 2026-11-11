@@ -15,14 +15,14 @@ internal static class DamageCheck
         if (spec.Protections.Any(id => target.FindStatus(id) != null)) return null;
         if (severity.Kind == SeverityKind.Lethal) return MissingProtection(spec) ?? "";
         var vuln = CarriedVulnerability(target, spec);
-        if (vuln is { RequiredMitigation: null }) return "had vuln up debuff";
-        if (severity.Kind == SeverityKind.TankBuster && !IsTank(target)) return "tank buster";
+        if (vuln is { RequiredMitigation: null }) return "estava com vuln up";
+        if (severity.Kind == SeverityKind.TankBuster && !IsTank(target)) return "tankbuster em quem não é tank";
         if (Survives(target, party, MathF.Max(severity.MinMitigation, vuln?.RequiredMitigation ?? 0f), kind, caster)) return null;
-        return vuln != null ? "not enough mitigation for a hit with vuln up" : "not enough mitigation";
+        return vuln != null ? "mitigação insuficiente para um golpe com vuln up" : "mitigação insuficiente";
     }
 
     private static string? MissingProtection(VulnSpec spec)
-        => spec.Protections.Count > 0 ? $"no {Natives.Data.StatusName(spec.Protections[0])}" : null;
+        => spec.Protections.Count > 0 ? $"sem {Natives.Data.StatusName(spec.Protections[0])}" : null;
 
     public static bool IsTank(SimCharacter target) => target is ISimPartyMember { Role: PartyRole.OffTank or PartyRole.MainTank };
 

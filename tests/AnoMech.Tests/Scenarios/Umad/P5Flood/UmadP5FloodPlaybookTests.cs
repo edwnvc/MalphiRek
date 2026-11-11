@@ -24,7 +24,7 @@ public class UmadP5FloodPlaybookTests
     {
         var state = UmadP5FloodState.FromNetworkReplay(false, false, true, 2, false)!;
         var why = UmadP5FloodPlaybook.Rotate(state, 1, 2).Why(default);
-        Assert.That(why, Does.Contain("counterclockwise"));
-        Assert.That(why, Does.Contain("east side"));
+        Assert.That(why, Does.Contain("anti-horário"));
+        Assert.That(why, Does.Contain("lado leste"));
     }
 }

@@ -66,12 +66,12 @@ public static class MitGrader
     {
         var judged = grades.Where(g => g.Kind != MitGradeKind.NotReached).ToList();
         var counts = new List<string>();
-        foreach (var (kind, word) in new[] { (MitGradeKind.Early, "early"), (MitGradeKind.Late, "late"), (MitGradeKind.Missed, "missed") })
+        foreach (var (kind, word) in new[] { (MitGradeKind.Early, "cedo"), (MitGradeKind.Late, "atrasado"), (MitGradeKind.Missed, "perdido") })
             if (judged.Count(g => g.Kind == kind) is var n and > 0) counts.Add($"{n} {word}");
-        var headline = $"Mitigation: {judged.Count(g => g.Kind == MitGradeKind.OnTime)} of {judged.Count} planned presses on time"
+        var headline = $"Mitigação: {judged.Count(g => g.Kind == MitGradeKind.OnTime)} de {judged.Count} botões planejados no tempo certo"
                        + (counts.Count > 0 ? $" ({string.Join(", ", counts)})" : "") + ".";
         var notReached = grades.Count - judged.Count;
-        if (notReached > 0) headline += $" ({notReached} not reached: the run ended at {endedAt:F1}s.)";
+        if (notReached > 0) headline += $" ({notReached} não alcançado(s): a tentativa terminou em {endedAt:F1}s.)";
 
         var lines = new List<string> { headline };
         foreach (var g in judged.Where(g => g.Kind != MitGradeKind.OnTime))
@@ -82,13 +82,13 @@ public static class MitGrader
     private static string Line(MitGrade g)
     {
         var e = g.Entry;
-        var what = $"{e.Action.Name}{(e.IsExtra ? " (Extras)" : "")} for {e.Label}";
+        var what = $"{e.Action.Name}{(e.IsExtra ? " (Extras)" : "")} para {e.Label}";
         var lastHit = e.Covers.Length > 0 ? e.Covers[^1] : e.Close;
         return g.Kind switch
         {
-            MitGradeKind.Early => $"{what}: pressed too early, at {g.PressedAt:F1}s (window {e.Open:F1}–{e.Close:F1}s): it wears off before the hit at {lastHit:F1}s.",
-            MitGradeKind.Late => $"{what}: pressed late, at {g.PressedAt:F1}s (window closed at {e.Close:F1}s).",
-            _ => $"{what}: not pressed (window {e.Open:F1}–{e.Close:F1}s).",
+            MitGradeKind.Early => $"{what}: apertado cedo demais, em {g.PressedAt:F1}s (janela {e.Open:F1}–{e.Close:F1}s): acaba antes do golpe em {lastHit:F1}s.",
+            MitGradeKind.Late => $"{what}: apertado atrasado, em {g.PressedAt:F1}s (a janela fechou em {e.Close:F1}s).",
+            _ => $"{what}: não apertado (janela {e.Open:F1}–{e.Close:F1}s).",
         };
     }
 }

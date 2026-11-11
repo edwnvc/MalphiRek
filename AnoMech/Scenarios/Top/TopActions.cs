@@ -153,7 +153,7 @@ public static class TopActions
         Cast = new() { AnimationLock = 1.1f },
         Timing = new() { DamageDelay = 0.67f },
         Effects = [Damage(MagicVulns, Lethal)],
-        DeathExplanation = "tower unfilled",
+        DeathExplanation = "torre sem ninguém",
     };
 
     // -- Hyper Pulse --
@@ -238,7 +238,7 @@ public static class TopActions
     {
         Cast = new() { AnimationLock = 1.1f },
         Effects = [Damage(MagicVulns, Lethal)],
-        DeathExplanation = "Failed Hello World mechanic",
+        DeathExplanation = "falhou a mecânica do Hello World",
     };
 
     public static readonly EnemyAction HelloNearWorld = HelloWorldSoak(ActionId.HelloNearWorld, 0.63f);

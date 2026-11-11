@@ -189,7 +189,7 @@ public sealed class Game : IDisposable
         }
         instance?.Tick(deltaSeconds);
         if (instance?.CatchFall() == true && run is not null)
-            World.Party.Player?.Die(SimCharacterDeathExtensions.Environment, "Fell off the arena");
+            World.Party.Player?.Die(SimCharacterDeathExtensions.Environment, "Caiu da arena");
         if (Paused) return;
         Events.Tick(deltaSeconds * EventTimeScale);
         World.Tick(deltaSeconds * EventTimeScale);
@@ -210,7 +210,7 @@ public sealed class Game : IDisposable
         DiagnosticLog.Warn(
             $"[Game] Kill: {target.Role} died at ({(target as IPositioned)?.Position.X:F1},{(target as IPositioned)?.Position.Z:F1}) -- {cause}");
         var progress = target is SimPlayer ? hostProgress ?? ActiveScenario?.RunProgress : null;
-        Plugin.ChatGui.Print(new XivChatEntry { Type = XivChatType.SystemMessage, Message = $"[AnoMech] {DescribeName(target)} died: {cause}{(progress != null ? $". {progress}" : "")}" });
+        Plugin.ChatGui.Print(new XivChatEntry { Type = XivChatType.SystemMessage, Message = $"[AnoMech] {DescribeName(target)} morreu: {cause}{(progress != null ? $". {progress}" : "")}" });
         if (target is SimPlayer && Plugin.Config.ShowDeathRecap) Recap = BuildRecap(target, cause, progress, hostStrat, hostAoe);
         run?.OnDeathReported(DescribeName(target), cause);
 
@@ -274,10 +274,10 @@ public sealed class Game : IDisposable
 
     private static string DescribeName(ISimPartyMember target) => target switch
     {
-        SimPlayer => "You",
+        SimPlayer => "Você",
         SimPartyNpc pm => pm.DisplayName,
         SimNetworkPuppet pm => pm.DisplayName,
-        _ => "Character",
+        _ => "Personagem",
     };
     
     // `resolved` runs in the same deferred callback, with why it was refused, or null once done;

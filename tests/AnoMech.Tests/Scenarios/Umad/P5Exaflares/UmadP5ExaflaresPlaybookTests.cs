@@ -33,11 +33,11 @@ public class UmadP5ExaflaresPlaybookTests
     public void ExaflaresOffersTheOuterLaneOnlyBeyondAnOffCentrePair()
     {
         var state = UmadP5ExaflaresState.FromNetworkReplay([2, 5, 1, 4, 3, 6], [3, 6, 2, 5, 1, 4]);
-        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 0).Why(PartyRole.CasterDps), Does.Not.Contain("open lane"));
-        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 1).Why(PartyRole.CasterDps), Does.Contain("open lane"));
-        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 2).Why(PartyRole.RegenHealer), Does.Contain("open lane"));
-        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 3).Why(PartyRole.PhysRangedDps), Does.Not.Contain("open lane"));
+        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 0).Why(PartyRole.CasterDps), Does.Not.Contain("faixa livre"));
+        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 1).Why(PartyRole.CasterDps), Does.Contain("faixa livre"));
+        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 2).Why(PartyRole.RegenHealer), Does.Contain("faixa livre"));
+        Assert.That(UmadP5ExaflaresPlaybook.Wave(state, 3).Why(PartyRole.PhysRangedDps), Does.Not.Contain("faixa livre"));
         for (var wave = 0; wave < 6; wave++)
-            Assert.That(UmadP5ExaflaresPlaybook.Wave(state, wave).Why(PartyRole.MeleeDpsA), Does.Not.Contain("open lane"), $"wave {wave}");
+            Assert.That(UmadP5ExaflaresPlaybook.Wave(state, wave).Why(PartyRole.MeleeDpsA), Does.Not.Contain("faixa livre"), $"wave {wave}");
     }
 }

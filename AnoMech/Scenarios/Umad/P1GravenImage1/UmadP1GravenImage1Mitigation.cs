@@ -32,24 +32,24 @@ internal static class UmadP1GravenImage1Mitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(OT, PartyMit, 0.60f, "Mystery Magic 1 (at Kefka's re-centre)", [Fire]),
-        new(D3, PartyMit, 0.60f, "Mystery Magic 1 (at Kefka's re-centre)", [Fire]),
-        new(SCH, DeploymentTactics, 2.10f, "Mystery Magic 1 (early)", [Fire]),
-        new(SGE, Zoe, 2.10f, "Mystery Magic 1 (early, so it's back for the second trap)", []),
-        new(SGE, Kerachole, 5.50f, "Mystery Magic 1 (after Graven Image)", [Fire, Wave]),
+        new(OT, PartyMit, 0.60f, "Mystery Magic 1 (quando o Kefka volta ao centro)", [Fire]),
+        new(D3, PartyMit, 0.60f, "Mystery Magic 1 (quando o Kefka volta ao centro)", [Fire]),
+        new(SCH, DeploymentTactics, 2.10f, "Mystery Magic 1 (cedo)", [Fire]),
+        new(SGE, Zoe, 2.10f, "Mystery Magic 1 (cedo, para voltar a tempo do segundo trap)", []),
+        new(SGE, Kerachole, 5.50f, "Mystery Magic 1 (depois do Graven Image)", [Fire, Wave]),
         new(MT, PartyMit, 12.50f, "Mystery Magic 1", [Fire, Wave, Trap], [Gunbreaker, DarkKnight]),
         new(OT, MitActionId.Reprisal, 12.50f, "Mystery Magic 1", [Fire, Trap]),
         new(WHM, Temperance, 12.50f, "Mystery Magic 1", [Fire, Wave, Trap]),
         new(AST, NeutralSect, 12.00f, "Mystery Magic 1", []),
         new(AST, SunSign, 12.50f, "Mystery Magic 1", [Fire, Wave, Trap]),
         new(SCH, Expedient, 12.50f, "Mystery Magic 1", [Fire, Wave, Trap]),
-        new(SGE, EukrasianPrognosisII, 12.50f, "Mystery Magic 1 (Zoe shields)", [Fire]),
+        new(SGE, EukrasianPrognosisII, 12.50f, "Mystery Magic 1 (escudos com Zoe)", [Fire]),
         new(D1, Feint, 12.50f, "Mystery Magic 1", [Fire, Trap]),
         new(MT, PartyMit, 16.73f, "Wave Cannon", [Wave, Trap], [Warrior, Paladin]),
         new(WHM, DivineCaress, 16.73f, "Wave Cannon", [Wave]),
         new(SGE, Holos, 16.73f, "Wave Cannon", [Wave, Trap]),
-        new(SCH, Concitation, 16.73f, "Wave Cannon (shields)", [Wave]),
-        new(AST, HeliosConjunction, 16.73f, "Wave Cannon (Neutral Sect shields)", [Wave]),
+        new(SCH, Concitation, 16.73f, "Wave Cannon (escudos)", [Wave]),
+        new(AST, HeliosConjunction, 16.73f, "Wave Cannon (escudos do Neutral Sect)", [Wave]),
         new(SCH, SacredSoil, 23.98f, "Double-trouble Trap 1", [Trap, Judgment]),
         new(D4, Addle, 23.98f, "Double-trouble Trap 1", [Trap, Judgment]),
         new(MT, MitActionId.Reprisal, 37.51f, "Light of Judgment 1", [Judgment, Hyperdrive1, Hyperdrive2, Hyperdrive3]),
@@ -63,14 +63,14 @@ internal static class UmadP1GravenImage1Mitigation
     private static readonly MitPlanEntry[] ExtrasAtJudgment =
     [
         new(Extras, MagickBarrier, 37.51f, "Light of Judgment 1", [Judgment, Hyperdrive1, Hyperdrive2, Hyperdrive3], [RedMage]),
-        new(Extras, TemperaCoat, 36.81f, "Light of Judgment 1 (Tempera Grassa next)", [], [Pictomancer]),
+        new(Extras, TemperaCoat, 36.81f, "Light of Judgment 1 (Tempera Grassa em seguida)", [], [Pictomancer]),
         new(Extras, TemperaGrassa, 37.51f, "Light of Judgment 1", [Judgment], [Pictomancer]),
     ];
 
     private static readonly MitPlanEntry[] ExtrasAtWaveCannon =
     [
         new(Extras, MagickBarrier, 16.73f, "Wave Cannon", [Wave, Towers, Trap], [RedMage]),
-        new(Extras, TemperaCoat, 16.03f, "Wave Cannon (Tempera Grassa next)", [], [Pictomancer]),
+        new(Extras, TemperaCoat, 16.03f, "Wave Cannon (Tempera Grassa em seguida)", [], [Pictomancer]),
         new(Extras, TemperaGrassa, 16.73f, "Wave Cannon", [Wave], [Pictomancer]),
     ];
 }

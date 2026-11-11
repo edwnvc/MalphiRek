@@ -314,7 +314,7 @@ public sealed class FruP4CrystallizeTimeScenario : IScenario
     {
         if (fragmentBroken || fragment is null || !resolved.NpcHits.Contains(fragment) || FragmentSurvives.Contains(resolved.Action.ActionId)) return;
         fragmentBroken = true;
-        world.Fail($"{Natives.Data.ActionName(resolved.Action.ActionId)} hit the Fragment of Fate");
+        world.Fail($"{Natives.Data.ActionName(resolved.Action.ActionId)} atingiu o Fragment of Fate");
     }
 
     private static void CastAt(SimEnemy? helper, EnemyAction action, SimCharacter? target)
@@ -484,7 +484,7 @@ public sealed class FruP4CrystallizeTimeScenario : IScenario
         {
             dragonCatches[side] = 2;
             // UNVERIFIED: no pull lets a head get this far, so the action the wipe shows is a guess.
-            world.Party.WipeAllPlayers(ActionId.LongingOfTheLost, "a dragon head reached the south with a catch left");
+            world.Party.WipeAllPlayers(ActionId.LongingOfTheLost, "uma cabeça de dragão chegou ao sul ainda com uma pegada sobrando");
             return;
         }
         var position = head.Position;

@@ -58,7 +58,7 @@ public sealed class UmadP1GravenImage1Scenario : IMultiplayerReplayable
         state = new UmadP1GravenImage1State(world.Rng, overrides);
         LastState = state;
         var k = kit = new UmadP1Kit(world, "UmadP1GravenImage1", overrides.PropsBindDirector);
-        world.EnforceArenaBoundary(UmadP1Kit.ArenaRadius, "Knocked off the arena");
+        world.EnforceArenaBoundary(UmadP1Kit.ArenaRadius, "Arremessado para fora da arena");
         world.MitPractice.Begin(UmadP1GravenImage1Mitigation.Plan(overrides.ExtrasAtWaveCannon),
             new Dictionary<MitSource, Func<SimCharacter?>> { [UmadMitigation.Kefka] = () => k.Kefka });
         DiagnosticLog.Info($"[UmadP1GravenImage1] Roll: tethers={(state.TetherDps ? "DPS" : "Supports")} ice1={state.Ice1} fire={state.Fire} "
@@ -213,12 +213,12 @@ public sealed class UmadP1GravenImage1Scenario : IMultiplayerReplayable
         if (resolved.Hits.Count == 0)
         {
             kit.KefkaCast(Constants.ActionId.UnmitigatedExplosion, 1.1f);
-            kit.Party.WipeAllPlayers(Constants.ActionId.UnmitigatedExplosion, "nobody soaked a tower during Graven Image 1");
+            kit.Party.WipeAllPlayers(Constants.ActionId.UnmitigatedExplosion, "ninguém pegou uma torre no Graven Image 1");
             return;
         }
         foreach (var member in resolved.Hits)
             if (member.IsAlive() && TowersHolding(member) >= 2)
-                member.Die(Constants.ActionId.Explosion, "soaked two Explosion towers");
+                member.Die(Constants.ActionId.Explosion, "pegou duas torres de Explosion");
     }
 
     private int TowersHolding(SimCharacter member)

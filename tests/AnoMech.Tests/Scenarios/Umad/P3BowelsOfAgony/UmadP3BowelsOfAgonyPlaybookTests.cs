@@ -60,7 +60,7 @@ public class UmadP3BowelsOfAgonyPlaybookTests
             foreach (var role in state.HoldersOf(state.LongElement))
             {
                 var why = UmadP3BowelsOfAgonyPlaybook.Sg3kCleanseFacing(state, state.ShortElement).Why(role);
-                Assert.That(why, Does.Contain(state.Winds[role] == Wind.Headwind ? "so face away from" : "Tailwind, so face"), $"{role}, {context}");
+                Assert.That(why, Does.Contain(state.Winds[role] == Wind.Headwind ? "então fique de costas para" : "Tailwind, então fique de frente para"), $"{role}, {context}");
             }
     }
 }

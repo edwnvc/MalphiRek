@@ -225,7 +225,7 @@ public sealed class FruP4DarklitDragonsongScenario : IScenario
     {
         if (fragmentBroken || fragment is null || !resolved.NpcHits.Contains(fragment) || FragmentSurvives.Contains(resolved.Action.ActionId)) return;
         fragmentBroken = true;
-        world.Fail($"{Natives.Data.ActionName(resolved.Action.ActionId)} hit the Fragment of Fate");
+        world.Fail($"{Natives.Data.ActionName(resolved.Action.ActionId)} atingiu o Fragment of Fate");
     }
 
     private List<SimCharacter> Waters()

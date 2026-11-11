@@ -15,13 +15,13 @@ internal static class UmadP3BowelsOfAgonyPlaybook
     private const string Implosion1 = "NAUR §3.5 (0:35:25)";
     private const string Sg3k = "Icy Veins P3 · raidplan hbgw9v52x9syetck";
 
-    private static readonly string[] SpotWords = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"];
+    private static readonly string[] SpotWords = ["sul", "sudeste", "leste", "nordeste", "norte", "noroeste", "oeste", "sudoeste"];
 
     private static string Spot(int spot) => SpotWords[((spot % 8) + 8) % 8];
 
     private static string Label(PartyRole role) => SettingsGrid.RoleLabel(role);
 
-    private static string CrystalName(Element element) => element == Element.Water ? "water" : "fire";
+    private static string CrystalName(Element element) => element == Element.Water ? "água" : "fogo";
 
     private static string DebuffName(Element element) => element == Element.Water ? "Dynamic Fluid" : "Entropy";
 
@@ -30,159 +30,159 @@ internal static class UmadP3BowelsOfAgonyPlaybook
     private static bool IsRanged(PartyRole role) => role is PartyRole.PhysRangedDps or PartyRole.CasterDps;
 
     private static string WindFacing(UmadP3BowelsOfAgonyState state, PartyRole role, string source)
-        => state.Winds[role] == Wind.Headwind ? $"you have Headwind, so face away from {source}" : $"you have Tailwind, so face {source}";
+        => state.Winds[role] == Wind.Headwind ? $"você tem Headwind, então fique de costas para {source}" : $"você tem Tailwind, então fique de frente para {source}";
 
     public static readonly StratCue DecisiveBattleSplit = new(
         "The Decisive Battle",
         role => role is PartyRole.MainTank or PartyRole.RegenHealer or PartyRole.MeleeDpsA or PartyRole.MeleeDpsB
-            ? "Stand by Chaos on the west side: the four players nearest him get Epic Hero, which locks you to him, and the rest get Fated Hero for Exdeath."
-            : "Stand by Exdeath on the east side: the four players nearest Chaos get Epic Hero, and you four get Fated Hero, which locks you to Exdeath.",
+            ? "Fique perto do Chaos no lado oeste: os quatro jogadores mais perto dele pegam Epic Hero, que te prende a ele, e o resto pega Fated Hero para o Exdeath."
+            : "Fique perto do Exdeath no lado leste: os quatro jogadores mais perto do Chaos pegam Epic Hero, e vocês quatro pegam Fated Hero, que te prende ao Exdeath.",
         Decisive);
 
     public static readonly StratCue BossesToTheMiddle = new(
         "Bowels of Agony",
         role => role switch
         {
-            PartyRole.MainTank => "Pull Chaos onto the middle: stand east of it so he walks to the centre. Bowels of Agony is a raidwide that hands out the debuffs.",
-            PartyRole.OffTank => "Pull Exdeath onto the middle: stand west of it so he walks to the centre. Bowels of Agony is a raidwide that hands out the debuffs.",
-            _ => "Hit your boss in the middle. Bowels of Agony is a raidwide that hands out Headwind or Tailwind to everyone and an element to two pairs.",
+            PartyRole.MainTank => "Puxe o Chaos para o meio: fique a leste dele para ele andar até o centro. Bowels of Agony é um raidwide que distribui os debuffs.",
+            PartyRole.OffTank => "Puxe o Exdeath para o meio: fique a oeste dele para ele andar até o centro. Bowels of Agony é um raidwide que distribui os debuffs.",
+            _ => "Bata no seu boss no meio. Bowels of Agony é um raidwide que dá Headwind ou Tailwind para todo mundo e um elemento para dois pares.",
         },
         Bowels);
 
     public static StratCue Lb3Setup(UmadP3BowelsOfAgonyState state) => new(
-        "Bowels of Agony: crystals (LB3)",
+        "Bowels of Agony: cristais (LB3)",
         role =>
         {
             var wind = Spot(state.WindSpot);
-            if (role == PartyRole.MainTank) return $"Drag Chaos to the {wind} wind crystal: stand at that wall so he sits about 10y out, facing it.";
-            if (role == PartyRole.OffTank) return "Keep Exdeath in the middle: he casts Thunder III there next, and you leave him for the wall when he starts.";
+            if (role == PartyRole.MainTank) return $"Leve o Chaos até o cristal de vento do {wind}: fique nessa parede para ele ficar a uns 10y, virado para ela.";
+            if (role == PartyRole.OffTank) return "Mantenha o Exdeath no meio: ele solta o Thunder III ali em seguida, e você o deixa e vai para a parede quando o cast começar.";
             if (IsRanged(role))
-                return $"Go to the {Spot(state.ShortSpot)} {CrystalName(state.ShortElement)} crystal, the short one: its {CrystalShot(state.ShortElement)} fires at the two players nearest it, and that must be you two, 12y apart.";
-            return $"Stack at the wall behind Chaos by the {wind} wind crystal, out of Exdeath's Thunder III. LB3 keeps every wind debuff for Limit Cut's Vacuum Wave, so stay away from the crystals.";
+                return $"Vá para o cristal de {CrystalName(state.ShortElement)} do {Spot(state.ShortSpot)}, o curto: o {CrystalShot(state.ShortElement)} dele atira nos dois jogadores mais perto, e esses têm que ser vocês dois, a 12y um do outro.";
+            return $"Faça stack na parede atrás do Chaos, perto do cristal de vento do {wind}, fora do Thunder III do Exdeath. O LB3 mantém todos os debuffs de vento para o Vacuum Wave do Limit Cut, então fique longe dos cristais.";
         },
         Bowels);
 
     public static StratCue Lb3ThunderAoe(UmadP3BowelsOfAgonyState state) => new(
-        "Thunder III (large AoE)",
+        "Thunder III (AoE grande)",
         role => role == PartyRole.OffTank
-            ? $"Exdeath is casting Thunder III, an AoE that kills anyone within about 15y of him: leave him in the middle and join the stack at the {Spot(state.WindSpot)} wall."
-            : "Exdeath is casting Thunder III, an AoE that kills anyone within about 15y of him: stay out at the wall.",
+            ? $"O Exdeath está castando o Thunder III, uma AoE que mata qualquer um a menos de uns 15y dele: deixe-o no meio e entre no stack na parede {Spot(state.WindSpot)}."
+            : "O Exdeath está castando o Thunder III, uma AoE que mata qualquer um a menos de uns 15y dele: fique lá fora, na parede.",
         ShortResolve);
 
     public static StratCue Lb3Resolve(UmadP3BowelsOfAgonyState state, Element element) => new(
-        element == state.ShortElement ? $"Short {CrystalName(element)} (LB3)" : $"Long {CrystalName(element)} (LB3)",
+        element == state.ShortElement ? $"{CrystalName(element)} curto (LB3)" : $"{CrystalName(element)} longo (LB3)",
         role =>
         {
-            var crystal = $"{Spot(state.SpotOf(element))} {CrystalName(element)} crystal";
+            var crystal = $"cristal de {CrystalName(element)} do {Spot(state.SpotOf(element))}";
             var holds = state.ElementOf(role) == element;
             if (IsRanged(role))
             {
                 var spot = element == state.ShortElement
-                    ? $"Stand by the {crystal}, 12y from the other ranged"
-                    : $"Stand on the line from Chaos's back toward the {crystal}, one of you near and one far, over 10y apart";
-                var own = holds ? $" Your {DebuffName(element)} runs out here too, clear of everyone." : "";
-                return $"{spot}: its {CrystalShot(element)} fires at the two players nearest it, and that must be you two.{own}";
+                    ? $"Fique perto do {crystal}, a 12y do outro ranged"
+                    : $"Fique na linha que vai das costas do Chaos até o {crystal}, um de vocês perto e o outro longe, a mais de 10y um do outro";
+                var own = holds ? $" Seu {DebuffName(element)} também acaba aqui, longe de todos." : "";
+                return $"{spot}: o {CrystalShot(element)} dele atira nos dois jogadores mais perto, e esses têm que ser vocês dois.{own}";
             }
             if (element == Element.Water)
                 return holds
-                    ? "Your Dynamic Fluid runs out: its donut misses anyone within 4y of you, so stay in the tight stack at the wall."
-                    : "Stay in the tight stack at the wall: the Dynamic Fluid donuts miss anyone within 4y of their holder.";
-            var side = UmadP3BowelsOfAgonyState.IsSupport(role) ? "left" : "right";
+                    ? "Seu Dynamic Fluid acaba: o donut dele não acerta ninguém a menos de 4y de você, então fique no stack apertado na parede."
+                    : "Fique no stack apertado na parede: os donuts do Dynamic Fluid não acertam ninguém a menos de 4y de quem tem o debuff.";
+            var side = UmadP3BowelsOfAgonyState.IsSupport(role) ? "esquerda" : "direita";
             return holds
-                ? $"Your Entropy runs out, a 5y circle on you: step out to the {side} of your group along the wall, over 5y from everyone."
-                : $"Supports stack left and DPS right, facing Chaos, so you're in the {side} group; the Entropy holders step out past you.";
+                ? $"Seu Entropy acaba, um círculo de 5y em você: saia para a {side} do seu grupo ao longo da parede, a mais de 5y de todos."
+                : $"Supports fazem stack à esquerda e DPS à direita, de frente para o Chaos, então você está no grupo da {side}; quem tem Entropy sai passando por você.";
         },
         element == state.ShortElement ? ShortResolve : "NAUR §3.5 (0:35:48)");
 
     public static readonly StratCue Lb3Regroup = new(
-        "Thunder III: keep clear",
+        "Thunder III: fique longe",
         role => IsRanged(role)
-            ? "Stay by the crystal, over 10y from Exdeath: his Thunder III buster hits whoever is closest to him."
-            : "Back into one stack at the wall, over 10y from Exdeath: his Thunder III buster hits whoever is closest to him.",
+            ? "Fique perto do cristal, a mais de 10y do Exdeath: o buster Thunder III dele acerta quem estiver mais perto."
+            : "Volte para um stack só na parede, a mais de 10y do Exdeath: o buster Thunder III dele acerta quem estiver mais perto.",
         Thunder);
 
     public static StratCue Lb3PreImplosion(UmadP3BowelsOfAgonyState state) => new(
-        "Implosion: set up",
+        "Implosion: preparação",
         role =>
         {
-            if (role == PartyRole.MainTank) return $"Back to the {Spot(state.WindSpot)} wall, so Chaos faces it when he casts Implosion.";
-            if (role == PartyRole.OffTank) return $"Drag Exdeath to the {Spot(state.WindSpot)} wind crystal, onto Chaos's spot about 10y out, and leave him there through Implosion: Limit Cut starts with both bosses on that corner.";
-            if (IsRanged(role)) return $"Cross to the long {CrystalName(state.LongElement)} crystal ({Spot(state.LongSpot)}): you dodge Implosion there and then take its shots.";
-            return "Stay at the wall by Chaos: you dodge Implosion close to him.";
+            if (role == PartyRole.MainTank) return $"Volte para a parede {Spot(state.WindSpot)}, para o Chaos ficar virado para ela quando castar o Implosion.";
+            if (role == PartyRole.OffTank) return $"Leve o Exdeath até o cristal de vento do {Spot(state.WindSpot)}, no lugar do Chaos a uns 10y, e deixe-o ali durante o Implosion: o Limit Cut começa com os dois bosses nesse canto.";
+            if (IsRanged(role)) return $"Atravesse até o cristal de {CrystalName(state.LongElement)} longo ({Spot(state.LongSpot)}): você desvia do Implosion ali e depois pega os tiros dele.";
+            return "Fique na parede perto do Chaos: você desvia do Implosion perto dele.";
         },
         Implosion1);
 
     public static StratCue Implosion(UmadP3BowelsOfAgonyState state, UmadP3BowelsOfAgonyAi.Strat strat, bool firstHit) => new(
-        firstHit ? "Implosion (first cleave)" : "Implosion (second cleave)",
+        firstHit ? "Implosion (primeiro cleave)" : "Implosion (segundo cleave)",
         role =>
         {
             var sidesHit = firstHit == state.Latitudinal;
             var name = state.Latitudinal ? "Latitudinal" : "Longitudinal";
-            var hit = sidesHit ? "his sides" : "his front and back";
-            var safe = sidesHit ? "in front of or behind him" : "beside him";
-            var rule = $"{name} Implosion: this cleave hits {hit} (two 90° cones), so stand {safe}, just off the diagonal";
+            var hit = sidesHit ? "os lados dele" : "a frente e as costas dele";
+            var safe = sidesHit ? "na frente ou atrás dele" : "do lado dele";
+            var rule = $"{name} Implosion: este cleave acerta {hit} (dois cones de 90°), então fique {safe}, logo fora da diagonal";
             if (strat == UmadP3BowelsOfAgonyAi.Strat.Lb3)
                 return IsRanged(role)
-                    ? $"{rule}, on the side toward the long {CrystalName(state.LongElement)} crystal, where you take its shots next."
-                    : $"{rule}, close to Chaos: supports on his left, DPS on his right (facing him from the wall), the sides you take the long {CrystalName(state.LongElement)} on.";
+                    ? $"{rule}, no lado do cristal de {CrystalName(state.LongElement)} longo, onde você pega os tiros dele em seguida."
+                    : $"{rule}, perto do Chaos: supports à esquerda dele, DPS à direita (olhando para ele a partir da parede), os lados em que vocês pegam o {CrystalName(state.LongElement)} longo.";
             return state.ElementOf(role) != null
-                ? $"{rule}: element players dodge toward the long {CrystalName(state.LongElement)} crystal ({Spot(state.LongSpot)})."
-                : $"{rule}: players without an element dodge toward the wind crystal ({Spot(state.WindSpot)}).";
+                ? $"{rule}: quem tem elemento desvia na direção do cristal de {CrystalName(state.LongElement)} longo ({Spot(state.LongSpot)})."
+                : $"{rule}: quem não tem elemento desvia na direção do cristal de vento ({Spot(state.WindSpot)}).";
         },
         strat == UmadP3BowelsOfAgonyAi.Strat.Lb3 ? Implosion1 : Sg3k);
 
     public static StratCue Sg3kSetup(UmadP3BowelsOfAgonyState state) => new(
-        "Bowels of Agony: crystals (SG3K)",
+        "Bowels of Agony: cristais (SG3K)",
         role => role switch
         {
-            PartyRole.MainTank => $"Drag Chaos between the short {CrystalName(state.ShortElement)} crystal ({Spot(state.ShortSpot)}) and the wind crystal ({Spot(state.WindSpot)}).",
-            PartyRole.OffTank => $"Take Exdeath to the wall at the long {CrystalName(state.LongElement)} crystal ({Spot(state.LongSpot)}): his Thunder III then can't reach the others.",
+            PartyRole.MainTank => $"Leve o Chaos para entre o cristal de {CrystalName(state.ShortElement)} curto ({Spot(state.ShortSpot)}) e o cristal de vento ({Spot(state.WindSpot)}).",
+            PartyRole.OffTank => $"Leve o Exdeath até a parede no cristal de {CrystalName(state.LongElement)} longo ({Spot(state.LongSpot)}): assim o Thunder III dele não alcança os outros.",
             _ => Sg3kResolve(state, state.ShortElement).Why(role),
         },
         Sg3k);
 
     public static StratCue Sg3kResolve(UmadP3BowelsOfAgonyState state, Element element) => new(
-        element == state.ShortElement ? $"Short {CrystalName(element)} (SG3K)" : $"Long {CrystalName(element)} (SG3K)",
+        element == state.ShortElement ? $"{CrystalName(element)} curto (SG3K)" : $"{CrystalName(element)} longo (SG3K)",
         role =>
         {
-            var crystal = $"{Spot(state.SpotOf(element))} {CrystalName(element)} crystal";
+            var crystal = $"cristal de {CrystalName(element)} do {Spot(state.SpotOf(element))}";
             var resolvers = state.HoldersOf(element);
             var other = element == Element.Water ? Element.Fire : Element.Water;
             var cleanse = state.HoldersOf(other);
             if (role == resolvers[0])
-                return $"Your {DebuffName(element)} runs out: stand at the wall behind the {crystal}. You and {Label(resolvers[1])} are the two nearest it, so its {CrystalShot(element)} fires at you two.";
+                return $"Seu {DebuffName(element)} acaba: fique na parede atrás do {crystal}. Você e {Label(resolvers[1])} são os dois mais perto dele, então o {CrystalShot(element)} atira em vocês dois.";
             if (role == resolvers[1])
-                return $"Your {DebuffName(element)} runs out: stand 7y out toward the {crystal}. Its {CrystalShot(element)} on you knocks {Label(cleanse[0])} and {Label(cleanse[1])} back, which takes their winds.";
+                return $"Seu {DebuffName(element)} acaba: fique a 7y para fora, na direção do {crystal}. O {CrystalShot(element)} em você empurra {Label(cleanse[0])} e {Label(cleanse[1])}, o que tira os ventos deles.";
             if (state.ElementOf(role) == other)
             {
-                var where = element == Element.Water ? "inside its 5y circle" : "in its donut, 4-10y from them";
-                return $"Stand just behind {Label(resolvers[1])}, {where}: the {crystal}'s {CrystalShot(element)} knocks you back and takes your wind; {WindFacing(state, role, Label(resolvers[1]))}.";
+                var where = element == Element.Water ? "dentro do círculo de 5y" : "no donut, a 4-10y dele";
+                return $"Fique logo atrás de {Label(resolvers[1])}, {where}: o {CrystalShot(element)} do {crystal} te empurra e tira seu vento; {WindFacing(state, role, Label(resolvers[1]))}.";
             }
-            return "Stand by the wind crystal with your partner: each wind a crystal takes makes a Cyclone, a two-player stack on whoever stands nearest the wind crystal.";
+            return "Fique perto do cristal de vento com seu par: cada vento que um cristal tira vira um Cyclone, um stack de dois jogadores em quem estiver mais perto do cristal de vento.";
         },
         Sg3k);
 
     public static StratCue Sg3kCleanseFacing(UmadP3BowelsOfAgonyState state, Element resolving) => new(
-        "Crystal knockback",
+        "Knockback do cristal",
         role =>
         {
             var other = resolving == Element.Water ? Element.Fire : Element.Water;
             var centre = Label(state.HoldersOf(resolving)[1]);
             return state.ElementOf(role) == other
-                ? $"The {CrystalShot(resolving)} on {centre} knocks you back: {WindFacing(state, role, centre)}, and the push only takes your wind. Facing wrong throws you off the platform."
-                : $"The {CrystalShot(resolving)} on {centre} knocks the {DebuffName(other)} players back to take their winds; stay where you are.";
+                ? $"O {CrystalShot(resolving)} em {centre} te empurra: {WindFacing(state, role, centre)}, e o empurrão só tira seu vento. Virado para o lado errado, você é jogado para fora da plataforma."
+                : $"O {CrystalShot(resolving)} em {centre} empurra os jogadores com {DebuffName(other)} para tirar os ventos deles; fique onde está.";
         },
         Sg3k);
 
     public static StratCue Sg3kPreImplosion(UmadP3BowelsOfAgonyState state) => new(
-        "Implosion: set up",
+        "Implosion: preparação",
         role => role switch
         {
-            PartyRole.MainTank => "Pull Chaos to the middle and stand north of him, so he faces north: Implosion's cones then split on the intercardinals.",
-            PartyRole.OffTank => $"Take Exdeath toward the wind crystal ({Spot(state.WindSpot)}), where Limit Cut needs him.",
+            PartyRole.MainTank => "Puxe o Chaos para o meio e fique ao norte dele, para ele ficar virado para o norte: assim os cones do Implosion se dividem nos intercardeais.",
+            PartyRole.OffTank => $"Leve o Exdeath na direção do cristal de vento ({Spot(state.WindSpot)}), onde o Limit Cut precisa dele.",
             _ => state.ElementOf(role) != null
-                ? $"Head for the long {CrystalName(state.LongElement)} crystal ({Spot(state.LongSpot)}): element players dodge Implosion toward it."
-                : $"Head for the wind crystal ({Spot(state.WindSpot)}): players without an element dodge Implosion toward it.",
+                ? $"Vá para o cristal de {CrystalName(state.LongElement)} longo ({Spot(state.LongSpot)}): quem tem elemento desvia do Implosion na direção dele."
+                : $"Vá para o cristal de vento ({Spot(state.WindSpot)}): quem não tem elemento desvia do Implosion na direção dele.",
         },
         Sg3k);
 

@@ -49,7 +49,7 @@ public static class MitDamage
         var raw = (hit.Raw ?? 0f) * (hit.TankBuster ? 1f : profile.Taken(victim));
         var applied = new List<string>();
         if (victimLayers.FirstOrDefault(l => !l.Value.OnEnemy && l.Value.Damage >= 1f) is { Name: not null } invuln)
-            return new(raw, 0f, 0f, 0f, [$"{invuln.Name} (invulnerable)"]);
+            return new(raw, 0f, 0f, 0f, [$"{invuln.Name} (invulnerável)"]);
 
         var taken = raw;
         taken = Reduce(taken, victimLayers.Where(l => !l.Value.OnEnemy && !l.Value.IsShield), hit.Kind, applied);
@@ -58,7 +58,7 @@ public static class MitDamage
         if (hit.TankBuster && assumeTankCooldowns)
         {
             taken *= 1f - profile.TankCooldowns;
-            applied.Add($"own cooldowns {Percent(profile.TankCooldowns)} (assumed)");
+            applied.Add($"cooldowns próprios {Percent(profile.TankCooldowns)} (estimado)");
         }
 
         var afterMit = taken;
@@ -93,9 +93,9 @@ public static class MitDamage
     public static string Explain(MitHitResult r, IReadOnlyList<string> missing)
     {
         var cuts = r.Applied.Count > 0 ? "; " + string.Join(", ", r.Applied) : "";
-        var shields = r.Absorbed > 0f ? $"; shields absorbed {Thousands(r.Absorbed)}" : "";
-        var text = $"took {Thousands(r.HpLoss)} after mitigation (raw {Thousands(r.Raw)}{cuts}{shields}).";
-        if (missing.Count > 0) text += $" Missing from the plan: {string.Join(", ", missing)}.";
+        var shields = r.Absorbed > 0f ? $"; escudos absorveram {Thousands(r.Absorbed)}" : "";
+        var text = $"tomou {Thousands(r.HpLoss)} depois da mitigação (bruto {Thousands(r.Raw)}{cuts}{shields}).";
+        if (missing.Count > 0) text += $" Faltou do plano: {string.Join(", ", missing)}.";
         return text;
     }
 

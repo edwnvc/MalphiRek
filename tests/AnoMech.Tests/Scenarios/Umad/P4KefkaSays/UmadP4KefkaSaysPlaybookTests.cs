@@ -69,11 +69,11 @@ public class UmadP4KefkaSaysPlaybookTests
                 var spot = Strat<Vector2>("ThunderSafeSpot", state.Mystery[cast]);
                 var lane = DeathRecap.Compass(Vector3.Zero, new Vector3(spot.X, 0f, spot.Y));
                 var why = UmadP4KefkaSaysPlaybook.MysteryMagic(state, cast).Why(PartyRole.MainTank);
-                Assert.That(why, Does.Contain($"just {lane} of the middle"), $"{state.Mystery[cast]}");
+                Assert.That(why, Does.Contain($"logo ao {lane} do meio"), $"{state.Mystery[cast]}");
 
                 var stack = Strat<Vector2>("SafeSpot", state.Mystery[cast]);
                 var stackSide = DeathRecap.Compass(Vector3.Zero, new Vector3(stack.X, 0f, stack.Y));
-                var realCones = why[(why.IndexOf("really hit point ") + 17)..why.IndexOf(", and")].Split(" and ");
+                var realCones = why[(why.IndexOf("apontam para ") + 13)..why.IndexOf(", e as")].Split(" e ");
                 Assert.That(realCones, Has.No.Member(stackSide), $"{state.Mystery[cast]} stack at {stack}");
             }
         }
@@ -91,7 +91,7 @@ public class UmadP4KefkaSaysPlaybookTests
             {
                 var spot = move[(int)role]!.Value;
                 var side = DeathRecap.Compass(Vector3.Zero, new Vector3(spot.X, 0f, spot.Y));
-                Assert.That(UmadP4KefkaSaysPlaybook.FloodOfNaught(state).Why(role), Does.Contain($"on the {side} side"), $"{role} roll {roll}");
+                Assert.That(UmadP4KefkaSaysPlaybook.FloodOfNaught(state).Why(role), Does.Contain($"no lado {side}"), $"{role} roll {roll}");
             }
         }
     }

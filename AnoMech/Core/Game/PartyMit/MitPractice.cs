@@ -181,7 +181,7 @@ public sealed class MitPractice
         if (hp > 0f) return result.HpLoss;
         if (warnedAt.TryGetValue(victim, out var warned) && now - warned <= data.Profile.TopUpGap) return result.HpLoss;
         warnedAt[victim] = now;
-        world.Announce($"{hit.Name} would have killed {Who(member)}: {MitDamage.Explain(result, Missing(victim, now))}");
+        world.Announce($"{hit.Name} teria matado {Who(member)}: {MitDamage.Explain(result, Missing(victim, now))}");
         return result.HpLoss;
     }
 
@@ -192,7 +192,7 @@ public sealed class MitPractice
         foreach (var p in plan)
         {
             if (!p.Covers.Any(c => MathF.Abs(c - now) <= MissingWithin) || InEffect(p, victim, now)) continue;
-            missing.Add($"{Owner(p.Slot)} {p.Action.Name}");
+            missing.Add($"{p.Action.Name} ({Owner(p.Slot)})");
         }
         return missing.Distinct().ToList();
     }
@@ -223,9 +223,9 @@ public sealed class MitPractice
 
     private IReadOnlyList<string> Summary(SimPlayer player, float now)
     {
-        if (!grading) return ["Mitigation: your presses weren't graded. Turn on \"Resolve your own actions\" to grade them."];
+        if (!grading) return ["Mitigação: seus botões não foram avaliados. Ligue \"Resolve your own actions\" para avaliá-los."];
         if (!plan.Any(p => p.Slot == player.Role && !p.IsPreStart))
-            return [$"Mitigation: no planned presses for your {JobName((JobId)player.ClassJob)} in {player.Role.ShortLabel()}."];
+            return [$"Mitigação: nenhum botão planejado para seu {JobName((JobId)player.ClassJob)} em {player.Role.ShortLabel()}."];
         return MitGrader.Summary(MitGrader.Grade(plan, player.Role, presses, now), now);
     }
 
@@ -266,9 +266,9 @@ public sealed class MitPractice
 
     private static void Write(SimCharacter member, MitHpPool pool) => member.WriteHp(pool.Hp / pool.Max);
 
-    private string Owner(PartyRole slot) => world.Party.Player is { } player && player.Role == slot ? "your" : $"{slot.ShortLabel()}'s";
+    private string Owner(PartyRole slot) => world.Party.Player is { } player && player.Role == slot ? "seu" : $"do {slot.ShortLabel()}";
 
-    private static string Who(ISimPartyMember member) => member is SimPlayer ? $"you ({member.Role.ShortLabel()})" : member.Role.ShortLabel();
+    private static string Who(ISimPartyMember member) => member is SimPlayer ? $"você ({member.Role.ShortLabel()})" : member.Role.ShortLabel();
 
     private static string JobName(JobId job) => Regex.Replace(job.ToString(), "(?<!^)([A-Z])", " $1");
 }

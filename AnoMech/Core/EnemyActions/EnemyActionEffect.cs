@@ -175,7 +175,7 @@ internal sealed class ApplyRuinEffect(RuinSpec ruin, ushort statusId, int times,
         {
             if (ctx.IsKilled(target) || !target.IsAlive()) continue;
             if (ruin.Overloads(target, times))
-                ctx.Kill(target, $"{Natives.Data.StatusName(statusId)} overload");
+                ctx.Kill(target, $"excesso de {Natives.Data.StatusName(statusId)}");
             else
                 ctx.AddStatus(target, statusId, duration);
         }
@@ -194,7 +194,7 @@ internal sealed class GazeEffect(bool lookAway) : IEnemyActionEffect
             if (lookAway ? facing.IsLookingAt(from) : facing.IsLookingAwayFrom(from))
             {
                 ctx.ShowDamage(target, Severity.Lethal.FlyTextAmount(kills: true), kind);
-                ctx.Kill(target, lookAway ? "looked at the gaze" : "faced away from the gaze");
+                ctx.Kill(target, lookAway ? "olhou para o gaze" : "estava de costas para o gaze");
             }
             else
                 ctx.Dodge(target);

@@ -22,30 +22,30 @@ internal static class UmadP5ExaflaresPlaybook
     }
 
     public static readonly StratCue FanOut = StratCue.ForAll(
-        "Stray Apocalypse: opening spread",
-        "Before the first wave, fan out from the spawn huddle into the melee ring around Kefka on your own bearing, "
-        + "so nobody shares a spot when the first strafe starts. NAUR sets no opening spots.",
+        "Stray Apocalypse: espalhar no início",
+        "Antes da primeira onda, saia do bolo inicial e vá para o anel de melee em volta do Kefka, na sua própria direção, "
+        + "para ninguém dividir o mesmo lugar quando começar o primeiro desvio. O NAUR não define posições iniciais.",
         Apocalypse);
 
     public static StratCue Wave(UmadP5ExaflaresState state, int wave) => new(
-        $"Stray Apocalypse: wave {wave + 1} of 6",
+        $"Stray Apocalypse: onda {wave + 1} de 6",
         role =>
         {
             var lane = IsInner(role)
-                ? "into the gap between its two lines, as close to Kefka as the gap allows, for uptime"
+                ? "para o espaço entre as duas linhas dela, o mais perto do Kefka que o espaço deixar, para manter uptime"
                 : PairOffCentre(state, wave)
-                    ? "into the nearest safe lane: the gap between its two lines or, as they sit off-centre, the open lane beyond them (NAUR always takes the gap)"
-                    : "to the nearest spot in the gap between its two lines, apart from the others";
-            var hold = wave == 0 ? "" : " Never step forward or back: that crosses the last wave's fire, still rolling.";
-            return $"Wave {wave + 1} comes from the {(FromNorthwest(wave) ? "northwest" : "northeast")}: face it and strafe only left or right, {lane}.{hold}";
+                    ? "para a faixa segura mais próxima: o espaço entre as duas linhas ou, como elas estão fora do centro, a faixa livre depois delas (o NAUR sempre usa o espaço entre as linhas)"
+                    : "para o ponto mais próximo no espaço entre as duas linhas, afastado dos outros";
+            var hold = wave == 0 ? "" : " Nunca ande para frente ou para trás: isso cruza o fogo da onda anterior, que ainda está rolando.";
+            return $"A onda {wave + 1} vem do {(FromNorthwest(wave) ? "noroeste" : "nordeste")}: fique de frente para ela e ande só para a esquerda ou para a direita, {lane}.{hold}";
         },
         Apocalypse);
 
     public static readonly StratCue Spread = new(
-        "Stray Entropy: spread",
-        role => "Stray Entropy puts a 5y AoE on everyone, and two overlapping kill. "
+        "Stray Entropy: espalhar",
+        role => "Stray Entropy coloca uma AoE de 5y em todo mundo, e duas sobrepostas matam. "
                 + (IsInner(role)
-                    ? "Tanks and melee spread around Kefka inside max melee but off his centre, as far from each other as that allows."
-                    : "Healers and ranged go out to about 13y from Kefka on their own bearing and push about 10y apart, leaving the boss ring to the melee."),
+                    ? "Tanks e melees se espalham em volta do Kefka, dentro do alcance máximo de melee mas fora do centro dele, o mais longe uns dos outros que der."
+                    : "Healers e ranged vão para cerca de 13y do Kefka, cada um na sua direção, e se afastam uns 10y entre si, deixando o anel do boss para os melees."),
         Entropy);
 }

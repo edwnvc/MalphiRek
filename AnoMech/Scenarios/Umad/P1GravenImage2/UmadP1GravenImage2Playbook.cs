@@ -16,73 +16,73 @@ internal static class UmadP1GravenImage2Playbook
     public static readonly StratCue LightOfJudgment = UmadP1Playbook.LightOfJudgment("NAUR §1.11 (0:09:15)");
 
     public static StratCue FirstStack(UmadP1GravenImage2State state) => new(
-        "Graven Image 2: first puddles",
-        _ => "Everyone stacks on waymark A so the four Gravitas puddles land on top of each other; every Gravitas must hit all 8 or it wipes the party. "
-             + $"{IceText(state.Ice)} So the stack sits on the {(state.Ice.HitsNorthEast ? "west" : "east")} side of A.",
+        "Graven Image 2: primeiras poças",
+        _ => "Todo mundo faz stack no waymark A para as quatro poças de Gravitas caírem uma em cima da outra; cada Gravitas tem que acertar os 8, senão o grupo morre. "
+             + $"{IceText(state.Ice)} Por isso o stack fica no lado {(state.Ice.HitsNorthEast ? "oeste" : "leste")} do A.",
         $"{FirstTethers} · wtfdig kefka_p1/8_graven2_first_puddle");
 
     public static readonly StratCue SecondStack = new(
-        "Graven Image 2: second puddles",
-        _ => "Everyone stacks on waymark C so the second set of puddles lands together in the south; every Gravitas must hit all 8 or it wipes the party.",
+        "Graven Image 2: segundas poças",
+        _ => "Todo mundo faz stack no waymark C para o segundo grupo de poças cair junto no sul; cada Gravitas tem que acertar os 8, senão o grupo morre.",
         $"{SecondTethers} · wtfdig kefka_p1/12_graven2_second_puddle");
 
     public static StratCue Spreads(UmadP1GravenImage2State state, int set) => new(
-        $"Vitrophyre spreads (set {set + 1})",
+        $"Spreads do Vitrophyre (grupo {set + 1})",
         role => UmadP1Roles.IsDps(role) == state.PurpleDps[set] ? PurpleText(set) : YellowText(role, set),
         set == 0 ? $"{FirstTethers} · wtfdig kefka_p1/9_graven2_spreads" : $"{SecondTethers} · wtfdig kefka_p1/13_graven2_second_spreads");
 
     private static string PurpleText(int set)
-        => $"Your tether is to the central (purple) statue, so your puddle dropped with the stack: go through the boss to the {(set == 0 ? "south" : "north")}, away from the spreads, and don't step back into a puddle.";
+        => $"Seu tether é com a estátua central (roxa), então sua poça caiu junto com o stack: atravesse o boss para o {(set == 0 ? "sul" : "norte")}, longe dos spreads, e não volte para dentro de uma poça.";
 
     private static string YellowText(PartyRole role, int set)
     {
         var fromNorth = set == 0;
         var east = UmadP1Roles.IsGroupOne(role) == fromNorth;
         var where = UmadP1Roles.IsTankOrMelee(role)
-            ? $"to max melee on the {(east ? "east" : "west")}"
-            : $"further out to the {(fromNorth ? "north" : "south")}-{(east ? "east" : "west")}";
-        return $"Your tether is to the right (yellow) statue: a 5y spread that knocks anyone else away and sets off any puddle it touches. "
-               + $"Group {(UmadP1Roles.IsGroupOne(role) ? 1 : 2)} fans {(UmadP1Roles.IsGroupOne(role) ? "left" : "right")} facing the boss; as {Label(role)} you go {where}, over 10y from the puddles.";
+            ? $"para o alcance máximo de melee no {(east ? "leste" : "oeste")}"
+            : $"mais para fora, para o {(fromNorth ? east ? "nordeste" : "noroeste" : east ? "sudeste" : "sudoeste")}";
+        return $"Seu tether é com a estátua da direita (amarela): um spread de 5y que empurra qualquer outro e detona qualquer poça que tocar. "
+               + $"O grupo {(UmadP1Roles.IsGroupOne(role) ? 1 : 2)} se abre para a {(UmadP1Roles.IsGroupOne(role) ? "esquerda" : "direita")} de frente para o boss; como {Label(role)} você vai {where}, a mais de 10y das poças.";
     }
 
     public static readonly StratCue Buster = new(
         "Revolting Ruin III",
         role => role == PartyRole.MainTank
-            ? "You hold Kefka: stand north of him so both Revolting Ruin III cones point away from the party."
-            : "Gather south of the boss, out of the tank's cones.",
+            ? "Você segura o Kefka: fique ao norte dele para os dois cones do Revolting Ruin III apontarem para longe do grupo."
+            : "Junte-se ao sul do boss, fora dos cones do tank.",
         "NAUR §1.8 (0:06:29) · wtfdig kefka_p1/10_graven2_tankbuster");
 
     private static string CleaveText(UmadP1GravenImage2State state, int cleave)
         => state.CleaveWest[cleave]
-            ? "The purple (left) orb glows, so the west half is cleaved: move to the east half."
-            : "The yellow (right) orb glows, so the east half is cleaved: move to the west half.";
+            ? "O orbe roxo (esquerda) brilha, então a metade oeste leva o cleave: vá para a metade leste."
+            : "O orbe amarelo (direita) brilha, então a metade leste leva o cleave: vá para a metade oeste.";
 
     public static StratCue FirstCleave(UmadP1GravenImage2State state) => new(
-        "Half-room cleave 1",
-        role => CleaveText(state, 0) + (role == PartyRole.MainTank ? " Stay north of the boss for the buster." : " Stay south of the boss, out of the tank's cones."),
+        "Cleave de meia sala 1",
+        role => CleaveText(state, 0) + (role == PartyRole.MainTank ? " Fique ao norte do boss para o buster." : " Fique ao sul do boss, fora dos cones do tank."),
         "NAUR §1.8 (0:06:29) · wtfdig kefka_p1/11_graven2_halfroom_cleave");
 
     public static StratCue SecondCleave(UmadP1GravenImage2State state) => new(
-        "Half-room cleave 2",
-        role => CleaveText(state, 1) + $" {Group(role)} wait {(UmadP1Roles.IsDps(role) ? "south" : "north")} of the boss, ready for the confetti.",
+        "Cleave de meia sala 2",
+        role => CleaveText(state, 1) + $" Os {Group(role)} esperam ao {(UmadP1Roles.IsDps(role) ? "sul" : "norte")} do boss, prontos para o confete.",
         $"{SecondTethers} · wtfdig kefka_p1/14_graven2_second_halfroom_cleave");
 
     public static StratCue Confetti(UmadP1GravenImage2State state) => new(
-        "Double-trouble Trap 2 (confetti)",
+        "Double-trouble Trap 2 (confete)",
         role => role == state.TrapSupport || role == state.TrapDps
-            ? $"You hold the confetti: stand out at max melee to the {(UmadP1Roles.IsDps(role) ? "south" : "north")}, next to your side's puddles, so the knockback throws your group into the far puddles. Then step back into the puddles behind you."
-            : $"Stack with the {Group(role)} inside the boss's hitbox on the {(UmadP1Roles.IsDps(role) ? "south" : "north")}: the confetti's knockback carries you across into the far puddles to pop them.",
+            ? $"Você está com o confete: fique no alcance máximo de melee ao {(UmadP1Roles.IsDps(role) ? "sul" : "norte")}, ao lado das poças do seu lado, para o knockback jogar seu grupo nas poças do outro lado. Depois volte para as poças atrás de você."
+            : $"Faça stack com os {Group(role)} dentro do hitbox do boss, ao {(UmadP1Roles.IsDps(role) ? "sul" : "norte")}: o knockback do confete te leva até as poças do outro lado para estourá-las.",
         $"{Trap} · wtfdig kefka_p1/15_graven2_second_confetti_positions");
 
     public static StratCue Soak(UmadP1GravenImage2State state) => new(
-        "Gravity III puddle soak",
+        "Soak das poças do Gravity III",
         role =>
         {
             var holder = role == state.TrapSupport || role == state.TrapDps;
             var north = !UmadP1Roles.IsDps(role) == holder;
-            return $"Four players per puddle set, and every puddle must be popped by 4 (Phase 1's puddle puzzle). "
-                   + (holder ? $"As the holder, walk back into the {(north ? "north" : "south")} puddles behind you."
-                             : $"The knockback carried you into the {(north ? "north" : "south")} puddles: stay until they pop.");
+            return $"Quatro jogadores por grupo de poças, e cada poça tem que ser estourada por 4 (o quebra-cabeça das poças do P1). "
+                   + (holder ? $"Como quem segura o confete, volte andando para as poças do {(north ? "norte" : "sul")} atrás de você."
+                             : $"O knockback te levou para as poças do {(north ? "norte" : "sul")}: fique até elas estourarem.");
         },
         $"{Trap} · wtfdig kefka_p1/16_puddle_soaks");
 }

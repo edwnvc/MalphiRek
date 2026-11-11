@@ -19,7 +19,7 @@ public static class FruActions
     {
         Cast = new() { AnimationLock = 2.1f },
         Effects = [Damage(Lethal)],
-        DeathExplanation = "a fifth Lightsteeped stack exploded",
+        DeathExplanation = "um quinto stack de Lightsteeped explodiu",
     };
 
     private static readonly IEnemyActionEffect AddLightsteeped = ApplyStatus(StatusId.Lightsteeped, 36f, delayToEffectResult: true);
@@ -171,7 +171,7 @@ public static class FruActions
         Cast = new() { AnimationLock = 2.1f },
         Effects = [Damage(Lethal)],
         Timing = new() { DamageDelay = 0.66f },
-        DeathExplanation = "an Everlasting Light chain broke",
+        DeathExplanation = "uma corrente de Everlasting Light quebrou",
     };
 
     public static readonly EnemyAction InescapableIllumination = new(ActionId.InescapableIllumination)
@@ -179,7 +179,7 @@ public static class FruActions
         Cast = new() { AnimationLock = 2.1f },
         Effects = [Damage(Lethal)],
         Timing = new() { DamageDelay = 0.63f },
-        DeathExplanation = "a tower went unsoaked",
+        DeathExplanation = "uma torre ficou sem ninguém",
     };
 
     public static readonly EnemyAction BanishPairs = new(ActionId.BanishPairs)
@@ -572,7 +572,7 @@ public static class FruActions
     {
         Cast = new() { AnimationLock = 2.1f },
         Effects = [Damage(Lethal)],
-        DeathExplanation = "tower soaked by fewer than two",
+        DeathExplanation = "torre pega por menos de dois",
     };
 
     // A line stack; only its front bait takes the resistance down. A second hit of the same colour

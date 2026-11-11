@@ -14,7 +14,7 @@ internal static class UmadP2TrinesPlaybook
     private const string Busters = "NAUR §2.14 (0:29:26)";
     private const string Embrace = "NAUR §2.15 (0:30:08)";
 
-    private static readonly string[] Bearings = ["the middle", "north", "east-north-east", "south-east", "south", "west-south-west", "north-west"];
+    private static readonly string[] Bearings = ["o meio", "norte", "leste-nordeste", "sudeste", "sul", "oeste-sudoeste", "noroeste"];
 
     private static string Where(int triangle) => $"{Geometry.Name(triangle)} ({Bearings[triangle]})";
 
@@ -23,26 +23,26 @@ internal static class UmadP2TrinesPlaybook
     public static readonly StratCue Opening = new(
         "Light of Judgment II",
         role => role == PartyRole.MainTank
-            ? "Hold Kefka facing north from 6y north of him: Trine's triangles and the first Wings of Destruction are read off his facing. Light of Judgment II is a raidwide."
-            : "Stack just south of Kefka: Light of Judgment II is a raidwide, and Kefka stays facing north for Trine.",
+            ? "Segure o Kefka virado para o norte, a 6y ao norte dele: os triângulos do Trine e o primeiro Wings of Destruction dependem de para onde ele está virado. Light of Judgment II é um raidwide."
+            : "Faça stack logo ao sul do Kefka: Light of Judgment II é um raidwide, e o Kefka continua virado para o norte para o Trine.",
         LightOfJudgment);
 
     public static StratCue WingsDodge(UmadP2TrinesState state) => StratCue.ForAll(
-        "Wings of Destruction (half room)",
-        $"Kefka lights his {(state.WingsRight ? "right" : "left")} wing: it hits his {(state.WingsRight ? "right" : "left")} half, the {(state.WingsRight ? "east" : "west")}, so stand 2y into the "
-        + $"{(state.WingsRight ? "west" : "east")} half beside him. That's inside the centre triangle, which drops last, so stay there until the first set of triangles explodes.",
+        "Wings of Destruction (meia sala)",
+        $"O Kefka acende a asa {(state.WingsRight ? "direita" : "esquerda")}: ela acerta a metade {(state.WingsRight ? "direita" : "esquerda")} dele, o {(state.WingsRight ? "leste" : "oeste")}, então fique 2y dentro da metade "
+        + $"{(state.WingsRight ? "oeste" : "leste")} ao lado dele. Isso fica dentro do triângulo central, que cai por último, então fique ali até o primeiro grupo de triângulos explodir.",
         Wings);
 
     public static StratCue Spots(UmadP2TrinesState state) => new(
         "Trine",
         role => role switch
         {
-            PartyRole.MainTank => $"Take the near Wings of Destruction buster: about 9y out to the {(state.CentrePointsEast ? "west" : "south-west")}, as close to Kefka as the centre triangle's corners allow (aim for its flat edge), "
-                                  + "and clear of any triangle still to drop. It hits the closest player, so no one else may stand nearer.",
-            PartyRole.OffTank => $"Take the far Wings of Destruction buster: 18.5y out in {Where(state.TankTriangle)}, the first first-set triangle counter-clockwise from the north-west. "
-                                 + "It hits the farthest player, so no one else may stand farther.",
-            _ => $"Go to {Where(state.PartyTriangle)}, the first first-set triangle clockwise from north, once it has exploded: inside it, well out but not at the wall. "
-                 + $"The buster circles are on the tanks, so stay over 7y from {Label(PartyRole.MainTank)} and {Label(PartyRole.OffTank)}.",
+            PartyRole.MainTank => $"Pegue o buster de perto do Wings of Destruction: uns 9y para o {(state.CentrePointsEast ? "oeste" : "sudoeste")}, o mais perto do Kefka que os cantos do triângulo central deixarem (mire na borda reta dele), "
+                                  + "e longe de qualquer triângulo que ainda vai cair. Ele acerta o jogador mais perto, então ninguém mais pode ficar mais perto.",
+            PartyRole.OffTank => $"Pegue o buster de longe do Wings of Destruction: a 18,5y em {Where(state.TankTriangle)}, o primeiro triângulo do primeiro grupo no sentido anti-horário a partir do noroeste. "
+                                 + "Ele acerta o jogador mais longe, então ninguém mais pode ficar mais longe.",
+            _ => $"Vá para {Where(state.PartyTriangle)}, o primeiro triângulo do primeiro grupo no sentido horário a partir do norte, depois que ele explodir: dentro dele, bem afastado mas não na parede. "
+                 + $"Os círculos dos busters estão nos tanks, então fique a mais de 7y de {Label(PartyRole.MainTank)} e {Label(PartyRole.OffTank)}.",
         },
         Trine);
 
@@ -50,9 +50,9 @@ internal static class UmadP2TrinesPlaybook
         "Wings of Destruction (tank busters)",
         role => role switch
         {
-            PartyRole.MainTank => "Stay the closest player to Kefka: a 7y buster lands on the nearest player and leaves a vulnerability, so the off-tank must be well away from you.",
-            PartyRole.OffTank => "Stay the farthest player from Kefka: a 7y buster lands on the farthest player and leaves a vulnerability, so keep clear of the main tank.",
-            _ => "Stay in your triangle: the busters land on the nearest and the farthest player, and that must be the two tanks.",
+            PartyRole.MainTank => "Continue sendo o jogador mais perto do Kefka: um buster de 7y cai no jogador mais perto e deixa uma vulnerabilidade, então o off-tank tem que ficar bem longe de você.",
+            PartyRole.OffTank => "Continue sendo o jogador mais longe do Kefka: um buster de 7y cai no jogador mais longe e deixa uma vulnerabilidade, então fique longe do main tank.",
+            _ => "Fique no seu triângulo: os busters caem no jogador mais perto e no mais longe, e esses têm que ser os dois tanks.",
         },
         Busters);
 
@@ -60,9 +60,9 @@ internal static class UmadP2TrinesPlaybook
         "Ultimate Embrace II",
         role => role switch
         {
-            PartyRole.MainTank => "Ultimate Embrace II is a 5y shared tank buster on you: hold still for the off-tank to join you. Alone it needs an invuln.",
-            PartyRole.OffTank => $"Join {Label(PartyRole.MainTank)} for Ultimate Embrace II, a 5y tank buster the two of you share.",
-            _ => "Stay over 5y from the tanks: Ultimate Embrace II is their shared buster, lethal to anyone else.",
+            PartyRole.MainTank => "Ultimate Embrace II é um tank buster compartilhado de 5y em você: fique parado para o off-tank se juntar. Sozinho, precisa de invuln.",
+            PartyRole.OffTank => $"Junte-se a {Label(PartyRole.MainTank)} para o Ultimate Embrace II, um tank buster de 5y que vocês dois dividem.",
+            _ => "Fique a mais de 5y dos tanks: Ultimate Embrace II é o buster compartilhado deles, letal para qualquer outro.",
         },
         Embrace);
 }

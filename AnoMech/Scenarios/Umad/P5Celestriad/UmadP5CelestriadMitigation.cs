@@ -29,7 +29,7 @@ internal static class UmadP5CelestriadMitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(SCH, SummonSeraph, 3.00f, "Celestriad (during the cast bar)", [Towers1]),
+        new(SCH, SummonSeraph, 3.00f, "Celestriad (durante a barra de cast)", [Towers1]),
         new(MT, PartyMit, 4.60f, "Celestriad", [Towers1]),
     ];
 }

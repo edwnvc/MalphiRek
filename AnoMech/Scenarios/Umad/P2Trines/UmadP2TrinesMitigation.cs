@@ -46,16 +46,16 @@ internal static class UmadP2TrinesMitigation
         new(OT, MitActionId.Reprisal, 6.20f, "Light of Judgment II", [LightOfJudgmentHit]),
         new(OT, PartyMit, 6.20f, "Light of Judgment II", [LightOfJudgmentHit]),
         new(SCH, DeploymentTactics, 6.20f, "Light of Judgment II", [LightOfJudgmentHit]),
-        new(SCH, SacredSoil, 4.70f, "Light of Judgment II (early, so it's back for Wings of Destruction)", [LightOfJudgmentHit]),
+        new(SCH, SacredSoil, 4.70f, "Light of Judgment II (cedo, para voltar a tempo do Wings of Destruction)", [LightOfJudgmentHit]),
         new(SGE, Zoe, 5.70f, "Light of Judgment II", []),
-        new(SGE, EukrasianPrognosisII, 6.20f, "Light of Judgment II (Zoe shields)", [LightOfJudgmentHit]),
-        new(SGE, Kerachole, 4.70f, "Light of Judgment II (early, so it's back for Wings of Destruction)", [LightOfJudgmentHit]),
+        new(SGE, EukrasianPrognosisII, 6.20f, "Light of Judgment II (escudos com Zoe)", [LightOfJudgmentHit]),
+        new(SGE, Kerachole, 4.70f, "Light of Judgment II (cedo, para voltar a tempo do Wings of Destruction)", [LightOfJudgmentHit]),
         new(SGE, Holos, 6.20f, "Light of Judgment II", [LightOfJudgmentHit]),
         new(D1, Feint, 6.20f, "Light of Judgment II", [LightOfJudgmentHit]),
         new(D3, PartyMit, 6.20f, "Light of Judgment II", [LightOfJudgmentHit]),
         new(D4, Addle, 6.20f, "Light of Judgment II", [LightOfJudgmentHit]),
 
-        new(MT, MitActionId.Reprisal, 34.80f, "Wings of Destruction (Kefka's Ultimate Embrace)", [UltimateEmbraceHit]),
+        new(MT, MitActionId.Reprisal, 34.80f, "Wings of Destruction (Ultimate Embrace do Kefka)", [UltimateEmbraceHit]),
         new(MT, PartyMit, 34.80f, "Wings of Destruction", [BusterHits, UltimateEmbraceHit]),
         new(WHM, PlenaryIndulgence, 34.80f, "Wings of Destruction", [BusterHits, UltimateEmbraceHit]),
         new(AST, CollectiveUnconscious, 34.80f, "Wings of Destruction", [BusterHits, UltimateEmbraceHit]),
@@ -64,6 +64,6 @@ internal static class UmadP2TrinesMitigation
         new(SCH, SummonSeraph, 34.80f, "Wings of Destruction", [BusterHits, UltimateEmbraceHit]),
         new(SGE, Kerachole, 34.80f, "Wings of Destruction", [BusterHits, UltimateEmbraceHit]),
         new(SGE, Panhaima, 34.80f, "Wings of Destruction", [BusterHits, UltimateEmbraceHit]),
-        new(D2, Feint, 34.80f, "Wings of Destruction (Kefka's Ultimate Embrace)", [UltimateEmbraceHit]),
+        new(D2, Feint, 34.80f, "Wings of Destruction (Ultimate Embrace do Kefka)", [UltimateEmbraceHit]),
     ];
 }

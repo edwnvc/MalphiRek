@@ -59,8 +59,8 @@ internal static class UmadP2ForsakenMitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(SCH, DeploymentTactics, -6.50f, "Forsaken (during Ultimate Embrace)", [ForsakenHit]),
-        new(SGE, Holos, -6.50f, "Forsaken (during Ultimate Embrace)", [ForsakenHit]),
+        new(SCH, DeploymentTactics, -6.50f, "Forsaken (durante o Ultimate Embrace)", [ForsakenHit]),
+        new(SGE, Holos, -6.50f, "Forsaken (durante o Ultimate Embrace)", [ForsakenHit]),
         new(SGE, Zoe, 8.20f, "Forsaken", []),
         new(MT, MitActionId.Reprisal, 8.70f, "Forsaken", [ForsakenHit, Towers1]),
         new(OT, PartyMit, 8.70f, "Forsaken", [ForsakenHit], [Warrior, Paladin]),
@@ -68,13 +68,13 @@ internal static class UmadP2ForsakenMitigation
         new(AST, CollectiveUnconscious, 8.70f, "Forsaken", [ForsakenHit]),
         new(SCH, SacredSoil, 8.70f, "Forsaken", [ForsakenHit, Towers1]),
         new(SGE, Kerachole, 8.70f, "Forsaken", [ForsakenHit, Towers1]),
-        new(SGE, EukrasianPrognosisII, 8.70f, "Forsaken (Zoe shields)", [ForsakenHit]),
+        new(SGE, EukrasianPrognosisII, 8.70f, "Forsaken (escudos com Zoe)", [ForsakenHit]),
         new(D1, Feint, 8.70f, "Forsaken", [ForsakenHit, Towers1]),
         new(D3, PartyMit, 8.70f, "Forsaken", [ForsakenHit, Towers1]),
         new(D4, Addle, 8.70f, "Forsaken", [ForsakenHit, Towers1]),
         new(Extras, Dismantle, 8.70f, "Forsaken", [ForsakenHit], [Machinist]),
         new(Extras, MagickBarrier, 8.70f, "Forsaken", [ForsakenHit], [RedMage]),
-        new(Extras, TemperaCoat, 8.00f, "Forsaken (Tempera Grassa next)", [], [Pictomancer]),
+        new(Extras, TemperaCoat, 8.00f, "Forsaken (Tempera Grassa em seguida)", [], [Pictomancer]),
         new(Extras, TemperaGrassa, 8.70f, "Forsaken", [ForsakenHit], [Pictomancer]),
 
         new(OT, PartyMit, 21.66f, "Towers I", [Towers1], [Gunbreaker, DarkKnight]),

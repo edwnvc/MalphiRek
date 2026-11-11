@@ -41,8 +41,9 @@ public class UmadP1GravenImage2PlaybookTests
             foreach (var role in UmadP1Roles.Dps)
             {
                 var exit = UmadP1GravenImage2Ai.TetherExit(state, set, role);
-                var side = exit.X > 0f ? "east" : "west";
-                Assert.That(UmadP1GravenImage2Playbook.Spreads(state, set).Why(role), Does.Contain(side), $"{role} set {set} at {exit}");
+                // East reads leste for melee and nordeste/sudeste for ranged; west always ends in oeste.
+                var side = exit.X > 0f ? "leste|nordeste|sudeste" : "oeste";
+                Assert.That(UmadP1GravenImage2Playbook.Spreads(state, set).Why(role), Does.Match(side), $"{role} set {set} at {exit}");
             }
     }
 }

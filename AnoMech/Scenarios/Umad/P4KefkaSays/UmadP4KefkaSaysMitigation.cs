@@ -49,7 +49,7 @@ internal static class UmadP4KefkaSaysMitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(D2, Feint, 1.50f, "Kefka's autos (start of the phase)", []),
+        new(D2, Feint, 1.50f, "Autos do Kefka (início da fase)", []),
 
         new(WHM, PlenaryIndulgence, 18.87f, "Grand Cross 1", [GrandCross1, Inferno1]),
         new(AST, CollectiveUnconscious, 18.87f, "Grand Cross 1", [GrandCross1, Inferno1]),
@@ -58,9 +58,9 @@ internal static class UmadP4KefkaSaysMitigation
         new(SGE, Kerachole, 18.87f, "Grand Cross 1", [GrandCross1, Inferno1]),
         new(SGE, Philosophia, 18.87f, "Grand Cross 1", []),
         new(SGE, Holos, 18.87f, "Grand Cross 1", [GrandCross1, Inferno1, GrandCross2]),
-        new(Extras, Dismantle, 18.87f, "Grand Cross 1 (Kefka's autos)", [], [Machinist]),
+        new(Extras, Dismantle, 18.87f, "Grand Cross 1 (autos do Kefka)", [], [Machinist]),
         new(Extras, MagickBarrier, 18.87f, "Grand Cross 1", [GrandCross1], [RedMage]),
-        new(Extras, TemperaCoat, 18.17f, "Grand Cross 1 (Tempera Grassa next)", [], [Pictomancer]),
+        new(Extras, TemperaCoat, 18.17f, "Grand Cross 1 (Tempera Grassa em seguida)", [], [Pictomancer]),
         new(Extras, TemperaGrassa, 18.87f, "Grand Cross 1", [GrandCross1], [Pictomancer]),
 
         new(D3, PartyMit, 24.01f, "Inferno/Tsunami 1", [Inferno1, GrandCross2]),
@@ -79,12 +79,12 @@ internal static class UmadP4KefkaSaysMitigation
         new(WHM, DivineCaress, 48.76f, "Grand Cross 3", [GrandCross3]),
         new(SCH, Consolation, 48.76f, "Grand Cross 3", [GrandCross3]),
         new(SGE, Zoe, 48.46f, "Grand Cross 3", []),
-        new(SGE, EukrasianPrognosisII, 48.76f, "Grand Cross 3 (Zoe shields)", [GrandCross3]),
+        new(SGE, EukrasianPrognosisII, 48.76f, "Grand Cross 3 (escudos com Zoe)", [GrandCross3]),
 
         new(WHM, LiturgyOfTheBell, 60.89f, "Flood of Naught", []),
         new(AST, Macrocosmos, 60.89f, "Flood of Naught", []),
-        new(SCH, SacredSoil, 58.50f, "Flood of Naught (early, so it's back for Ultima Upsurge)", [DeathBolt1]),
-        new(SGE, Kerachole, 58.50f, "Flood of Naught (early, so it's back for Ultima Upsurge)", [DeathBolt1]),
+        new(SCH, SacredSoil, 58.50f, "Flood of Naught (cedo, para voltar a tempo do Ultima Upsurge)", [DeathBolt1]),
+        new(SGE, Kerachole, 58.50f, "Flood of Naught (cedo, para voltar a tempo do Ultima Upsurge)", [DeathBolt1]),
 
         new(MT, PartyMit, 69.87f, "Death Bolt/Wave 1", [DeathBolt1]),
 

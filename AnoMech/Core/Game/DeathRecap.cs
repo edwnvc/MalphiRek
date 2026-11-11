@@ -35,13 +35,13 @@ public sealed record DeathRecap(PartyRole Role, string Cause, Vector3 DiedAt, fl
     public float? MissedBy => Spot is { } spot ? DistanceXZ(spot, DiedAt) : null;
 
     public string WhereText => Spot is not { } spot
-        ? "The strat had no spot for you at this point."
+        ? "A strat não tinha um lugar para você neste momento."
         : MissedBy <= OnSpotTolerance
-            ? "You were on your spot."
-            : $"You were {MissedBy:F1}y {Compass(spot, DiedAt)} of your spot.";
+            ? "Você estava no seu lugar."
+            : $"Você estava a {MissedBy:F1}y ao {Compass(spot, DiedAt)} do seu lugar.";
 
     public string? TimingText => Strat?.Deadline is { } deadline
-        ? $"Be there by {deadline:F1}s; you died at {DiedAtTime:F1}s."
+        ? $"Esteja lá até {deadline:F1}s; você morreu em {DiedAtTime:F1}s."
         : null;
 
     // Where `to` lies as seen from `from`, on the 8-point compass (north is -Z).
@@ -52,7 +52,7 @@ public sealed record DeathRecap(PartyRole Role, string Cause, Vector3 DiedAt, fl
         return Points[index];
     }
 
-    private static readonly string[] Points = ["north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west"];
+    private static readonly string[] Points = ["norte", "nordeste", "leste", "sudeste", "sul", "sudoeste", "oeste", "noroeste"];
 
     private static float DistanceXZ(Vector3 a, Vector3 b)
         => MathF.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Z - b.Z) * (a.Z - b.Z));

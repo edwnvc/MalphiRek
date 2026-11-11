@@ -12,23 +12,23 @@ internal static class UmadP3LimitCutPlaybook
     private const string Thunder = "NAUR §3.9 (0:38:27) · §3.4 (0:35:00)";
 
     // Spot index order: 0 = S, then on toward E.
-    private static readonly string[] SpotWords = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"];
+    private static readonly string[] SpotWords = ["sul", "sudeste", "leste", "nordeste", "norte", "noroeste", "oeste", "sudoeste"];
 
     private static string Spot(int spot) => SpotWords[((spot % 8) + 8) % 8];
 
     private static string Label(PartyRole role) => SettingsGrid.RoleLabel(role);
 
     public static StratCue Stack(UmadP3LimitCutState state) => new(
-        "Umbra Smash: stack by the bosses",
+        "Umbra Smash: stack perto dos bosses",
         role =>
         {
             var corner = Spot(state.BossSpot);
             return role switch
             {
-                PartyRole.MainTank => $"Hold Chaos about 10y out on the {corner} intercardinal, Exdeath just behind him and the party stacked just inside: Umbra Smash goes to whoever is farthest from Chaos, and that must be the bait alone.",
-                PartyRole.OffTank => $"Hold Exdeath just behind Chaos on the {corner} intercardinal, the party stacked just inside: Umbra Smash goes to whoever is farthest from Chaos, and that must be the bait alone.",
-                _ when role == state.BaitRole => $"Stack with the party 5.5y out toward the bosses on the {corner} intercardinal for now: you run across the arena to bait Umbra Smash next.",
-                _ => $"Stack 5.5y out toward the bosses on the {corner} intercardinal: Umbra Smash goes to whoever is farthest from Chaos, and that must be {Label(state.BaitRole)}, the bait, alone.",
+                PartyRole.MainTank => $"Segure o Chaos a uns 10y para fora, no intercardeal {corner}, com o Exdeath logo atrás dele e o grupo em stack logo para dentro: o Umbra Smash vai em quem estiver mais longe do Chaos, e esse tem que ser só o bait.",
+                PartyRole.OffTank => $"Segure o Exdeath logo atrás do Chaos, no intercardeal {corner}, com o grupo em stack logo para dentro: o Umbra Smash vai em quem estiver mais longe do Chaos, e esse tem que ser só o bait.",
+                _ when role == state.BaitRole => $"Por enquanto, faça stack com o grupo a 5,5y para fora, na direção dos bosses, no intercardeal {corner}: em seguida você atravessa a arena para fazer o bait do Umbra Smash.",
+                _ => $"Faça stack a 5,5y para fora, na direção dos bosses, no intercardeal {corner}: o Umbra Smash vai em quem estiver mais longe do Chaos, e esse tem que ser só {Label(state.BaitRole)}, o bait.",
             };
         },
         Umbra);
@@ -36,74 +36,74 @@ internal static class UmadP3LimitCutPlaybook
     public static StratCue UmbraBait(UmadP3LimitCutState state) => new(
         "Umbra Smash: bait",
         role => role == state.BaitRole
-            ? $"You bait Umbra Smash: it goes to whoever is farthest from Chaos when he starts casting and kills anyone within 20y of where it lands, so stand at the {Spot(state.BossSpot + 4)} wall, across the arena from Chaos and the stack."
-            : $"{Label(state.BaitRole)} baits Umbra Smash at the {Spot(state.BossSpot + 4)} wall; stay in the stack by the bosses, over 20y from where it lands.",
+            ? $"Você faz o bait do Umbra Smash: ele vai em quem estiver mais longe do Chaos quando o cast começa e mata qualquer um a menos de 20y de onde cai, então fique na parede {Spot(state.BossSpot + 4)}, do outro lado da arena em relação ao Chaos e ao stack."
+            : $"{Label(state.BaitRole)} faz o bait do Umbra Smash na parede {Spot(state.BossSpot + 4)}; fique no stack perto dos bosses, a mais de 20y de onde ele cai.",
         Umbra);
 
     public static StratCue BaitBack(UmadP3LimitCutState state) => new(
-        "Umbra Smash: back to the stack",
+        "Umbra Smash: volta para o stack",
         role => role == state.BaitRole
-            ? "Umbra Smash locked onto where you stood when the cast began, and Chaos lands there: run back into the stack now, over 20y from the impact."
-            : $"{Label(state.BaitRole)} comes back from the Umbra Smash bait; stay in the stack, over 20y from where it lands.",
+            ? "O Umbra Smash travou onde você estava quando o cast começou, e o Chaos cai ali: corra de volta para o stack agora, a mais de 20y do impacto."
+            : $"{Label(state.BaitRole)} volta do bait do Umbra Smash; fique no stack, a mais de 20y de onde ele cai.",
         Umbra);
 
     public static readonly StratCue TanksIntoStack = new(
-        "Umbra Smash: tanks join the stack",
+        "Umbra Smash: tanks entram no stack",
         role => role.IsTank()
-            ? "Umbra Smash has locked onto the bait, so drop the bosses and join the stack: the whole party then takes Vacuum Wave's knockback from Exdeath together."
-            : "Umbra Smash has locked onto the bait; the tanks join your stack, so the whole party takes Vacuum Wave's knockback from Exdeath together.",
+            ? "O Umbra Smash já travou no bait, então largue os bosses e entre no stack: o grupo inteiro toma junto o knockback do Vacuum Wave do Exdeath."
+            : "O Umbra Smash já travou no bait; os tanks entram no seu stack, para o grupo inteiro tomar junto o knockback do Vacuum Wave do Exdeath.",
         Umbra);
 
     public static StratCue VacuumWave(UmadP3LimitCutState state) => new(
         "Vacuum Wave",
         role => state.Winds[role] == Wind.Headwind
-            ? "You have Headwind: face away from Exdeath, so Vacuum Wave hits your back, cleanses it and only pushes you 10y. More than 45° off throws you 40y off the arena; the tank LB3 covers the damage."
-            : "You have Tailwind: face Exdeath, so Vacuum Wave hits your front, cleanses it and only pushes you 10y. More than 45° off throws you 40y off the arena; the tank LB3 covers the damage.",
+            ? "Você tem Headwind: fique de costas para o Exdeath, para o Vacuum Wave acertar suas costas, limpar o debuff e só te empurrar 10y. Mais de 45° de erro te joga 40y para fora da arena; o LB3 de tank cobre o dano."
+            : "Você tem Tailwind: fique de frente para o Exdeath, para o Vacuum Wave acertar sua frente, limpar o debuff e só te empurrar 10y. Mais de 45° de erro te joga 40y para fora da arena; o LB3 de tank cobre o dano.",
         Vacuum);
 
     public static readonly StratCue Cyclones = StratCue.ForAll(
         "Cyclones",
-        "Every wind carried into Vacuum Wave fires a Cyclone, a two-player stack whose vulnerability the next one lands on. Everyone packs together just past the middle, away from Exdeath, to split all of them under the tank LB3.",
+        "Cada vento levado para o Vacuum Wave solta um Cyclone, um stack de dois jogadores cuja vulnerabilidade cai no próximo. Todo mundo se junta logo depois do meio, longe do Exdeath, para dividir todos eles debaixo do LB3 de tank.",
         Vacuum);
 
     public static StratCue Charges(UmadP3LimitCutState state) => new(
-        "Limit cut: Ultima Blaster charges",
+        "Limit Cut: investidas do Ultima Blaster",
         role =>
         {
             var number = state.NumberOf(role);
-            if (number == 0) return "Every clone charges straight at its number: stand at the wall across from the clone with your number.";
+            if (number == 0) return "Cada clone investe direto no seu número: fique na parede em frente ao clone com o seu número.";
             var from = state.ChargeSpot(number - 1);
-            var fill = state.Clockwise ? "counterclockwise" : "clockwise";
+            var fill = state.Clockwise ? "anti-horário" : "horário";
             var other = number > 4 ? number - 4 : number + 4;
-            return $"You're number {number}: clone {number} charges at you from the {Spot(from)} spot, deadly unless you're far away. "
-                   + $"Stand at the wall across from it, a half-step {fill} of the {Spot(from + 4)} spot, since clone {other} charges from that spot itself. "
-                   + $"Number 1 starts across from the first clone ({Spot(state.StartSpot)}) and the numbers fill {fill}, against the clones' turn.";
+            return $"Você é o número {number}: o clone {number} investe em você vindo do ponto {Spot(from)}, mortal a não ser que você esteja longe. "
+                   + $"Fique na parede em frente a ele, meio passo no sentido {fill} do ponto {Spot(from + 4)}, porque o clone {other} investe vindo exatamente desse ponto. "
+                   + $"O número 1 começa em frente ao primeiro clone ({Spot(state.StartSpot)}) e os números seguem no sentido {fill}, contra o giro dos clones.";
         },
         "NAUR §3.9 (0:37:50)");
 
     public static StratCue ClearForThunder(UmadP3LimitCutState state) => new(
-        "Thunder III: clear Exdeath",
+        "Thunder III: saia de perto do Exdeath",
         role =>
         {
             var (first, second) = ThunderIIIPlanning.Roles(state.ThunderPlan);
-            var plan = $"Exdeath's Thunder III hits whoever is closest to him twice, 3s apart, and {UmadP3BlackHolePlaybook.ThunderPlan(state.ThunderPlan)}";
-            if (role == first) return $"{plan}: walk onto him.";
-            if (role == second) return $"{plan}: wait on the {Spot(state.BossSpot)} intercardinal, clear of the first hit, until you swap in.";
-            if (role.IsTank()) return $"{plan}: you're not on it, so wait on the {Spot(state.BossSpot)} intercardinal, over 10y from him.";
-            return $"{plan}: group up 4y from the middle, away from the {Spot(state.BossSpot)} corner, over 10y from him.";
+            var plan = $"O Thunder III do Exdeath acerta duas vezes quem estiver mais perto dele, com 3s de intervalo, e {UmadP3BlackHolePlaybook.ThunderPlan(state.ThunderPlan)}";
+            if (role == first) return $"{plan}: vá para cima dele.";
+            if (role == second) return $"{plan}: espere no intercardeal {Spot(state.BossSpot)}, longe do primeiro golpe, até a sua vez de trocar.";
+            if (role.IsTank()) return $"{plan}: não é com você, então espere no intercardeal {Spot(state.BossSpot)}, a mais de 10y dele.";
+            return $"{plan}: juntem-se a 4y do meio, longe do canto {Spot(state.BossSpot)}, a mais de 10y dele.";
         },
         Thunder);
 
     public static StratCue ClearForLastThunder(UmadP3LimitCutState state) => new(
-        "Thunder III: clear Exdeath",
+        "Thunder III: saia de perto do Exdeath",
         role =>
         {
             var (first, second) = ThunderIIIPlanning.Roles(state.LastThunderPlan);
-            var plan = $"Exdeath's last Thunder III hits whoever is closest to him twice, 3s apart, and {UmadP3BlackHolePlaybook.ThunderPlan(state.LastThunderPlan)}";
-            if (role == first) return $"{plan}: walk onto him.";
-            if (role == second) return $"{plan}: wait 10y out to his side, clear of the first hit, until you swap in.";
-            if (role.IsTank()) return $"{plan}: you're not on it, so wait 10y out to his side.";
-            return $"{plan}: group up 4y from the middle, across from him, so the hit on the tank can't reach you.";
+            var plan = $"O último Thunder III do Exdeath acerta duas vezes quem estiver mais perto dele, com 3s de intervalo, e {UmadP3BlackHolePlaybook.ThunderPlan(state.LastThunderPlan)}";
+            if (role == first) return $"{plan}: vá para cima dele.";
+            if (role == second) return $"{plan}: espere a 10y ao lado dele, longe do primeiro golpe, até a sua vez de trocar.";
+            if (role.IsTank()) return $"{plan}: não é com você, então espere a 10y ao lado dele.";
+            return $"{plan}: juntem-se a 4y do meio, do lado oposto a ele, para o golpe no tank não te alcançar.";
         },
         Thunder);
 
@@ -114,21 +114,21 @@ internal static class UmadP3LimitCutPlaybook
     public static StratCue ThunderSwap(ThunderIIIAssignment plan) => UmadP3BlackHolePlaybook.ThunderSwap(plan, Thunder);
 
     public static StratCue DecisiveBattleSplit => new(
-        "The Decisive Battle (second)",
+        "The Decisive Battle (segundo)",
         role => role is PartyRole.MainTank or PartyRole.RegenHealer or PartyRole.MeleeDpsA or PartyRole.MeleeDpsB
-            ? "Split to Chaos before it resolves: MT, H1 and both melee take Epic Hero, which locks you to him."
-            : "Split to Exdeath before it resolves: OT, H2 and both ranged take Fated Hero, which locks you to him.",
+            ? "Vá para o Chaos antes de resolver: MT, H1 e os dois melees pegam Epic Hero, que te prende a ele."
+            : "Vá para o Exdeath antes de resolver: OT, H2 e os dois ranged pegam Fated Hero, que te prende a ele.",
         "NAUR §3.10 (0:39:41)");
 
     public static StratCue Uptime => new(
-        "The Decisive Battle (second)",
+        "The Decisive Battle (segundo)",
         role => (role switch
                 {
-                    PartyRole.MainTank => "Hold Chaos where he stands",
-                    PartyRole.OffTank => "Hold Exdeath where Thunder III left him",
-                    PartyRole.RegenHealer or PartyRole.MeleeDpsA or PartyRole.MeleeDpsB => "Stay by Chaos where he stands",
-                    _ => "Stay by Exdeath where Thunder III left him",
+                    PartyRole.MainTank => "Segure o Chaos onde ele está",
+                    PartyRole.OffTank => "Segure o Exdeath onde o Thunder III o deixou",
+                    PartyRole.RegenHealer or PartyRole.MeleeDpsA or PartyRole.MeleeDpsB => "Fique perto do Chaos onde ele está",
+                    _ => "Fique perto do Exdeath onde o Thunder III o deixou",
                 })
-                + ": leave the bosses where they are, Black Hole starts by pulling them into the middle. The Decisive Battle locks MT, H1 and both melee to Chaos and the rest to Exdeath.",
+                + ": deixe os bosses onde estão, o Black Hole começa puxando eles para o meio. O Decisive Battle prende MT, H1 e os dois melees ao Chaos e o resto ao Exdeath.",
         "NAUR §3.10 (0:39:41)");
 }

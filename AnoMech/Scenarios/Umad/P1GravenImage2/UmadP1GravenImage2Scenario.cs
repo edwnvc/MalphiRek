@@ -80,7 +80,7 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
         puddles.Clear();
         puddlesSoakable = false;
         puzzleFailure = null;
-        world.EnforceArenaBoundary(UmadP1Kit.ArenaRadius, "Knocked off the arena");
+        world.EnforceArenaBoundary(UmadP1Kit.ArenaRadius, "Arremessado para fora da arena");
         world.MitPractice.Begin(UmadP1GravenImage2Mitigation.Plan(),
             new Dictionary<MitSource, Func<SimCharacter?>> { [UmadMitigation.Kefka] = () => k.Kefka });
         DiagnosticLog.Info($"[UmadP1GravenImage2] Roll: purpleDps=[{string.Join(",", state.PurpleDps)}] ice={state.Ice} "
@@ -239,7 +239,7 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
             .ToList();
         if (outside.Count > 0)
         {
-            kit.Party.WipeAllPlayers(Constants.ActionId.Gravitas, $"{string.Join(", ", outside)} not in the Gravitas stack");
+            kit.Party.WipeAllPlayers(Constants.ActionId.Gravitas, $"{string.Join(", ", outside)} fora do stack do Gravitas");
             return;
         }
         var position = resolved.Origin.Position;
@@ -259,7 +259,7 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
             if (kit.Party.Get(role) is not { } target || !target.IsAlive()) continue;
             if (puddles.Any(p => !p.Popped && DistanceXZ(p.Position, target.Position) < VitrophyreRadius + PuddleRadius))
             {
-                ExplodePuddles($"{role}'s Vitrophyre touched a Gravitas puddle");
+                ExplodePuddles($"o Vitrophyre de {role} tocou numa poça de Gravitas");
                 return;
             }
             statue?.Cast(UmadActions.Vitrophyre, target);
@@ -300,7 +300,7 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
                 puddle.Exempt.IntersectWith(inside);
                 if (inside.FirstOrDefault(m => !puddle.Exempt.Contains(m)) is { } intruder)
                 {
-                    ExplodePuddles($"{(intruder as ISimPartyMember)?.Role.ToString() ?? "someone"} stepped into a Gravitas puddle");
+                    ExplodePuddles($"{(intruder as ISimPartyMember)?.Role.ToString() ?? "alguém"} pisou numa poça de Gravitas");
                     return;
                 }
                 continue;
@@ -325,7 +325,7 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
     // A full soak takes 4; anything short fails the puzzle (UNVERIFIED threshold).
     private void JudgePuddleSoak(ActionResolved resolved)
     {
-        if (resolved.Hits.Count < 4) FailPuzzle($"a puddle was popped by {resolved.Hits.Count} player(s), not 4");
+        if (resolved.Hits.Count < 4) FailPuzzle($"uma poça foi estourada por {resolved.Hits.Count} jogador(es), não 4");
     }
 
     private void PopLeftoverPuddles()
@@ -333,7 +333,7 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
         foreach (var puddle in puddles.Where(p => !p.Popped).ToList())
         {
             PopPuddle(puddle);
-            FailPuzzle("a puddle was never popped");
+            FailPuzzle("uma poça nunca foi estourada");
         }
     }
 
@@ -349,8 +349,8 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
     private void PunishFailedPuzzle()
     {
         if (kit == null || puzzleFailure == null) return;
-        kit.World.Announce($"Not every Gravitas puddle was popped by 4 ({puzzleFailure}).");
-        kit.Party.WipeAllPlayers(Constants.ActionId.GravityIII, $"failed the Gravitas puddle puzzle ({puzzleFailure})");
+        kit.World.Announce($"Nem toda poça de Gravitas foi estourada por 4 ({puzzleFailure}).");
+        kit.Party.WipeAllPlayers(Constants.ActionId.GravityIII, $"falhou o quebra-cabeça das poças de Gravitas ({puzzleFailure})");
     }
 
     private static float DistanceXZ(Vector3 a, Vector3 b)

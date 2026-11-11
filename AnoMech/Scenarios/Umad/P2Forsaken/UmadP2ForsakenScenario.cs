@@ -71,7 +71,7 @@ public sealed class UmadP2ForsakenScenario : IMultiplayerReplayable
 
     private SimEnemy? kefka;
     private int towersSoaked;
-    public string? RunProgress => $"You cleared {towersSoaked / 2} of 8 tower sets.";
+    public string? RunProgress => $"Você completou {towersSoaked / 2} de 8 grupos de torres.";
 
     public void Run(SimWorld worldParam, int? selectedAi)
     {

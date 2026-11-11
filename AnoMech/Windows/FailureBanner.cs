@@ -60,7 +60,7 @@ internal sealed class FailureBanner : Window, IDisposable
     public override void Draw()
     {
         using (titleFont.Push())
-            CenteredText("MECHANIC FAILED", TitleColor);
+            CenteredText("MECÂNICA FALHOU", TitleColor);
         CenteredText(reason, new Vector4(1f, 1f, 1f, 1f));
     }
 

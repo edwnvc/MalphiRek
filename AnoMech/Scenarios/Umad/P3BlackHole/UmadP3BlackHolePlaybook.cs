@@ -31,8 +31,8 @@ internal static class UmadP3BlackHolePlaybook
 
     // By D>S>A seat, Modified DSA's lasers: one player takes both of set 2, and one both of set 9.
     private static readonly string[] ModifiedSets =
-        ["sets 1, 3 and 4", "sets 5, 6 and 7", "set 8, then both of set 9", "sets 3, 4 and 5",
-         "both of set 2, then set 3", "sets 4, 5 and 6", "sets 7, 8 and 10", "sets 6, 7 and 8"];
+        ["os grupos 1, 3 e 4", "os grupos 5, 6 e 7", "o grupo 8, depois os dois do grupo 9", "os grupos 3, 4 e 5",
+         "os dois do grupo 2, depois o grupo 3", "os grupos 4, 5 e 6", "os grupos 7, 8 e 10", "os grupos 6, 7 e 8"];
 
     private static string Label(PartyRole role) => SettingsGrid.RoleLabel(role);
 
@@ -60,15 +60,15 @@ internal static class UmadP3BlackHolePlaybook
         "Earthquake",
         role => role switch
         {
-            PartyRole.MainTank => "Hold Chaos 6y east of the middle while OT holds Exdeath just west, so the party can stack between them.",
-            PartyRole.OffTank => "Hold Exdeath 4y west of the middle while MT holds Chaos just east, so the party can stack between them.",
-            _ => "Stack in the middle: Earthquake leaves everyone at 1 HP with Primordial Crust, and the healers need you together to top everyone up.",
+            PartyRole.MainTank => "Segure o Chaos a 6y a leste do meio enquanto o OT segura o Exdeath logo a oeste, para o grupo fazer stack entre os dois.",
+            PartyRole.OffTank => "Segure o Exdeath a 4y a oeste do meio enquanto o MT segura o Chaos logo a leste, para o grupo fazer stack entre os dois.",
+            _ => "Faça stack no meio: o Earthquake deixa todo mundo com 1 HP e Primordial Crust, e os healers precisam de vocês juntos para curar todos.",
         },
         "NAUR §3.11 (0:40:04)");
 
     public static readonly StratCue AccretionHeals = StratCue.ForAll(
-        "Accretion heals",
-        "Everyone, tanks too, stacks in the middle: the two Accretion players are healed off one at a time, and each cleanse sets off a small raidwide.",
+        "Cura do Accretion",
+        "Todo mundo, tanks também, faz stack no meio: os dois jogadores com Accretion são curados um de cada vez, e cada cleanse solta um raidwide pequeno.",
         "NAUR §3.12 (0:41:00)");
 
     private static int Seat(UmadP3BlackHoleState state, PartyRole role) => Array.IndexOf(state.Roles.List, role);
@@ -89,33 +89,33 @@ internal static class UmadP3BlackHolePlaybook
         var line = UmadP3BlackHoleState.SlotLine[seat] switch { 1 => "First", 2 => "Second", _ => "Third" };
         var kind = seat is 3 or 7 ? "Accretion" : seat < 3 ? "Support" : "DPS";
         var first = FirstSet[DsaSeat(order, seat)];
-        var sets = order == TetherOrder.ModifiedDsa ? ModifiedSets[seat] : $"sets {first}, {first + 1} and {first + 2}";
-        return $"You're {line} in Line ({kind}): your lasers are {sets}; "
-               + "the first two stack Unbecoming and Meanest Existence, the third cleanses your Primordial Crust.";
+        var sets = order == TetherOrder.ModifiedDsa ? ModifiedSets[seat] : $"os grupos {first}, {first + 1} e {first + 2}";
+        return $"Você é {line} in Line ({kind}): seus lasers são {sets}; "
+               + "os dois primeiros acumulam Unbecoming e Meanest Existence, o terceiro limpa seu Primordial Crust.";
     }
 
     private static string OrderText(TetherOrder order) => order switch
     {
-        TetherOrder.SupportDpsAccretion => "non-Accretion Supports take the first tether, non-Accretion DPS the second, Accretion the third (NAUR puts the DPS first)",
-        TetherOrder.ModifiedDsa => "non-Accretion DPS take the first tether, non-Accretion Supports the second, Accretion the third, "
-                                   + "except that Support 1st in Line takes set 1's lone tether, DPS 1st in Line both of set 2's, "
-                                   + "Support 3rd in Line both of set 9's and DPS 3rd in Line set 10's",
-        _ => "non-Accretion DPS take the first tether, non-Accretion Supports the second, Accretion the third",
+        TetherOrder.SupportDpsAccretion => "os Supports sem Accretion pegam o primeiro tether, os DPS sem Accretion o segundo, e os Accretion o terceiro (o NAUR põe os DPS primeiro)",
+        TetherOrder.ModifiedDsa => "os DPS sem Accretion pegam o primeiro tether, os Supports sem Accretion o segundo, e os Accretion o terceiro, "
+                                   + "exceto que o Support First in Line pega o tether sozinho do grupo 1, o DPS First in Line os dois do grupo 2, "
+                                   + "o Support Third in Line os dois do grupo 9 e o DPS Third in Line o do grupo 10",
+        _ => "os DPS sem Accretion pegam o primeiro tether, os Supports sem Accretion o segundo, e os Accretion o terceiro",
     };
 
     public static StratCue BlackHoleWave(UmadP3BlackHoleState state, TetherOrder order, int wave) => new(
-        $"Black Hole wave {wave + 1}",
-        role => "Wait in the middle, clear of the black holes: only the players whose turn it is go out, and they pull their lasers along the wall. "
+        $"Black Hole: onda {wave + 1}",
+        role => "Espere no meio, longe dos black holes: só os jogadores da vez saem, e eles puxam os lasers ao longo da parede. "
                 + Turn(state, order, role),
         $"{WaveSource(order, wave)} · {Strat(order)}");
 
     public static StratCue Grab(UmadP3BlackHoleState state, TetherOrder order, int tetherIndex) => new(
-        "Black Hole: take your tether",
+        "Black Hole: pegue seu tether",
         role =>
         {
-            var which = state.ScenarioObjects.Tethers.Count == 1 ? "only" : tetherIndex switch { 0 => "first", 1 => "second", _ => "third" };
-            return $"Counting clockwise from Kefka ({Compass(state.ScenarioObjects.TetherSortFrom)}), {OrderText(order)}: "
-                   + $"step into the {which} tether's line to take it. {Turn(state, order, role)}";
+            var which = state.ScenarioObjects.Tethers.Count == 1 ? "único" : tetherIndex switch { 0 => "primeiro", 1 => "segundo", _ => "terceiro" };
+            return $"Contando no sentido horário a partir do Kefka ({Compass(state.ScenarioObjects.TetherSortFrom)}), {OrderText(order)}: "
+                   + $"entre na linha do {which} tether para pegá-lo. {Turn(state, order, role)}";
         },
         $"{Rotation} · {Strat(order)}");
 
@@ -135,151 +135,151 @@ internal static class UmadP3BlackHolePlaybook
     }
 
     public static StratCue GrabBoth(UmadP3BlackHoleState state, TetherOrder order) => new(
-        "Black Hole: take both tethers",
-        role => "This pair of tethers is yours alone: you've stepped into one tether's line, now step into the other's, "
-                + $"so both black holes are tethered to you. {Turn(state, order, role)}",
+        "Black Hole: pegue os dois tethers",
+        role => "Este par de tethers é só seu: você já entrou na linha de um tether, agora entre na do outro, "
+                + $"para os dois black holes ficarem presos em você. {Turn(state, order, role)}",
         $"{ModifiedDeck} · {Strat(order)}");
 
     public static StratCue HoldBoth(UmadP3BlackHoleState state, TetherOrder order) => new(
-        "Black Hole: hold both tethers",
-        role => "Hold both tethers about 12y out on the intercardinal between their two black holes, stepping clear of any small black hole there, "
-                + $"so both lasers point past the edge, away from the stack in the middle. {Turn(state, order, role)}",
+        "Black Hole: segure os dois tethers",
+        role => "Segure os dois tethers a uns 12y para fora, no intercardeal entre os dois black holes deles, desviando de qualquer black hole pequeno ali, "
+                + $"para os dois lasers passarem da borda, longe do stack no meio. {Turn(state, order, role)}",
         $"{ModifiedDeck} · {Strat(order)}");
 
     public static readonly StratCue ExdeathToOpenCardinal = new(
-        "Exdeath to the open cardinal",
+        "Exdeath para o cardeal livre",
         role => role == PartyRole.OffTank
-            ? "Take Exdeath to the cardinal just clockwise of the first tether's black hole, the one with no black hole this wave, standing about 14y out so he sits about 10y out, "
-              + "and take Thunder III there, behind the second pair's black holes."
-            : "Stay in the middle: the off-tank holds Exdeath on the open cardinal, just clockwise of the first tether's black hole, for Thunder III.",
+            ? "Leve o Exdeath para o cardeal logo no sentido horário do black hole do primeiro tether, o que não tem black hole nesta onda, ficando a uns 14y para fora para ele ficar a uns 10y, "
+              + "e tome o Thunder III ali, atrás dos black holes do segundo par."
+            : "Fique no meio: o off-tank segura o Exdeath no cardeal livre, logo no sentido horário do black hole do primeiro tether, para o Thunder III.",
         Thunder1);
 
     public static readonly StratCue ExdeathToFirstTether = new(
-        "Exdeath toward the first tether",
+        "Exdeath na direção do primeiro tether",
         role => role == PartyRole.OffTank
-            ? "Take Exdeath to the intercardinal just clockwise of the first tether's black hole, standing about 14y out so he sits about 11y out, "
-              + "and take Thunder III there, across the arena from the second pair's lasers."
-            : "Stay in the middle: the off-tank holds Exdeath on the intercardinal just clockwise of the first tether's black hole for Thunder III, "
-              + "across the arena from the second pair's lasers.",
+            ? "Leve o Exdeath para o intercardeal logo no sentido horário do black hole do primeiro tether, ficando a uns 14y para fora para ele ficar a uns 11y, "
+              + "e tome o Thunder III ali, do outro lado da arena em relação aos lasers do segundo par."
+            : "Fique no meio: o off-tank segura o Exdeath no intercardeal logo no sentido horário do black hole do primeiro tether para o Thunder III, "
+              + "do outro lado da arena em relação aos lasers do segundo par.",
         ModifiedDeck);
 
     public static StratCue Pull(UmadP3BlackHoleState state, TetherOrder order) => new(
-        "Black Hole: pull your tether",
-        role => "Stretch your tether 60° clockwise of its black hole and hold it about 10y out, near Chaos's max melee "
-                + $"rather than at the wall, so its laser passes clear of the stack in the middle. {Turn(state, order, role)}",
+        "Black Hole: puxe seu tether",
+        role => "Estique seu tether 60° no sentido horário do black hole dele e segure a uns 10y para fora, perto do alcance máximo de melee do Chaos "
+                + $"em vez de na parede, para o laser passar longe do stack no meio. {Turn(state, order, role)}",
         $"{Rotation} · {Strat(order)}");
 
     public static StratCue ReturnToMiddle(UmadP3BlackHoleState state, TetherOrder order) => new(
-        "Black Hole: back to the middle",
-        role => $"Your time on this tether is over: go back to the stack in the middle, out of every laser's path. {Turn(state, order, role)}",
+        "Black Hole: volta para o meio",
+        role => $"Sua vez com este tether acabou: volte para o stack no meio, fora do caminho de todos os lasers. {Turn(state, order, role)}",
         $"{Rotation} · {Strat(order)}");
 
     public static StratCue LookUponSplit(UmadP3BlackHoleState state, TetherOrder order) => new(
-        "Black Hole set 10 + Kefka's body slam",
+        "Black Hole grupo 10 + body slam do Kefka",
         role =>
         {
             var holder = state.Roles[order is TetherOrder.SupportDpsAccretion or TetherOrder.ModifiedDsa ? 6 : 2];
-            var line = $"Kefka's body slam cuts a 16y line through the middle from the {Compass(state.KefkaPosition[4])} wall";
+            var line = $"O body slam do Kefka corta uma linha de 16y pelo meio, vindo da parede {Compass(state.KefkaPosition[4])}";
             return role == holder
-                ? $"{line}. You hold the last tether: ride it out to the wall 45° to whichever side of its black hole clears the line, so the final laser points at the wall, away from everyone."
-                : $"{line}: go to the wall opposite {Label(holder)}, who holds the last tether, clear of both the line and the final laser.";
+                ? $"{line}. Você segura o último tether: leve-o até a parede, 45° para o lado do black hole dele que sai da linha, para o laser final apontar para a parede, longe de todos."
+                : $"{line}: vá para a parede oposta a {Label(holder)}, que segura o último tether, longe da linha e do laser final.";
         },
         $"{(order == TetherOrder.ModifiedDsa ? ModifiedDeck : "NAUR §3.20 (0:48:19)")} · {Strat(order)}");
 
     // ---- Kefka, Chaos and Exdeath around the tethers ----
 
     public static StratCue Slap(UmadP3BlackHoleState state, int slapIndex, int kefkaIndex) => new(
-        $"Kefka's hand slam {slapIndex + 1}",
+        $"Tapa do Kefka {slapIndex + 1}",
         role =>
         {
             var kefka = state.KefkaPosition[kefkaIndex];
-            var where = $"Kefka ({Compass(kefka)}) is relative north.";
+            var where = $"O Kefka ({Compass(kefka)}) é o norte relativo.";
             if (state.SlapAttacks[slapIndex] == ActionId.SlapHappy_Left)
-                return $"{where} He slaps the {Relative(kefka, -1f, 0f)} half, then drops a party stack that needs all eight: "
-                       + $"everyone stacks together on the {Relative(kefka, 1f, 0f)} side.";
-            var (group, rel, z) = role.IsTank() ? ("tanks", "north-west", -1f) : role.IsDps() ? ("DPS", "south-west", 1f) : ("healers", "west", 0f);
-            return $"{where} He slaps the {Relative(kefka, 1f, 0f)} half, then fires three cones at a tank, a healer and a DPS, "
-                   + $"each shared by its role: {group} stand relative {rel}, to the {Relative(kefka, -1f, z)}.";
+                return $"{where} Ele bate na metade {Relative(kefka, -1f, 0f)}, depois solta um stack de grupo que precisa dos oito: "
+                       + $"todo mundo faz stack junto no lado {Relative(kefka, 1f, 0f)}.";
+            var (group, rel, z) = role.IsTank() ? ("os tanks", "noroeste", -1f) : role.IsDps() ? ("os DPS", "sudoeste", 1f) : ("os healers", "oeste", 0f);
+            return $"{where} Ele bate na metade {Relative(kefka, 1f, 0f)}, depois solta três cones em um tank, um healer e um DPS, "
+                   + $"cada um dividido pela sua função: {group} ficam no {rel} relativo, a {Relative(kefka, -1f, z)}.";
         },
         SlapSources[slapIndex]);
 
     public static readonly StratCue Edict = StratCue.ForAll(
         "Damning Edict",
-        "Chaos cleaves the half of the room in front of him: tuck 3y behind him, as close to the middle as that allows, so the slap dodge after it is a short step.",
+        "O Chaos faz cleave na metade da sala à frente dele: fique 3y atrás dele, o mais perto do meio que der, para o desvio do tapa depois ser um passo curto.",
         "NAUR §3.15 (0:42:46)");
 
     public static StratCue EdictAndBodySlam(UmadP3BlackHoleState state) => new(
-        "Damning Edict 2 + Kefka's body slam",
-        _ => $"Damning Edict and Kefka's body slam (a 16y line through the middle from the {Compass(state.KefkaPosition[2])} wall) "
-             + "go off 1.4s apart, too close to dodge one then the other: hold one spot behind Chaos and outside the line.",
+        "Damning Edict 2 + body slam do Kefka",
+        _ => $"O Damning Edict e o body slam do Kefka (uma linha de 16y pelo meio, vindo da parede {Compass(state.KefkaPosition[2])}) "
+             + "saem com 1,4s de diferença, perto demais para desviar de um e depois do outro: fique num ponto só, atrás do Chaos e fora da linha.",
         "NAUR §3.17 (0:44:54)");
 
     public static StratCue ImplosionAnchor(UmadP3BlackHoleState state) => new(
-        "Implosion: place Chaos",
+        "Implosion: posicione o Chaos",
         role =>
         {
             var anchor = Compass(state.KefkaPosition[3].Rotate(1));
             return role == PartyRole.MainTank
-                ? $"Park Chaos 5y out to the {anchor}, 45° clockwise of Kefka, so his Implosion cones lock onto a known angle."
-                : $"MT parks Chaos 5y out to the {anchor}, 45° clockwise of Kefka, so his Implosion cones lock onto a known angle.";
+                ? $"Deixe o Chaos a 5y para o {anchor}, 45° no sentido horário do Kefka, para os cones do Implosion travarem num ângulo conhecido."
+                : $"O MT deixa o Chaos a 5y para o {anchor}, 45° no sentido horário do Kefka, para os cones do Implosion travarem num ângulo conhecido.";
         },
         "NAUR §3.19 (0:46:27)");
 
     public static StratCue Implosion(UmadP3BlackHoleState state, int shockwave) => new(
-        shockwave == 0 ? "Implosion: first cones" : "Implosion: second cones",
+        shockwave == 0 ? "Implosion: primeiros cones" : "Implosion: segundos cones",
         _ =>
         {
             var longitudinal = state.ImplosionAttack == ActionId.LongitudinalImplosion;
             var safe = Relative(state.KefkaPosition[3], state.SlapAttacks[2] == ActionId.SlapHappy_Left ? 1f : -1f, 0f);
-            return $"{(longitudinal ? "Longitudinal" : "Latitudinal")} Implosion cleaves Chaos's {(longitudinal ? "front and back, then his sides" : "sides, then his front and back")}. "
-                   + $"The strat stands on a diagonal from Chaos, the gap both pairs miss, leaning ~10° away from the cones about to fire, on the {safe} side Kefka's next slap leaves safe. "
-                   + $"NAUR instead dodges to his {(longitudinal ? "sides" : "front or back")} first, close to him.";
+            return $"O {(longitudinal ? "Longitudinal" : "Latitudinal")} Implosion acerta {(longitudinal ? "a frente e as costas do Chaos, depois os lados" : "os lados do Chaos, depois a frente e as costas")}. "
+                   + $"A strat fica na diagonal do Chaos, o espaço que os dois pares não acertam, inclinando ~10° para longe dos cones que vão sair, no lado {safe} que o próximo tapa do Kefka deixa seguro. "
+                   + $"O NAUR, em vez disso, desvia primeiro para {(longitudinal ? "os lados" : "a frente ou as costas")} dele, perto dele.";
         },
         "NAUR §3.19 (0:46:27)");
 
     // ---- Thunder III (also Limit Cut's) ----
 
-    private const string ThunderRule = "Exdeath's Thunder III hits whoever is closest to him twice, 3s apart";
+    private const string ThunderRule = "O Thunder III do Exdeath acerta duas vezes quem estiver mais perto dele, com 3s de intervalo";
 
     public static string ThunderPlan(ThunderIIIAssignment plan) => plan switch
     {
-        ThunderIIIAssignment.MtInvulnsBoth => "MT stands on him and invulns both hits",
-        ThunderIIIAssignment.OtInvulnsBoth => "OT stands on him and invulns both hits",
-        ThunderIIIAssignment.ShareMtFirst => "MT takes the first hit and OT the second, since one hit's Lightning Resistance Down makes a second lethal",
-        _ => "OT takes the first hit and MT the second, since one hit's Lightning Resistance Down makes a second lethal",
+        ThunderIIIAssignment.MtInvulnsBoth => "o MT fica nele e usa invuln nos dois golpes",
+        ThunderIIIAssignment.OtInvulnsBoth => "o OT fica nele e usa invuln nos dois golpes",
+        ThunderIIIAssignment.ShareMtFirst => "o MT toma o primeiro golpe e o OT o segundo, porque o Lightning Resistance Down de um golpe torna o segundo letal",
+        _ => "o OT toma o primeiro golpe e o MT o segundo, porque o Lightning Resistance Down de um golpe torna o segundo letal",
     };
 
     public static StratCue ThunderTank(ThunderIIIAssignment plan, string source) => new(
         "Thunder III (tank buster)",
         role => role == ThunderIIIPlanning.Roles(plan).First
-            ? $"{ThunderRule}, and {ThunderPlan(plan)}: walk onto Exdeath so you're the closest."
-            : $"{ThunderRule}, and {ThunderPlan(plan)}: stay over 10y from him.",
+            ? $"{ThunderRule}, e {ThunderPlan(plan)}: vá para cima do Exdeath para ser o mais perto."
+            : $"{ThunderRule}, e {ThunderPlan(plan)}: fique a mais de 10y dele.",
         source);
 
     public static StratCue ThunderClearance(PartyRole holder, PartyRole? waiting, string source = ThunderRuleSource) => new(
-        "Thunder III: keep clear",
+        "Thunder III: fique longe",
         role => role == waiting
-            ? $"{ThunderRule}: wait 10y to the side of {Label(holder)} so the first hit can't pick you, then swap onto Exdeath for the second."
-            : $"{ThunderRule}, and {Label(holder)} is on him: step out to 10y from Exdeath so it can't pick you.",
+            ? $"{ThunderRule}: espere a 10y ao lado de {Label(holder)} para o primeiro golpe não te escolher, depois troque para cima do Exdeath para o segundo."
+            : $"{ThunderRule}, e {Label(holder)} está nele: afaste-se para 10y do Exdeath para ele não te escolher.",
         source);
 
     public static StratCue ThunderSwap(ThunderIIIAssignment plan, string source) => new(
-        "Thunder III: tank swap",
+        "Thunder III: troca de tanks",
         role =>
         {
             if (ThunderIIIPlanning.Roles(plan) is not (var first, { } second))
-                return $"{ThunderRule}, and {ThunderPlan(plan)}: stay over 10y from him.";
+                return $"{ThunderRule}, e {ThunderPlan(plan)}: fique a mais de 10y dele.";
             if (role == first)
-                return $"You took the first Thunder III hit and carry Lightning Resistance Down, so a second would kill you: trade places with {Label(second)}, who steps onto Exdeath.";
+                return $"Você tomou o primeiro golpe do Thunder III e está com Lightning Resistance Down, então um segundo te mataria: troque de lugar com {Label(second)}, que vai para cima do Exdeath.";
             if (role == second)
-                return $"Step onto Exdeath now, trading places with {Label(first)}: you take the second Thunder III hit, which would kill {Label(first)} through Lightning Resistance Down.";
-            return $"{ThunderRule}: the tanks trade places between the hits, so stay over 10y from him.";
+                return $"Vá para cima do Exdeath agora, trocando de lugar com {Label(first)}: você toma o segundo golpe do Thunder III, que mataria {Label(first)} por causa do Lightning Resistance Down.";
+            return $"{ThunderRule}: os tanks trocam de lugar entre os golpes, então fique a mais de 10y dele.";
         },
         source);
 
     public static StratCue ThunderStack(ThunderIIIAssignment plan, string source) => StratCue.ForAll(
         "Thunder III: stack",
-        $"Stack in the middle: {ThunderRule}, and {ThunderPlan(plan)}. Everyone else is then stepped out to 10y from him.",
+        $"Faça stack no meio: {ThunderRule}, e {ThunderPlan(plan)}. Depois, todos os outros se afastam para 10y dele.",
         source);
 
     // ---- Blizzard III and Stomp a Mole ----
@@ -287,52 +287,52 @@ internal static class UmadP3BlackHolePlaybook
     private static bool GroupOne(PartyRole role) => (int)role % 2 == 0;
 
     public static StratCue StompPreposition(UmadP3BlackHoleState state) => new(
-        "Blizzard III + Stomp a Mole: start",
-        role => $"Kefka's last teleport ({Compass(state.KefkaPosition[4])}) is now relative north. "
+        "Blizzard III + Stomp a Mole: início",
+        role => $"O último teleporte do Kefka ({Compass(state.KefkaPosition[4])}) agora é o norte relativo. "
                 + (role.IsTank()
-                    ? $"First walk {(role == PartyRole.MainTank ? "Chaos" : "Exdeath")} back into the middle, then leave him there and wait 9y relative north of it with the supports, "
-                      + "so the first Blizzard III puddles drop clear of it."
-                    : $"{(role.IsDps() ? "DPS wait 9y relative south" : "Supports wait 9y relative north")} of the middle, so the first Blizzard III puddles drop clear of it."),
+                    ? $"Primeiro leve o {(role == PartyRole.MainTank ? "Chaos" : "Exdeath")} de volta para o meio, depois deixe-o ali e espere a 9y ao norte relativo dele com os supports, "
+                      + "para as primeiras poças do Blizzard III caírem longe dele."
+                    : $"{(role.IsDps() ? "Os DPS esperam a 9y ao sul relativo" : "Os Supports esperam a 9y ao norte relativo")} do meio, para as primeiras poças do Blizzard III caírem longe dele."),
         Stomps);
 
     public static StratCue StompCorners(UmadP3BlackHoleState state) => new(
-        "Blizzard III: second puddles",
+        "Blizzard III: segundas poças",
         role =>
         {
             var west = GroupOne(role);
             var north = !role.IsDps();
             var world = Relative(state.KefkaPosition[4], west ? -1f : 1f, north ? -1f : 1f);
-            return $"Step out of the first puddles to the relative {(north ? "north" : "south")}-{(west ? "west" : "east")} corner ({world}) to drop the second one there: "
-                   + "Supports north, DPS south, Group 1 west, Group 2 east, two to a corner.";
+            return $"Saia das primeiras poças para o canto {(north ? west ? "noroeste" : "nordeste" : west ? "sudoeste" : "sudeste")} relativo ({world}) para soltar a segunda ali: "
+                   + "Supports no norte, DPS no sul, Grupo 1 no oeste, Grupo 2 no leste, dois por canto.";
         },
         Stomps);
 
     private static string Tower(UmadP3BlackHoleState state, PartyRole role)
     {
         var west = GroupOne(role);
-        return $"Group {(west ? 1 : 2)} takes the relative {(west ? "west" : "east")} tower ({Relative(state.KefkaPosition[4], west ? -1f : 1f, 0f)}), two per tower; an unsoaked tower wipes the party.";
+        return $"O Grupo {(west ? 1 : 2)} pega a torre {(west ? "oeste" : "leste")} relativa ({Relative(state.KefkaPosition[4], west ? -1f : 1f, 0f)}), dois por torre; uma torre sem ninguém mata o grupo.";
     }
 
     public static StratCue StompStackAndTowers(UmadP3BlackHoleState state) => new(
-        "Knock Down 1 + Stomp a Mole towers",
+        "Knock Down 1 + torres do Stomp a Mole",
         role =>
         {
             var marked = state.StackTargets[0];
             var stackers = marked.IsDps() ? "DPS" : "Supports";
             return role.IsDps() == marked.IsDps()
-                ? $"The first stack is on {Label(marked)}, so the {stackers} dip into the middle and take it together: it needs four."
-                : $"The first stack is on {Label(marked)}, so the {stackers} take it in the middle and your role soaks Kefka's towers. {Tower(state, role)}";
+                ? $"O primeiro stack está em {Label(marked)}, então os {stackers} entram no meio e pegam ele juntos: ele precisa de quatro."
+                : $"O primeiro stack está em {Label(marked)}, então os {stackers} pegam ele no meio e a sua função pega as torres do Kefka. {Tower(state, role)}";
         },
         Stomps);
 
     public static StratCue StompSwap(UmadP3BlackHoleState state, bool west) => new(
-        west ? "Knock Down 2 + towers: west swap" : "Knock Down 2 + towers: east swap",
+        west ? "Knock Down 2 + torres: troca do oeste" : "Knock Down 2 + torres: troca do leste",
         role =>
         {
-            const string timing = "The west pairs trade first, since the west tower goes off 1.3s before the east.";
+            const string timing = "Os pares do oeste trocam primeiro, porque a torre oeste explode 1,3s antes da leste.";
             return role.IsDps() == state.StackTargets[0].IsDps()
-                ? $"Roles swap: you took the first stack, so now you soak a tower. {Tower(state, role)} {timing}"
-                : $"Roles swap: back to the middle for the second stack, on {Label(state.StackTargets[1])}. {timing}";
+                ? $"As funções trocam: você pegou o primeiro stack, então agora pega uma torre. {Tower(state, role)} {timing}"
+                : $"As funções trocam: volte para o meio para o segundo stack, em {Label(state.StackTargets[1])}. {timing}";
         },
         Stomps);
 }

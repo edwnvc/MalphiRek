@@ -53,16 +53,16 @@ public sealed class UmadP2ForsakenPlaybook
 
     public StratCue Lineup => new(
         "Forsaken (raidwide)",
-        role => $"Wait close to Kefka with the {(UmadP1Roles.IsDps(role) ? "DPS on his east side" : "Supports on his west side")} while Forsaken's raidwide goes off; "
-                + "mitigate and shield it, then read your marker and your partner's.",
+        role => $"Espere perto do Kefka com os {(UmadP1Roles.IsDps(role) ? "DPS no lado leste dele" : "Supports no lado oeste dele")} enquanto o raidwide do Forsaken sai; "
+                + "use mitigação e escudos nele, depois leia o seu marcador e o do seu par.",
         $"NAUR §2.2 (0:15:46) · {plan}");
 
     // `soakers` is the helper's live list for the group soaking set index+1; the Why runs right
     // after the move is built, when its order still ranks same-marker players as the move did.
     public StratCue Towers(UmadP2ForsakenState state, int index, IReadOnlyList<PartyRole> soakers) => new(
         index % 2 == 0
-            ? $"Forsaken towers, set {index + 1} (odd layout)"
-            : $"Forsaken towers, set {index + 1} (even layout) + {EndName(EndOf(state, index))}",
+            ? $"Torres do Forsaken, grupo {index + 1} (layout ímpar)"
+            : $"Torres do Forsaken, grupo {index + 1} (layout par) + {EndName(EndOf(state, index))}",
         role => soakers.Contains(role) ? SoakerWhy(state, index, soakers, role) : OutsideWhy(state, index, role),
         TowerSource(index));
 
@@ -70,25 +70,25 @@ public sealed class UmadP2ForsakenPlaybook
     {
         var future = state.EndAttacks[occurrence] != EndAttack.PastsEnd;
         if (occurrence == 3)
-            return new($"{EndName(state.EndAttacks[occurrence])}: last clones",
+            return new($"{EndName(state.EndAttacks[occurrence])}: últimos clones",
                 _ => future
-                    ? "It's Future's End: the last clones turned to the party between the last towers and cleave their front half, so once they start casting everyone runs through to the far side, behind them."
-                    : "It's Past's End: the last clones cleave their back half, so everyone stays grouped between the last towers, in front of them.",
+                    ? "É Future's End: os últimos clones viraram para o grupo entre as últimas torres e fazem cleave na metade da frente, então quando o cast começar todo mundo atravessa para o outro lado, atrás deles."
+                    : "É Past's End: os últimos clones fazem cleave na metade de trás, então todo mundo fica junto entre as últimas torres, na frente deles.",
                 $"NAUR §2.10 (0:24:17) · {plan}");
         var nextSet = occurrence * 2 + 3;
         return new($"{EndName(state.EndAttacks[occurrence])}: All Things Ending",
             _ => future
-                ? $"It's Future's End: everyone groups at max melee on the side away from set {nextSet}'s towers, because Kefka and his clones turn to the party and cleave their front half. Once they start casting, run to the towers behind them."
-                : $"It's Past's End: everyone groups at max melee between set {nextSet}'s towers, because Kefka and his clones turn to the party and cleave their back half, which leaves the towers safe once they start casting.",
+                ? $"É Future's End: todo mundo se junta no alcance máximo de melee no lado oposto às torres do grupo {nextSet}, porque o Kefka e os clones viram para o grupo e fazem cleave na metade da frente. Quando o cast começar, corra para as torres atrás deles."
+                : $"É Past's End: todo mundo se junta no alcance máximo de melee entre as torres do grupo {nextSet}, porque o Kefka e os clones viram para o grupo e fazem cleave na metade de trás, o que deixa as torres seguras quando o cast começar.",
             $"NAUR §2.6 (0:20:34) · wtfdig kefka_p2/9_future_past_baits · {plan}");
     }
 
     public StratCue LastClonesGather(UmadP2ForsakenState state) => new(
-        $"{EndName(state.EndAttacks[3])}: last clones",
-        _ => "Everyone groups at max melee between the last towers so the last clones turn to face the party. "
+        $"{EndName(state.EndAttacks[3])}: últimos clones",
+        _ => "Todo mundo se junta no alcance máximo de melee entre as últimas torres para os últimos clones virarem para o grupo. "
              + (state.EndAttacks[3] == EndAttack.PastsEnd
-                 ? "It's Past's End, so you'll stay here, in front of them, while they cleave behind."
-                 : "It's Future's End, so once they start casting you'll run through to the far side, behind them."),
+                 ? "É Past's End, então você fica aqui, na frente deles, enquanto eles fazem cleave atrás."
+                 : "É Future's End, então quando o cast começar você atravessa para o outro lado, atrás deles."),
         $"NAUR §2.10 (0:24:17) · {plan}");
 
     // The tower side the helper gives `role` this set (true = left), or null outside the soakers.
@@ -148,7 +148,7 @@ public sealed class UmadP2ForsakenPlaybook
     private string SoakerWhy(UmadP2ForsakenState state, int index, IReadOnlyList<PartyRole> soakers, PartyRole role)
     {
         if (SoakSpot(state, index, soakers, role) is not { } soak)
-            return $"Your group soaks set {index + 1}: take your marker's spot in a tower, two soakers per tower, or the tower wipes the party.";
+            return $"Seu grupo pega o grupo de torres {index + 1}: vá para o lugar do seu marcador numa torre, dois por torre, senão a torre mata o grupo.";
         var spot = index % 2 == 0 ? OddSoakSpot(soak.Marker, soak.Left) : EvenSoakSpot(EndOf(state, index), soak.Marker, soak.Left);
         return $"{spot} {SideReason(state, index, soakers, role, soak.Marker)}";
     }
@@ -156,78 +156,78 @@ public sealed class UmadP2ForsakenPlaybook
     private string OddSoakSpot(uint marker, bool left) => (odd, marker, left) switch
     {
         (OddSpots.Na, LockonId.ForsakenStack, true) =>
-            "With a stack, take the left tower's inner edge on Kefka's hitbox ring: the cone soaker and the outside tank make it the 3 a stack needs.",
+            "Com stack, pegue a borda de dentro da torre da esquerda, no anel do hitbox do Kefka: quem pega o cone e o tank de fora completam os 3 que o stack precisa.",
         (OddSpots.Na, LockonId.ForsakenStack, false) =>
-            "With a stack, take the right tower's north part, nudged toward the middle: the two outside DPS make it the 3 a stack needs.",
+            "Com stack, pegue a parte norte da torre da direita, um pouco puxada para o meio: os dois DPS de fora completam os 3 que o stack precisa.",
         (OddSpots.Na, LockonId.ForsakenCone, _) =>
-            "With the cone, take the left tower's south part, a little in from the edge: you're the left stack's third player, and your cone fires at the nearest player, the outside healer past the edge, away from everyone.",
+            "Com o cone, pegue a parte sul da torre da esquerda, um pouco para dentro da borda: você é o terceiro jogador do stack esquerdo, e seu cone sai no jogador mais perto, o healer de fora depois da borda, longe de todos.",
         (OddSpots.Na, _, _) =>
-            "With the spread, take the right tower's south end, over 5y from the right stack, so your circle hits no one else.",
+            "Com o spread, pegue a ponta sul da torre da direita, a mais de 5y do stack direito, para o seu círculo não acertar mais ninguém.",
         (_, LockonId.ForsakenStack, true) =>
-            "With a stack, take the left tower's north-east part, toward Kefka: the cone soaker and the outside tank make it the 3 a stack needs.",
+            "Com stack, pegue a parte nordeste da torre da esquerda, na direção do Kefka: quem pega o cone e o tank de fora completam os 3 que o stack precisa.",
         (_, LockonId.ForsakenStack, false) =>
-            "With a stack, take the right tower's south-west side, toward the other tower, where the two outside DPS make it 3; NAUR has this stack on the tower's north part.",
+            "Com stack, pegue o lado sudoeste da torre da direita, na direção da outra torre, onde os dois DPS de fora completam 3; no NAUR esse stack fica na parte norte da torre.",
         (_, LockonId.ForsakenCone, _) =>
-            "With the cone, take the left tower's south-east part: you're the left stack's third player, and your cone fires at the outside healer just past the south edge, away from everyone.",
+            "Com o cone, pegue a parte sudeste da torre da esquerda: você é o terceiro jogador do stack esquerdo, e seu cone sai no healer de fora logo depois da borda sul, longe de todos.",
         _ =>
-            "With the spread, take the right tower's north-east part, over 5y from the right stack; NAUR has the spread at the tower's south end.",
+            "Com o spread, pegue a parte nordeste da torre da direita, a mais de 5y do stack direito; no NAUR o spread fica na ponta sul da torre.",
     };
 
     private string EvenSoakSpot(EndAttack end, uint marker, bool left)
     {
-        var side = left ? "left" : "right";
+        var side = left ? "esquerda" : "direita";
         var baiter = left ? "healer" : "ranged";
-        var compass = left ? "west" : "east";
+        var compass = left ? "oeste" : "leste";
         if (marker == LockonId.ForsakenChariot)
-            return $"With a spread, take the {side} tower's south edge, as far back as possible, so your circle misses the cone soaker and the baiters.";
-        return $"With a cone, take the {side} tower's north edge, where it crosses Kefka's inner hitbox ring: as one of the four nearest him you bait a {EndName(end)} hit, and your cone fires out at the outside {baiter} on the relative {compass} waymark.";
+            return $"Com spread, pegue a borda sul da torre da {side}, o mais para trás possível, para o seu círculo não acertar quem pega o cone nem os baits.";
+        return $"Com cone, pegue a borda norte da torre da {side}, onde ela cruza o anel interno do hitbox do Kefka: como um dos quatro mais perto dele você faz o bait de um golpe do {EndName(end)}, e seu cone sai no {baiter} de fora, no waymark {compass} relativo.";
     }
 
     private string SideReason(UmadP2ForsakenState state, int index, IReadOnlyList<PartyRole> soakers, PartyRole role, uint marker)
     {
         var oddSet = index % 2 == 0;
         if (oddSet && marker != LockonId.ForsakenStack)
-            return "Odd sets always put the cone left and the spread right.";
+            return "Os grupos ímpares sempre põem o cone à esquerda e o spread à direita.";
         if (oddSet && index == 0 && firstSetStacks == FirstSetStacks.ConeRoleLeft)
-            return $"This strat ({name}) puts the stack of the role holding cones left on set 1; NAUR always puts the Support stack left.";
+            return $"Esta strat ({name}) põe à esquerda, no grupo 1, o stack da função que tem os cones; o NAUR sempre põe o stack de Support à esquerda.";
         if (flex == Flex.South && index is not (0 or 3))
-            return $"This strat ({name}) keeps you in your last tower unless your tower-mate shares your marker, and then the one further south flexes; NAUR re-sorts by role every set.";
+            return $"Esta strat ({name}) te mantém na sua última torre, a não ser que seu par de torre tenha o mesmo marcador, e aí o que estiver mais ao sul troca; o NAUR reorganiza por função a cada grupo.";
         if (oddSet)
         {
             var sameRole = soakers.Any(r => r != role && Marker(state, r) == LockonId.ForsakenStack && UmadP1Roles.IsDps(r) == UmadP1Roles.IsDps(role));
             return !sameRole
-                ? "The Support stack goes left and the DPS stack right."
+                ? "O stack de Support vai para a esquerda e o de DPS para a direita."
                 : UmadP1Roles.IsDps(role)
-                    ? "Both stacks are on DPS: the ranged keeps the DPS side, right, and the melee flexes left."
-                    : "Both stacks are on Supports: the healer keeps the Supports' side, left, and the tank flexes right.";
+                    ? "Os dois stacks estão em DPS: o ranged fica no lado dos DPS, a direita, e o melee troca para a esquerda."
+                    : "Os dois stacks estão em Supports: o healer fica no lado dos Supports, a esquerda, e o tank troca para a direita.";
         }
         var partner = Partner(role);
         if (!UmadP1Roles.IsTankOrMelee(role))
-            return $"Supports go left and DPS right; as the {Kind(role)} you keep your side, and your partner {Label(partner)} flexes if your markers match.";
+            return $"Supports vão para a esquerda e DPS para a direita; como {Kind(role)} você fica no seu lado, e seu par {Label(partner)} troca se os marcadores forem iguais.";
         return Marker(state, partner) == marker
-            ? $"Supports go left and DPS right, but your marker matches your partner {Label(partner)}'s, so you flex."
-            : $"Supports go left and DPS right; your marker differs from your partner {Label(partner)}'s, so you keep your side.";
+            ? $"Supports vão para a esquerda e DPS para a direita, mas seu marcador é igual ao do seu par {Label(partner)}, então você troca."
+            : $"Supports vão para a esquerda e DPS para a direita; seu marcador é diferente do do seu par {Label(partner)}, então você fica no seu lado.";
     }
 
     private string OutsideWhy(UmadP2ForsakenState state, int index, PartyRole role)
     {
         var soakingGroup = index is < 3 or 7 ? "A" : "B";
         var spot = index % 2 == 0 ? OddOutsideSpot(role) : EvenOutsideSpot(EndOf(state, index), role);
-        return $"Group {soakingGroup} soaks set {index + 1}, so you stand outside the towers. {spot}";
+        return $"O Grupo {soakingGroup} pega o grupo de torres {index + 1}, então você fica fora das torres. {spot}";
     }
 
     private string OddOutsideSpot(PartyRole role) => (Kind(role), odd) switch
     {
         ("healer", _) =>
-            "Stand just past the left tower's south edge: you're nearest its cone soaker, so the cone fires out at you, away from the party; keep over 5y from the left stack.",
+            "Fique logo depois da borda sul da torre da esquerda: você é o mais perto de quem pega o cone, então o cone sai em você, longe do grupo; fique a mais de 5y do stack esquerdo.",
         ("tank", OddSpots.Na) =>
-            "Stand just outside the left tower's north-east edge, toward Kefka, as the third player in the left stack.",
+            "Fique logo fora da borda nordeste da torre da esquerda, na direção do Kefka, como terceiro jogador do stack esquerdo.",
         ("tank", _) =>
-            "Stand between Kefka and the left tower, just outside it, as the third player in the left stack.",
+            "Fique entre o Kefka e a torre da esquerda, logo fora dela, como terceiro jogador do stack esquerdo.",
         (_, OddSpots.Na) =>
-            "Stand with the other outside DPS just past the right tower's north-west edge: you two fill the right stack to 3.",
+            "Fique com o outro DPS de fora logo depois da borda noroeste da torre da direita: vocês dois completam os 3 do stack direito.",
         _ =>
-            "Stand with the other outside DPS just past the right tower's south-west side, between the towers, to fill the right stack to 3; NAUR has you on its north-west edge.",
+            "Fique com o outro DPS de fora logo depois do lado sudoeste da torre da direita, entre as torres, para completar os 3 do stack direito; no NAUR você fica na borda noroeste dela.",
     };
 
     private string EvenOutsideSpot(EndAttack end, PartyRole role)
@@ -237,11 +237,11 @@ public sealed class UmadP2ForsakenPlaybook
             case "healer":
             case "ranged":
                 var left = Kind(role) == "healer";
-                var compass = left ? "west" : "east";
-                return $"Stand on the relative {compass} waymark (outer corner of a numbered one, inner edge of a lettered one): you're nearest the {(left ? "left" : "right")} tower's cone soaker, so its cone fires out at you, clear of the {EndName(end)} baits.";
+                var compass = left ? "oeste" : "leste";
+                return $"Fique no waymark {compass} relativo (canto de fora de um numerado, borda de dentro de um com letra): você é o mais perto de quem pega o cone da torre da {(left ? "esquerda" : "direita")}, então o cone sai em você, longe dos baits do {EndName(end)}.";
             default:
                 var tank = Kind(role) == "tank";
-                return $"Stand relative {(tank ? "north-west" : "north-east")} on Kefka's hitbox: with the {(tank ? "melee" : "tank")} and the two cone soakers you're one of the four nearest him, so you bait a {EndName(end)} hit.";
+                return $"Fique no {(tank ? "noroeste" : "nordeste")} relativo, no hitbox do Kefka: com o {(tank ? "melee" : "tank")} e os dois que pegam cone, você é um dos quatro mais perto dele, então faz o bait de um golpe do {EndName(end)}.";
         }
     }
 

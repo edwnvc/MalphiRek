@@ -61,7 +61,7 @@ public sealed class UmadP2TrinesScenario : IMultiplayerReplayable
         if (selectedAi is { } idx && idx < AiStrats.Count)
             ((IScenarioAi<UmadP2TrinesState>)AiStrats[idx]).Run(state, world);
 
-        world.EnforceArenaBoundary(Geometry.ArenaRadius, "Fell off the arena");
+        world.EnforceArenaBoundary(Geometry.ArenaRadius, "Caiu da arena");
         SpawnActors();
         world.MitPractice.Begin(UmadP2TrinesMitigation.Plan(), new Dictionary<MitSource, Func<SimCharacter?>>
         {
@@ -211,7 +211,7 @@ public sealed class UmadP2TrinesScenario : IMultiplayerReplayable
         foreach (var member in resolved.Hits)
         {
             var count = cornersThisDrop[member] = cornersThisDrop.GetValueOrDefault(member) + 1;
-            if (count == 2 && member.IsAlive()) member.Die(ActionId.TrinePoint, "two corners at once");
+            if (count == 2 && member.IsAlive()) member.Die(ActionId.TrinePoint, "dois cantos ao mesmo tempo");
         }
     }
 

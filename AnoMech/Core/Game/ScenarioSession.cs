@@ -222,11 +222,11 @@ public sealed class ScenarioSession
     // A death reported in this run, godmode or not: the first one's overlay, and the mistake mark.
     public void OnDeathReported(string describedTarget, string cause)
     {
-        issues.Add(new RunIssue(elapsed, $"{describedTarget} died: {cause}"));
+        issues.Add(new RunIssue(elapsed, $"{describedTarget} morreu: {cause}"));
         if (!firstDeathShown)
         {
             firstDeathShown = true;
-            Plugin.ToastGui.ShowError($"{describedTarget} died: {cause}");
+            Plugin.ToastGui.ShowError($"{describedTarget} morreu: {cause}");
         }
         MarkMistake();
     }
@@ -236,7 +236,7 @@ public sealed class ScenarioSession
         mechanicFailed = true;
         issues.Add(new RunIssue(elapsed, reason));
         DiagnosticLog.Warn($"[ScenarioSession] Mechanic failed at t={elapsed:F2}: {reason}");
-        Plugin.ChatGui.Print(new XivChatEntry { Type = XivChatType.SystemMessage, Message = $"[AnoMech] Mechanic failed: {reason}" });
+        Plugin.ChatGui.Print(new XivChatEntry { Type = XivChatType.SystemMessage, Message = $"[AnoMech] Mecânica falhou: {reason}" });
         MarkMistake();
         MechanicFailed?.Invoke(reason);
         if (freeze) ScheduleFreeze();
@@ -252,7 +252,7 @@ public sealed class ScenarioSession
     private void PrintFailureSummary()
     {
         var lines = string.Join("; ", issues.Select(i => $"{i.Description} ({i.Time:F1}s)"));
-        Plugin.ChatGui.Print(new XivChatEntry { Type = XivChatType.SystemMessage, Message = $"[AnoMech] Run failed: {lines}" });
+        Plugin.ChatGui.Print(new XivChatEntry { Type = XivChatType.SystemMessage, Message = $"[AnoMech] Tentativa falhou: {lines}" });
     }
 
     private void PlayMark(uint actionId)

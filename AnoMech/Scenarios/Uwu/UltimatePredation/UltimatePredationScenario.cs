@@ -297,7 +297,7 @@ public class UltimatePredationScenario : IMultiplayerReplayable
         world.Events.Add(69, () =>
         {
             // TODO: Use a proper Enmity system for this
-            world.Announce($"{Name}: Assuming Tank Swap");
+            world.Announce($"{Name}: assumindo troca de tanks");
 
             ultima?.SetTarget(ot);
         });
@@ -311,7 +311,7 @@ public class UltimatePredationScenario : IMultiplayerReplayable
         world.Events.Add(77.34f, () =>
         {
             // TODO: Use a proper Enmity system for this
-            world.Announce($"{Name}: Assuming Tank Swap");
+            world.Announce($"{Name}: assumindo troca de tanks");
 
             ultima?.SetTarget(mt);
         });

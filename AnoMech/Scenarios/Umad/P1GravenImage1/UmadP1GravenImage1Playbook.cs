@@ -20,62 +20,62 @@ internal static class UmadP1GravenImage1Playbook
         var shown = state.Fire.ShowsStackIcon ? "stack" : "spread";
         var actual = state.Fire.IsStack ? "stack" : "spread";
         return state.Fire.IsLie
-            ? $"The fire orb is fake, so the {shown} marker means a {actual}."
-            : $"The fire orb is real: it's a {actual}.";
+            ? $"O orbe de fogo é falso, então o marcador de {shown} significa {actual}."
+            : $"O orbe de fogo é verdadeiro: é {actual}.";
     }
 
     private static string SpreadSpot(PartyRole role) => ((int)role % 4) switch
     {
-        0 => "the north or south edge of the safe quadrant, by the boss's hitbox",
-        1 => "the east or west edge of the safe quadrant, by the boss's hitbox",
-        2 => "further in, between the wall and the hitbox",
-        _ => "at the wall on the east-west line",
+        0 => "na borda norte ou sul do quadrante seguro, junto do hitbox do boss",
+        1 => "na borda leste ou oeste do quadrante seguro, junto do hitbox do boss",
+        2 => "mais para dentro, entre a parede e o hitbox",
+        _ => "na parede, na linha leste-oeste",
     };
 
     private static string QuadrantSpotText(UmadP1GravenImage1State state, PartyRole role)
     {
         var quadrant = Corner(state.Ice1.SafeQuadrant(west: !UmadP1Roles.IsDps(role)));
         var spot = state.Fire.IsStack
-            ? $"stack with the {Group(role)} on the boss's hitbox in the {quadrant} quadrant"
-            : $"as {Label(role)}, spread {SpreadSpot(role)} ({quadrant})";
-        return $"{IceText(state.Ice1)} {FireText(state)} {Group(role)} take the {Side(role)} safe quadrant: {spot}.";
+            ? $"faça stack com os {Group(role)} no hitbox do boss, no quadrante {quadrant}"
+            : $"como {Label(role)}, faça spread {SpreadSpot(role)} ({quadrant})";
+        return $"{IceText(state.Ice1)} {FireText(state)} Os {Group(role)} ficam com o quadrante seguro do {Side(role)}: {spot}.";
     }
 
     public static StratCue KnockbackTether(UmadP1GravenImage1State state) => new(
-        "Graven Image 1: knockback tether",
-        role => "You're tethered: Pulse Wave throws you 13y straight away from the statue in the north, "
-                + $"so you stand where it lands you on your spot. {QuadrantSpotText(state, role)}",
+        "Graven Image 1: tether de knockback",
+        role => "Você está com tether: o Pulse Wave te joga 13y em linha reta para longe da estátua do norte, "
+                + $"então fique onde ele te faz cair no seu lugar. {QuadrantSpotText(state, role)}",
         $"{Gi1} · wtfdig kefka_p1/2_graven1");
 
     public static StratCue MysteryMagic1(UmadP1GravenImage1State state) => new(
-        "Mystery Magic 1: fire + ice",
+        "Mystery Magic 1: fogo + gelo",
         role => QuadrantSpotText(state, role),
         $"{Gi1} · wtfdig kefka_p1/{(state.Fire.IsStack ? "3_graven1_stack_positions" : "4_graven1_spread_positions")}");
 
     public static readonly StratCue WaveCannonLineup = new(
-        "Wave Cannon lineup",
-        role => $"Line up west to east H2, H1, OT, MT | M1, M2, R1, R2, so each beam from the statue hits only its own target. You're {Label(role)}.",
+        "Fila do Wave Cannon",
+        role => $"Faça a fila de oeste para leste: H2, H1, OT, MT | M1, M2, R1, R2, para cada raio da estátua acertar só o seu alvo. Você é {Label(role)}.",
         Beams);
 
     public static StratCue Towers(UmadP1GravenImage1State state) => new(
-        "Wave Cannon towers",
+        "Torres do Wave Cannon",
         role => state.WaveTargets.Contains(role)
-            ? "A beam hit you, leaving Magic Vulnerability Up: soaking a tower now kills you, so step clear of every tower."
-            : $"No beam hit you, so you soak a {Group(role)} tower on the {Side(role)} side: going west to east, the outermost unhit player takes the outermost tower.",
+            ? "Um raio te acertou e deixou Magic Vulnerability Up: pegar uma torre agora te mata, então saia de todas as torres."
+            : $"Nenhum raio te acertou, então você pega uma torre dos {Group(role)} no lado {Side(role)}: indo de oeste para leste, o jogador não atingido mais de fora pega a torre mais de fora.",
         Beams);
 
     public static StratCue Confetti(UmadP1GravenImage1State state) => new(
-        "Double-trouble Trap 1 (confetti)",
+        "Double-trouble Trap 1 (confete)",
         role => role == state.TrapSupport || role == state.TrapDps
-            ? $"You hold the confetti: stand behind your group at max melee on the {Side(role)}, so its knockback throws them through the boss."
-            : $"Stack with the {Group(role)} on the boss's hitbox on the {Side(role)}: the confetti needs exactly 4 and its knockback carries you across.",
+            ? $"Você está com o confete: fique atrás do seu grupo, no alcance máximo de melee, no {Side(role)}, para o knockback dele jogar o grupo através do boss."
+            : $"Faça stack com os {Group(role)} no hitbox do boss, no {Side(role)}: o confete precisa de exatamente 4, e o knockback dele te leva para o outro lado.",
         "NAUR §1.4 (0:03:09) · wtfdig kefka_p1/6_graven1_confetti_positions");
 
     public static StratCue MysteryMagic2(UmadP1GravenImage1State state) => new(
-        "Mystery Magic 2: lightning + ice",
-        _ => $"Right after the confetti knockback, step to the nearest spot clear of the ice and the lightning. {IceText(state.Ice2)} "
+        "Mystery Magic 2: raio + gelo",
+        _ => $"Logo depois do knockback do confete, vá para o ponto mais próximo livre do gelo e do raio. {IceText(state.Ice2)} "
              + (state.Thunder.IsLie
-                 ? "The lightning orb is fake: the lines you see are safe and the unmarked ones hit."
-                 : "The lightning orb is real: dodge the lines you see."),
+                 ? "O orbe de raio é falso: as linhas que você vê são seguras e as não marcadas acertam."
+                 : "O orbe de raio é verdadeiro: desvie das linhas que você vê."),
         "NAUR §1.5 (0:03:26) · wtfdig kefka_p1/7_graven1_lightning_ice_resolution");
 }

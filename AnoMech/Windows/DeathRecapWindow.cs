@@ -14,7 +14,7 @@ public sealed class DeathRecapWindow : Window
 
     private readonly Game game;
 
-    public DeathRecapWindow(Game game) : base("Why you died###AnoMechDeathRecap")
+    public DeathRecapWindow(Game game) : base("Por que você morreu###AnoMechDeathRecap")
     {
         this.game = game;
         Flags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoFocusOnAppearing;
@@ -31,27 +31,27 @@ public sealed class DeathRecapWindow : Window
         var wrap = 420f * ImGuiHelpers.GlobalScale;
         ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + wrap);
 
-        Section("Why you died");
+        Section("Por que você morreu");
         ImGui.TextUnformatted(recap.Cause);
         if (recap.Aoe is { } aoe && !recap.Cause.Contains(aoe.Name))
-            ImGui.TextColored(MutedColor, $"Caught in {aoe.Name}.");
+            ImGui.TextColored(MutedColor, $"Atingido por {aoe.Name}.");
         if (recap.Progress is { } progress) ImGui.TextUnformatted(progress);
 
-        Section("Where you should have been");
+        Section("Onde você deveria estar");
         if (recap.Strat?.Mechanic is { } mechanic) ImGui.TextUnformatted(mechanic);
         ImGui.TextUnformatted(recap.WhereText);
         if (recap.TimingText is { } timing) ImGui.TextColored(MutedColor, timing);
 
         if (recap.Strat?.Why is { Length: > 0 } why)
         {
-            Section("Why there");
+            Section("Por que ali");
             ImGui.TextUnformatted(why);
             if (recap.Strat.Source is { Length: > 0 } source) ImGui.TextColored(MutedColor, source);
         }
 
         ImGui.PopTextWrapPos();
         ImGui.Spacing();
-        if (ImGui.Button(Plugin.Practice.RestartWaitingOnRecap ? "Close & restart" : "Close")) game.CloseRecap();
+        if (ImGui.Button(Plugin.Practice.RestartWaitingOnRecap ? "Fechar e reiniciar" : "Fechar")) game.CloseRecap();
     }
 
     private static void Section(string title)

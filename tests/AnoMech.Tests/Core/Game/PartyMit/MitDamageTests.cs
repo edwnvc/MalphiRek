@@ -92,7 +92,7 @@ public class MitDamageTests
     {
         var r = Hit(Hyperdrive, MitClass.Tank, on: [Layer(409, "Holmgang")]);
         Assert.That(r.HpLoss, Is.EqualTo(0f));
-        Assert.That(r.Applied.Single(), Is.EqualTo("Holmgang (invulnerable)"));
+        Assert.That(r.Applied.Single(), Is.EqualTo("Holmgang (invulnerável)"));
     }
 
     [Test]
@@ -106,7 +106,7 @@ public class MitDamageTests
     {
         var r = Hit(LightOfJudgment, MitClass.Magical, on: [Layer(2618, "Kerachole")], source: [Layer(1193, "Reprisal")],
             shields: [new MitShield(3903, "Divine Caress", 25000f)]);
-        Assert.That(MitDamage.Explain(r, ["your Kerachole", "OT's Reprisal"]),
-            Is.EqualTo("took 193k after mitigation (raw 270k; Kerachole 10%, Reprisal 10%; shields absorbed 25k). Missing from the plan: your Kerachole, OT's Reprisal."));
+        Assert.That(MitDamage.Explain(r, ["Kerachole (seu)", "Reprisal (do OT)"]),
+            Is.EqualTo("tomou 193k depois da mitigação (bruto 270k; Kerachole 10%, Reprisal 10%; escudos absorveram 25k). Faltou do plano: Kerachole (seu), Reprisal (do OT)."));
     }
 }

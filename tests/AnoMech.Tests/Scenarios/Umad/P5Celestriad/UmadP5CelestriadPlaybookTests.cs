@@ -52,11 +52,11 @@ public class UmadP5CelestriadPlaybookTests
                 {
                     var why = UmadP5CelestriadPlaybook.Towers(state, set).Why(role);
                     if (state.PlayerDebuffElement[role] is null)
-                        Assert.That(why, Does.Contain("clockwise tower (right"), $"{role} {context} set {set}");
+                        Assert.That(why, Does.Contain("torre do sentido horário (à direita"), $"{role} {context} set {set}");
                     else if (state.ElementForSet(role, set) == state.DoubleElement[set])
-                        Assert.That(why, Does.Contain("counterclockwise one (left"), $"{role} {context} set {set}");
+                        Assert.That(why, Does.Contain("a do sentido anti-horário (à esquerda"), $"{role} {context} set {set}");
                     else
-                        Assert.That(why, Does.Not.Contain("two lit towers"), $"{role} {context} set {set}");
+                        Assert.That(why, Does.Not.Contain("duas torres acesas"), $"{role} {context} set {set}");
                 }
     }
 
@@ -64,8 +64,8 @@ public class UmadP5CelestriadPlaybookTests
     public void CelestriadChoiceSendsAeroInAndEarthOut()
     {
         var aero = States().First(s => s.State.AeroVariant[0] == CatastrophicChoice.Aero).State;
-        Assert.That(UmadP5CelestriadPlaybook.CatastrophicChoiceHalf(aero, 0).Why(PartyRole.MainTank), Does.Contain("inner half of your"));
+        Assert.That(UmadP5CelestriadPlaybook.CatastrophicChoiceHalf(aero, 0).Why(PartyRole.MainTank), Does.Contain("metade de dentro da sua"));
         var earth = States().First(s => s.State.AeroVariant[0] == CatastrophicChoice.Earth).State;
-        Assert.That(UmadP5CelestriadPlaybook.CatastrophicChoiceHalf(earth, 0).Why(PartyRole.MainTank), Does.Contain("outer half of your"));
+        Assert.That(UmadP5CelestriadPlaybook.CatastrophicChoiceHalf(earth, 0).Why(PartyRole.MainTank), Does.Contain("metade de fora da sua"));
     }
 }

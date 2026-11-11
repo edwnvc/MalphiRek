@@ -99,17 +99,17 @@ public class UmadP3BlackHolePlaybookTests
         var state = State(HealerFirstAccretion, ActionId.SlapHappy_Left, 0, ActionId.LongitudinalImplosion,
             ThunderIIIAssignment.MtInvulnsBoth, ThunderIIIAssignment.ShareMtFirst, supportStacksFirst: true);
         var why = UmadP3BlackHolePlaybook.Pull(state, order).Why(HealerFirstAccretion[seat]);
-        Assert.That(why, Does.Contain($"sets {firstSet}, {firstSet + 1} and {firstSet + 2}"));
+        Assert.That(why, Does.Contain($"os grupos {firstSet}, {firstSet + 1} e {firstSet + 2}"));
     }
 
     // Modified DSA: Support 1st takes set 1 alone, DPS 1st both of set 2, Support 3rd both of set 9,
     // DPS 3rd set 10; the other seats keep D>S>A's lasers.
-    [TestCase(0, "sets 1, 3 and 4")]
-    [TestCase(4, "lasers are both of set 2, then set 3")]
-    [TestCase(2, "lasers are set 8, then both of set 9")]
-    [TestCase(6, "sets 7, 8 and 10")]
-    [TestCase(5, "sets 4, 5 and 6")]
-    [TestCase(3, "sets 3, 4 and 5")]
+    [TestCase(0, "os grupos 1, 3 e 4")]
+    [TestCase(4, "lasers são os dois do grupo 2, depois o grupo 3")]
+    [TestCase(2, "lasers são o grupo 8, depois os dois do grupo 9")]
+    [TestCase(6, "os grupos 7, 8 e 10")]
+    [TestCase(5, "os grupos 4, 5 e 6")]
+    [TestCase(3, "os grupos 3, 4 e 5")]
     public void ModifiedDsaTurnNamesTheSeatsLasers(int seat, string sets)
     {
         var state = State(HealerFirstAccretion, ActionId.SlapHappy_Left, 0, ActionId.LongitudinalImplosion,
@@ -124,8 +124,8 @@ public class UmadP3BlackHolePlaybookTests
         var state = State(HealerFirstAccretion, ActionId.SlapHappy_Left, 0, ActionId.LongitudinalImplosion,
             ThunderIIIAssignment.MtInvulnsBoth, ThunderIIIAssignment.ShareMtFirst, supportStacksFirst: true);
         var cue = UmadP3BlackHolePlaybook.LookUponSplit(state, TetherOrder.ModifiedDsa);
-        Assert.That(cue.Why(HealerFirstAccretion[6]), Does.Contain("You hold the last tether"));
-        Assert.That(cue.Why(HealerFirstAccretion[2]), Does.Not.Contain("You hold the last tether"));
+        Assert.That(cue.Why(HealerFirstAccretion[6]), Does.Contain("Você segura o último tether"));
+        Assert.That(cue.Why(HealerFirstAccretion[2]), Does.Not.Contain("Você segura o último tether"));
     }
 
     // The slap text names the side DodgeSlap sends each role to.
@@ -145,7 +145,7 @@ public class UmadP3BlackHolePlaybookTests
                         : direction.Flip().Apply(role.IsTank() ? new Vector3(7f, 0f, 7f) : role.IsDps() ? new Vector3(7f, 0f, -7f) : new Vector3(9f, 0f, 0f));
                     var side = DeathRecap.Compass(Vector3.Zero, spot);
                     var why = UmadP3BlackHolePlaybook.Slap(state, 0, 0).Why(role);
-                    Assert.That(why, Does.Contain(slap == ActionId.SlapHappy_Left ? $"on the {side} side" : $"to the {side}."), $"{role} slap {slap:X} kefka {kefka}");
+                    Assert.That(why, Does.Contain(slap == ActionId.SlapHappy_Left ? $"no lado {side}" : $"a {side}."), $"{role} slap {slap:X} kefka {kefka}");
                 }
             }
     }

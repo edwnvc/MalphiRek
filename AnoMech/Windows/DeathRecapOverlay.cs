@@ -51,12 +51,12 @@ public sealed class DeathRecapOverlay : Window
         {
             DrawGroundLine(draw, recap.DiedAt, spot, LineColor, 2f);
             DrawGroundCircle(draw, spot, SpotRingRadius, SpotColor, 3f);
-            Label(draw, spot, recap.Strat?.Mechanic ?? "Strat spot", SpotColor);
+            Label(draw, spot, recap.Strat?.Mechanic ?? "Lugar da strat", SpotColor);
             if (recap.MissedBy is { } missed && missed > DeathRecap.OnSpotTolerance)
                 Label(draw, (recap.DiedAt + spot) / 2f, $"{missed:F1}y", LineColor);
         }
         DrawCross(draw, recap.DiedAt, 0.6f, DeathColor, 3f);
-        Label(draw, recap.DiedAt, "You died", DeathColor);
+        Label(draw, recap.DiedAt, "Você morreu", DeathColor);
     }
 
     private static void DrawAoe(ImDrawListPtr draw, DeathAoe aoe)

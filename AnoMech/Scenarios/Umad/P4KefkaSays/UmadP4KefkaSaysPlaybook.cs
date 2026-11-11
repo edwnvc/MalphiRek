@@ -20,11 +20,11 @@ internal static class UmadP4KefkaSaysPlaybook
 
     // ---- Mystery Magic: Blizzard III cones and Thrumming Thunder III lines ----
 
-    private static string RealCones(MysteryCast m) => m.BlizzardOffset == 0 ? "south-east and north-west" : "north-east and south-west";
+    private static string RealCones(MysteryCast m) => m.BlizzardOffset == 0 ? "sudeste e noroeste" : "nordeste e sudoeste";
 
-    private static string SafeCones(MysteryCast m) => m.BlizzardOffset == 0 ? "north-east and south-west" : "north-west and south-east";
+    private static string SafeCones(MysteryCast m) => m.BlizzardOffset == 0 ? "nordeste e sudoeste" : "noroeste e sudeste";
 
-    private static string LineRun(MysteryCast m) => m.LightningOrientation > 0f ? "north-east to south-west" : "north-west to south-east";
+    private static string LineRun(MysteryCast m) => m.LightningOrientation > 0f ? "de nordeste a sudoeste" : "de noroeste a sudeste";
 
     // The 10y lane between the centre and the nearest real line: lines sit 5y and 15y either
     // side of the centre, and LightningOffset picks which two are real.
@@ -36,36 +36,36 @@ internal static class UmadP4KefkaSaysPlaybook
     }
 
     private static string MysteryText(MysteryCast m)
-        => $"The ice cones that really hit point {RealCones(m)}, and the real lightning lines ({LineRun(m)}) leave the lane just {SafeLane(m)} of the middle safe.";
+        => $"Os cones de gelo que acertam de verdade apontam para {RealCones(m)}, e as linhas de raio verdadeiras ({LineRun(m)}) deixam segura a faixa logo ao {SafeLane(m)} do meio.";
 
     public static readonly StratCue Gather = StratCue.ForAll(
         "Kefka Says",
-        "Gather in the middle: Chaos and Neo Exdeath's raidwides need heals and mitigation on everyone, and every Mystery Magic is dodged from here.",
+        "Junte-se no meio: os raidwides do Chaos e do Neo Exdeath precisam de cura e mitigação em todo mundo, e todo Mystery Magic é desviado a partir daqui.",
         $"NAUR §4.1 (0:51:26) · {Strat}");
 
     public static StratCue MysteryMagic(UmadP4KefkaSaysState state, int cast) => new(
         $"Mystery Magic {cast + 1}",
-        _ => $"{MysteryText(state.Mystery[cast])} Everyone stacks on one spot a few yards off the middle, in the gap that clears both.",
+        _ => $"{MysteryText(state.Mystery[cast])} Todo mundo faz stack num ponto só, alguns yalms fora do meio, no espaço livre dos dois.",
         $"{MysterySources[cast]} · {Strat}");
 
     // ---- Flood of Naught ----
 
-    private static string Colour(bool white) => white ? "White (NAUR: purple)" : "Black (NAUR: blue)";
+    private static string Colour(bool white) => white ? "White (NAUR: roxo)" : "Black (NAUR: azul)";
 
     public static StratCue FloodOfNaught(UmadP4KefkaSaysState state) => new(
         "Flood of Naught",
         role =>
         {
             var i = Array.IndexOf(state.Wave3.List, role);
-            if (i < 0) return "Every player takes one of the two Antilights: stand 8y off the centre line, where the Edge of Death kills.";
+            if (i < 0) return "Cada jogador pega um dos dois Antilights: fique a 8y da linha central, onde o Edge of Death mata.";
             var beyondDeath = i % 2 == 0;
             var white = state.Wounds[i];
             var needWhite = beyondDeath == white;
             var leftIsNeeded = (state.Antilights[0].Antilight == Antilight.White) == needWhite;
             var side = Compass(state.NeoExdeathDirection.Apply(new Vector3(leftIsNeeded ? -1f : 1f, 0f, 0f)));
-            return $"You have {(beyondDeath ? "Beyond Death" : "Allagan Field")} and a {Colour(white)} Wound. "
-                   + (beyondDeath ? "Beyond Death takes the beam of its own colour, whose lethal hit cleanses it; " : "Allagan Field takes the other colour, so you take no lethal hit; ")
-                   + $"the {(needWhite ? "White" : "Black")} Antilight is on the {side} side. Stand 8y off the centre line, where the Edge of Death kills.";
+            return $"Você tem {(beyondDeath ? "Beyond Death" : "Allagan Field")} e um Wound {Colour(white)}. "
+                   + (beyondDeath ? "Beyond Death pega o raio da própria cor, cujo golpe letal o limpa; " : "Allagan Field pega a outra cor, então você não toma golpe letal; ")
+                   + $"o Antilight {(needWhite ? "White" : "Black")} está no lado {side}. Fique a 8y da linha central, onde o Edge of Death mata.";
         },
         $"NAUR §4.8 (0:55:55) · {Strat}");
 
@@ -86,8 +86,8 @@ internal static class UmadP4KefkaSaysPlaybook
     private static string BombText(UmadP4KefkaSaysState state, int round, PartyRole role)
         => Bomb(state, role) is { } bomb && bomb.Round == round
             ? bomb.Real
-                ? " Your Acceleration Bomb is real and goes off now: stop moving and acting before it does."
-                : " Your Acceleration Bomb is fake and goes off now: keep moving as it does."
+                ? " Seu Acceleration Bomb é verdadeiro e explode agora: pare de se mexer e de usar ações antes que ele exploda."
+                : " Seu Acceleration Bomb é falso e explode agora: continue se mexendo enquanto ele explode."
             : "";
 
     private static string ElementSpot(UmadP4KefkaSaysState state, int round, PartyRole role)
@@ -101,39 +101,39 @@ internal static class UmadP4KefkaSaysPlaybook
             3 => ("Compressed Water", !real),
             _ => ((string?)null, false),
         };
-        var stack = support ? "north" : "south";
-        var spread = support ? "west" : "east";
+        var stack = support ? "norte" : "sul";
+        var spread = support ? "oeste" : "leste";
         var mine = marker is null
-            ? $"You have no stack or spread this round, so you stack {stack}."
-            : $"Your {marker} came from a {(real ? "real" : "fake")} Grand Cross, so it's a {(spreads ? "spread" : "stack")}: you go {(spreads ? spread : stack)}.";
-        return $"Supports stack north and DPS south; the Support spread goes west, the DPS spread east. {mine}";
+            ? $"Você não tem stack nem spread nesta rodada, então faz stack no {stack}."
+            : $"Seu {marker} veio de um Grand Cross {(real ? "verdadeiro" : "falso")}, então é {(spreads ? "spread" : "stack")}: você vai para o {(spreads ? spread : stack)}.";
+        return $"Supports fazem stack no norte e DPS no sul; o spread de Support vai para o oeste, o de DPS para o leste. {mine}";
     }
 
     public static StratCue Elements(UmadP4KefkaSaysState state, int round) => new(
-        round == 0 ? "Short stack, spread and Acceleration Bomb" : "Blizzard III Blowout + long stack, spread and Acceleration Bomb",
+        round == 0 ? "Stack, spread e Acceleration Bomb curtos" : "Blizzard III Blowout + stack, spread e Acceleration Bomb longos",
         role => ElementSpot(state, round, role)
-                + (round == 1 ? $" The real ice cones point {RealCones(state.Mystery[3])}, so each spot steps 1y off its cardinal into the safe {SafeCones(state.Mystery[3])} wedges." : "")
+                + (round == 1 ? $" Os cones de gelo verdadeiros apontam para {RealCones(state.Mystery[3])}, então cada posição sai 1y do seu cardeal para as fatias seguras de {SafeCones(state.Mystery[3])}." : "")
                 + BombText(state, round, role),
         round == 0 ? $"NAUR §4.10 (0:57:05) · {Strat}" : $"NAUR §4.13 (0:58:34) · §4.10 (0:57:05) · {Strat}");
 
     public static readonly StratCue AccelerationBombFake = StratCue.ForAll(
-        "Acceleration Bomb (fake)",
-        "Your Acceleration Bomb came from a fake Grand Cross, so standing still when it goes off kills you: keep moving through it.",
+        "Acceleration Bomb (falso)",
+        "Seu Acceleration Bomb veio de um Grand Cross falso, então ficar parado quando ele explode te mata: continue se mexendo durante ele.",
         $"NAUR §4.10 (0:57:05) · {Strat}");
 
     // ---- Cursed Shriek ----
 
     public static StratCue Gaze(UmadP4KefkaSaysState state, GazeLayout layout, int round, bool facing) => new(
-        $"{(round == 0 ? "Short" : "Long")} Cursed Shriek{(facing ? ": facing" : "")}",
+        $"Cursed Shriek {(round == 0 ? "curto" : "longo")}{(facing ? ": direção" : "")}",
         role =>
         {
             var wave = round == 0 ? state.Wave1 : state.Wave2;
             var real = round == 0 ? state.Wave1True : state.Wave2True;
             var shrieker = role == wave[0] || role == wave[4];
             var spot = GazeSpot(state, layout, round, shrieker, role.IsDps());
-            var rule = real ? "The Shriek is real: everyone else looks away from the Shriek players." : "The Shriek is fake: everyone else looks at the Shriek players.";
+            var rule = real ? "O Shriek é verdadeiro: todos os outros olham para longe dos jogadores com Shriek." : "O Shriek é falso: todos os outros olham para os jogadores com Shriek.";
             var turn = facing
-                ? real ? " Step a little outward now: moving turns you away from the middle, where they stand." : " Step a little inward now: moving turns you toward the middle, where they stand."
+                ? real ? " Dê um passinho para fora agora: andar te vira para longe do meio, onde eles estão." : " Dê um passinho para dentro agora: andar te vira para o meio, onde eles estão."
                 : "";
             return $"{spot} {rule}{turn}";
         },
@@ -142,53 +142,53 @@ internal static class UmadP4KefkaSaysPlaybook
     private static string GazeSpot(UmadP4KefkaSaysState state, GazeLayout layout, int round, bool shrieker, bool dps)
     {
         var thunder = state.Mystery[3];
-        var lane = $"Thrumming Thunder's real lines leave the lane just {SafeLane(thunder)} of the middle safe";
+        var lane = $"As linhas verdadeiras do Thrumming Thunder deixam segura a faixa logo ao {SafeLane(thunder)} do meio";
         if (round == 0 && layout == GazeLayout.SupportsNorthDpsSouth)
         {
-            var north = thunder.LightningOrientation > 0f ? "north-east" : "north-west";
-            var south = thunder.LightningOrientation > 0f ? "south-west" : "south-east";
+            var north = thunder.LightningOrientation > 0f ? "nordeste" : "noroeste";
+            var south = thunder.LightningOrientation > 0f ? "sudoeste" : "sudeste";
             return shrieker
-                ? $"You carry the Cursed Shriek. {lane}: stand 2.2y from the middle along its edge, to the {(dps ? south : north)}."
-                : $"{lane}: line up along its edge, Supports to the {north}, DPS to the {south}, 7.5-10y out, away from the two Shriek players.";
+                ? $"Você está com o Cursed Shriek. {lane}: fique a 2,2y do meio ao longo da borda dela, para o {(dps ? south : north)}."
+                : $"{lane}: façam fila ao longo da borda dela, Supports para o {north}, DPS para o {south}, a 7,5-10y para fora, longe dos dois jogadores com Shriek.";
         }
         if (round == 0)
             return shrieker
-                ? $"You carry the Cursed Shriek. {lane}: stand just off the middle in it, 1y from the other Shriek player."
-                : $"{lane}: line up 5y off the middle along it, around the two Shriek players.";
+                ? $"Você está com o Cursed Shriek. {lane}: fique logo fora do meio, dentro dela, a 1y do outro jogador com Shriek."
+                : $"{lane}: façam fila a 5y do meio ao longo dela, em volta dos dois jogadores com Shriek.";
         if (layout == GazeLayout.SupportsNorthDpsSouth)
             return shrieker
-                ? $"You carry the Cursed Shriek: stand 2y {(dps ? "south" : "north")} of the middle, across it from the other Shriek player."
-                : $"Supports wait 7.5-9y north of the middle, DPS south, away from the two Shriek players 2y either side of it.";
+                ? $"Você está com o Cursed Shriek: fique a 2y ao {(dps ? "sul" : "norte")} do meio, do lado oposto ao outro jogador com Shriek."
+                : $"Supports esperam a 7,5-9y ao norte do meio, DPS ao sul, longe dos dois jogadores com Shriek a 2y de cada lado dele.";
         return shrieker
-            ? $"You carry the Cursed Shriek: stand 2y {(dps ? "south" : "north")} of the middle, across it from the other Shriek player."
-            : "Ring the two Shriek players 6y out from the middle.";
+            ? $"Você está com o Cursed Shriek: fique a 2y ao {(dps ? "sul" : "norte")} do meio, do lado oposto ao outro jogador com Shriek."
+            : "Façam um anel a 6y do meio em volta dos dois jogadores com Shriek.";
     }
 
     // ---- Stray Flames and Stray Spray ----
 
     public static readonly StratCue FireBait = StratCue.ForAll(
-        "Entropy bait",
-        "Entropy drops a 6y AoE where each of you stands when it runs out: everyone baits it together in the middle so the AoEs overlap, then reacts to its shape.",
+        "Bait do Entropy",
+        "O Entropy solta uma AoE de 6y onde cada um estiver quando ele acabar: todo mundo faz o bait junto no meio para as AoEs se sobreporem, depois reage ao formato dela.",
         $"NAUR §4.12 (0:58:13) · {Strat}");
 
     public static StratCue StrayFlames(UmadP4KefkaSaysState state) => StratCue.ForAll(
         "Stray Flames",
         state.InfernoMystery.SolutionIsChariot
-            ? "Inferno was real, so Entropy's AoE is a point-blank circle: run straight out to your stack or spread spot for the next round."
-            : "Inferno was fake, so Entropy's AoE is a donut: stay in the middle, inside its 6y hole.",
+            ? "O Inferno era verdadeiro, então a AoE do Entropy é um círculo em volta de você: corra direto para o seu lugar de stack ou spread da próxima rodada."
+            : "O Inferno era falso, então a AoE do Entropy é um donut: fique no meio, dentro do buraco de 6y dele.",
         $"NAUR §4.12 (0:58:13) · {Strat}");
 
     public static readonly StratCue WaterBait = StratCue.ForAll(
-        "Dynamic Fluid bait",
-        "Dynamic Fluid drops a 6y AoE where each of you stands when it runs out: everyone baits it together in the middle, then reacts to its shape and to Mana Release.",
+        "Bait do Dynamic Fluid",
+        "O Dynamic Fluid solta uma AoE de 6y onde cada um estiver quando ele acabar: todo mundo faz o bait junto no meio, depois reage ao formato dela e ao Mana Release.",
         $"NAUR §4.15 (0:59:04) · {Strat}");
 
     public static StratCue StraySprayAndManaRelease(UmadP4KefkaSaysState state) => StratCue.ForAll(
         "Stray Spray + Mana Release",
         (state.TsunamiMystery.SolutionIsChariot
-            ? "Tsunami was fake, so Dynamic Fluid's AoE is a point-blank circle: get out past 6y. "
-            : "Tsunami was real, so Dynamic Fluid's AoE is a donut: stay within 6y of the middle. ")
-        + $"Mana Release replays Kefka's ice and lightning at the same time. {MysteryText(state.Mystery[4])} "
-        + "Everyone stacks on the one spot that clears all three.",
+            ? "O Tsunami era falso, então a AoE do Dynamic Fluid é um círculo em volta de você: saia para além de 6y. "
+            : "O Tsunami era verdadeiro, então a AoE do Dynamic Fluid é um donut: fique a menos de 6y do meio. ")
+        + $"O Mana Release repete o gelo e o raio do Kefka ao mesmo tempo. {MysteryText(state.Mystery[4])} "
+        + "Todo mundo faz stack no único ponto livre dos três.",
         $"NAUR §4.15 (0:59:04) · {Strat}");
 }

@@ -142,15 +142,15 @@ public class UmadP2ForsakenPlaybookTests
                 foreach (var role in UmadP1Roles.All)
                 {
                     var why = cue.Why(role);
-                    var side = OnLeft(set, role) ? "left" : "right";
-                    var other = OnLeft(set, role) ? "right" : "left";
+                    var side = OnLeft(set, role) ? "esquerda" : "direita";
+                    var other = OnLeft(set, role) ? "direita" : "esquerda";
                     if (set.Soakers.Contains(role))
                     {
                         Assert.That(strat.Playbook.SoaksLeft(set.State, set.Index, set.Soakers, role), Is.EqualTo(OnLeft(set, role)), $"{role}, {context}");
-                        Assert.That(why, Does.Contain($"{side} tower").And.Not.Contain($"{other} tower"), $"{role}, {context}");
+                        Assert.That(why, Does.Contain($"torre da {side}").And.Not.Contain($"torre da {other}"), $"{role}, {context}");
                     }
-                    else if (why.Contains("left tower") != why.Contains("right tower"))
-                        Assert.That(why, Does.Contain($"{side} tower"), $"{role}, {context}");
+                    else if (why.Contains("torre da esquerda") != why.Contains("torre da direita"))
+                        Assert.That(why, Does.Contain($"torre da {side}"), $"{role}, {context}");
                 }
             }
     }

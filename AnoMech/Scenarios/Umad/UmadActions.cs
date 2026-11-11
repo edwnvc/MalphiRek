@@ -194,7 +194,7 @@ public static class UmadActions
     {
         Cast = new() { AnimationLock = 1.1f },
         Effects = [Damage(MagicVulns, Lethal)],
-        DeathExplanation = "a tower taken by fewer than two",
+        DeathExplanation = "uma torre pega por menos de dois",
     };
 
     public static readonly EnemyAction ThePathOfLight = new(UmadConstants.ActionId.ThePathOfLight)
@@ -400,7 +400,7 @@ public static class UmadActions
     {
         Cast = new() { AnimationLock = 1.1f },
         Effects = [Damage(MagicVulns, Lethal)],
-        DeathExplanation = "a tower nobody took",
+        DeathExplanation = "uma torre que ninguém pegou",
     };
 
     public static readonly EnemyAction StompAMole = new(UmadConstants.ActionId.StompAMole)
@@ -631,7 +631,7 @@ public static class UmadActions
         Cast = new() { AnimationLock = 1.1f },
         Effects = [Damage(MagicVulns, Lethal)],
         Timing = new() { DamageDelay = 0.09f },
-        DeathExplanation = "failed Acceleration Bomb",
+        DeathExplanation = "falhou o Acceleration Bomb",
     };
 
     public static readonly EnemyAction DeathSurge = new(UmadConstants.ActionId.DeathSurge)
@@ -644,7 +644,7 @@ public static class UmadActions
     public static readonly EnemyAction DeathSurgeWipe = DeathSurge with
     {
         Effects = [Damage(Lethal, kindOverride: DamageKind.Typeless)],
-        DeathExplanation = "Allagan Field holder died",
+        DeathExplanation = "quem tinha o Allagan Field morreu",
     };
 
     // -- P5 Celestriad --
@@ -741,7 +741,7 @@ public static class UmadActions
                 {
                     if (!target.HasStatus(UmadConstants.StatusId.PrimordialCrust))
                     {
-                        ctx.Kill(target, "hit with Meanest Existence and no Primordial Crust");
+                        ctx.Kill(target, "atingido com Meanest Existence e sem Primordial Crust");
                         continue;
                     }
                     target.RemoveStatus(UmadConstants.StatusId.PrimordialCrust);

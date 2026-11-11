@@ -298,6 +298,6 @@ public sealed class FruP2LightRampantScenario : IScenario
     {
         foreach (var tower in towers) tower.Tick(world.Party);
         centerTower?.Tick(world.Party);
-        puddles.KillWhoeverStandsIn(world.Party, elapsed, ActionId.LuminousHammer, "stepped in a Luminous Hammer puddle");
+        puddles.KillWhoeverStandsIn(world.Party, elapsed, ActionId.LuminousHammer, "pisou numa poça de Luminous Hammer");
     }
 }

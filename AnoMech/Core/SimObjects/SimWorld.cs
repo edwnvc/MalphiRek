@@ -149,7 +149,7 @@ public sealed class SimWorld : ISimObject, IDisposable
 
     // Per-frame arena fence at `radius` from ScenarioOrigin. Kills any active
     // party member (player included) who leaves the ring.
-    public void EnforceArenaBoundary(float radius, string cause = "Walked out of arena")
+    public void EnforceArenaBoundary(float radius, string cause = "Saiu da arena")
         => children.SetSingleton(new SimArenaBoundary(Party, radius, cause));
 
     // Where the server stops an NPC a knockback pushes: a circle this far from ScenarioOrigin. Set by

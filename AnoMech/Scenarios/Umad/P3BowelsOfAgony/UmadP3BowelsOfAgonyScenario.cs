@@ -76,7 +76,7 @@ public sealed class UmadP3BowelsOfAgonyScenario : IMultiplayerReplayable
         if (selectedAi is { } idx && idx < AiStrats.Count)
             ((IScenarioAi<UmadP3BowelsOfAgonyState>)AiStrats[idx]).Run(state, world);
 
-        world.EnforceArenaBoundary(Geometry.ArenaRadius, "Fell off the arena");
+        world.EnforceArenaBoundary(Geometry.ArenaRadius, "Caiu da arena");
         SpawnActors(cast);
         if (!cast.Chained)
             world.MitPractice.Begin(UmadP3BowelsOfAgonyMitigation.Plan(state.ShortElement), new Dictionary<MitSource, Func<SimCharacter?>>

@@ -36,7 +36,7 @@ internal sealed record WildChargeDistribution(int Front, int? Min, Hit? FrontHit
     internal override (Hit? Hit, string? Reason) Assign(EnemyActionContext ctx, IReadOnlyList<SimCharacter> hits, int index, SimCharacter target)
     {
         if (hits.Count < Min)
-            return (Understacked ?? Severity.Lethal, $"{hits.Count}/{Min} players in stack");
+            return (Understacked ?? Severity.Lethal, $"{hits.Count}/{Min} jogadores no stack");
         return (index < Front ? FrontHit : null, null);
     }
 }
@@ -49,7 +49,7 @@ internal sealed record FalloffDistribution(float LethalWithin) : Distribution
         var dz = target.Position.Z - ctx.Origin.Position.Z;
         var distance = MathF.Sqrt(dx * dx + dz * dz);
         return distance < LethalWithin
-            ? (Severity.Lethal, $"{distance:F0}y from it, lethal inside {LethalWithin:F0}y")
+            ? (Severity.Lethal, $"a {distance:F0}y dele, letal a menos de {LethalWithin:F0}y")
             : (null, null);
     }
 }

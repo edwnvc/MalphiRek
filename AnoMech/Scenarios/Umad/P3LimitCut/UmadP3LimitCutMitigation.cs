@@ -49,29 +49,29 @@ internal static class UmadP3LimitCutMitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(WHM, Temperance, -1.70f, "Stray Flames/Tsunami (before the scenario)", [Blaster1, Blaster5]),
-        new(AST, NeutralSect, -1.70f, "Stray Flames/Tsunami (before the scenario)", []),
+        new(WHM, Temperance, -1.70f, "Stray Flames/Tsunami (antes do cenário)", [Blaster1, Blaster5]),
+        new(AST, NeutralSect, -1.70f, "Stray Flames/Tsunami (antes do cenário)", []),
 
-        new(MT, MitActionId.Reprisal, 7.39f, "Ultima Blaster (Chaos's autos)", []),
+        new(MT, MitActionId.Reprisal, 7.39f, "Ultima Blaster (autos do Chaos)", []),
         new(AST, SunSign, 7.39f, "Ultima Blaster", [Blaster1, Blaster5, CycloneHit]),
         new(SCH, SacredSoil, 7.39f, "Ultima Blaster", [Blaster1, Blaster5, CycloneHit]),
         new(SCH, FeyIllumination, 7.39f, "Ultima Blaster", [Blaster1, Blaster5, CycloneHit]),
         new(SCH, Seraphism, 7.39f, "Ultima Blaster", []),
         new(SGE, Kerachole, 7.39f, "Ultima Blaster", [Blaster1, Blaster5, CycloneHit]),
         new(SGE, Panhaima, 7.39f, "Ultima Blaster", [Blaster1, Blaster5, CycloneHit]),
-        new(D2, Feint, 7.39f, "Ultima Blaster (Chaos's autos)", []),
+        new(D2, Feint, 7.39f, "Ultima Blaster (autos do Chaos)", []),
         new(D3, PartyMit, 7.39f, "Ultima Blaster", [Blaster1, Blaster5, CycloneHit]),
 
-        new(MT, TankLb3, 14.94f, "Vacuum Wave (either tank)", [Blaster5, CycloneHit]),
-        new(OT, TankLb3, 14.94f, "Vacuum Wave (either tank)", [Blaster5, CycloneHit]),
+        new(MT, TankLb3, 14.94f, "Vacuum Wave (qualquer tank)", [Blaster5, CycloneHit]),
+        new(OT, TankLb3, 14.94f, "Vacuum Wave (qualquer tank)", [Blaster5, CycloneHit]),
         new(WHM, PlenaryIndulgence, 14.60f, "Vacuum Wave", [Blaster5, CycloneHit]),
         new(AST, CollectiveUnconscious, 14.60f, "Vacuum Wave", [Blaster5, CycloneHit]),
 
         new(WHM, DivineCaress, 18.47f, "Cyclone", [CycloneHit]),
 
-        new(OT, MitActionId.Reprisal, 44.99f, "The Decisive Battle (Exdeath's autos)", [], On: UmadMitigation.Exdeath),
-        new(SCH, DeploymentTactics, 44.99f, "The Decisive Battle (barriers for the Accretions)", []),
+        new(OT, MitActionId.Reprisal, 44.99f, "The Decisive Battle (autos do Exdeath)", [], On: UmadMitigation.Exdeath),
+        new(SCH, DeploymentTactics, 44.99f, "The Decisive Battle (barreiras para os Accretions)", []),
         new(SGE, Zoe, 44.69f, "The Decisive Battle", []),
-        new(SGE, EukrasianPrognosisII, 44.99f, "The Decisive Battle (barriers for the Accretions)", []),
+        new(SGE, EukrasianPrognosisII, 44.99f, "The Decisive Battle (barreiras para os Accretions)", []),
     ];
 }

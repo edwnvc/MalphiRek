@@ -71,7 +71,7 @@ public class MitGraderTests
         Assert.That(grades.Single().Kind, Is.EqualTo(MitGradeKind.OnTime));
     }
 
-    [Test]
+    [Test, SetCulture("pt-BR")]
     public void TheSummaryCountsAndExplainsEachMiss()
     {
         var plan = Plan();
@@ -79,18 +79,18 @@ public class MitGraderTests
         var lines = MitGrader.Summary(MitGrader.Grade(plan, Me, presses, 100f), 100f);
         Assert.That(lines, Is.EqualTo(new[]
         {
-            "Mitigation: 1 of 2 planned presses on time (1 missed).",
-            "Kerachole for Hit 2: not pressed (window 45.3–59.8s).",
+            "Mitigação: 1 de 2 botões planejados no tempo certo (1 perdido).",
+            "Kerachole para Hit 2: não apertado (janela 45,3–59,8s).",
         }));
 
         var rdm = MitGrader.Summary(MitGrader.Grade(plan, PartyRole.CasterDps, [], 100f), 100f);
-        Assert.That(rdm[1], Does.StartWith("Magick Barrier (Extras) for Hit 2: not pressed"));
+        Assert.That(rdm[1], Does.StartWith("Magick Barrier (Extras) para Hit 2: não apertado"));
     }
 
-    [Test]
+    [Test, SetCulture("pt-BR")]
     public void TheSummaryNotesWhatTheRunDidntReach()
     {
         var lines = MitGrader.Summary(MitGrader.Grade(Plan(), Me, [new(Me, MitActionId.Kerachole, 18f)], 40f), 40f);
-        Assert.That(lines.Single(), Is.EqualTo("Mitigation: 1 of 1 planned presses on time. (1 not reached: the run ended at 40.0s.)"));
+        Assert.That(lines.Single(), Is.EqualTo("Mitigação: 1 de 1 botões planejados no tempo certo. (1 não alcançado(s): a tentativa terminou em 40,0s.)"));
     }
 }

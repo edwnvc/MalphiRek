@@ -21,6 +21,6 @@ internal static class UmadP5ExaflaresMitigation
 
     private static readonly MitPlanEntry[] Rows =
     [
-        new(OT, MitActionId.Reprisal, 12.50f, "Stray Entropy (two GCDs after Stray Apocalypse)", []),
+        new(OT, MitActionId.Reprisal, 12.50f, "Stray Entropy (dois GCDs depois do Stray Apocalypse)", []),
     ];
 }

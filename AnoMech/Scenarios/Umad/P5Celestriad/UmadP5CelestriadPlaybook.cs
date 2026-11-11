@@ -10,16 +10,14 @@ internal static class UmadP5CelestriadPlaybook
     private const string Choice = "NAUR §5.6 (1:08:13) · strat by RoarkGit";
 
     private static string Name(CelestriadElement element)
-        => element == CelestriadElement.Fire ? "fire" : element == CelestriadElement.Lightning ? "lightning" : "ice";
-
-    private static string WithArticle(CelestriadElement element) => element == CelestriadElement.Ice ? "an ice" : $"a {Name(element)}";
+        => element == CelestriadElement.Fire ? "fogo" : element == CelestriadElement.Lightning ? "raio" : "gelo";
 
     // The other role sharing this role's debuff (or lack of one): its tower partner every set.
     private static string WithPartner(UmadP5CelestriadState state, PartyRole role)
     {
         foreach (var (other, element) in state.PlayerDebuffElement)
             if (other != role && element == state.PlayerDebuffElement[role])
-                return $" with {SettingsGrid.RoleLabel(other)}";
+                return $" com {SettingsGrid.RoleLabel(other)}";
         return "";
     }
 
@@ -28,35 +26,35 @@ internal static class UmadP5CelestriadPlaybook
         var target = Name(state.ElementForSet(role, set));
         var partner = WithPartner(state, role);
         if (state.PlayerDebuffElement[role] is not { } own)
-            return $"You have no vulnerability, so you fill {target}, the element with two lit towers this set: "
-                   + $"take its clockwise tower (right, facing out){partner}; the debuffed pair takes the other.";
+            return $"Você não tem vulnerabilidade, então completa o {target}, o elemento com duas torres acesas neste grupo: "
+                   + $"pegue a torre do sentido horário (à direita, olhando para fora){partner}; a dupla com debuff pega a outra.";
 
         var rotate = set switch
         {
-            0 => $"You carry {WithArticle(own)} vulnerability, so {WithArticle(own)} tower kills you: go one element clockwise, to {target}.",
-            1 => $"Rotate one more element clockwise, to {target}: the tower you just soaked left you vulnerable to its element.",
-            _ => $"Rotate one more element clockwise, back to {target}: your first {Name(own)} vulnerability runs out just before this set resolves.",
+            0 => $"Você tem vulnerabilidade a {Name(own)}, então uma torre de {Name(own)} te mata: vá um elemento no sentido horário, para {target}.",
+            1 => $"Gire mais um elemento no sentido horário, para {target}: a torre que você acabou de pegar te deixou vulnerável ao elemento dela.",
+            _ => $"Gire mais um elemento no sentido horário, de volta para {target}: sua primeira vulnerabilidade a {Name(own)} acaba logo antes deste grupo resolver.",
         };
         var tower = state.ElementForSet(role, set) == state.DoubleElement[set]
-            ? $"It has two lit towers: take the counterclockwise one (left, facing out){partner}; the free players take the other."
-            : $"Soak its lit tower{partner}, each of you 1y off its centre.";
+            ? $"Ele tem duas torres acesas: pegue a do sentido anti-horário (à esquerda, olhando para fora){partner}; os jogadores livres pegam a outra."
+            : $"Pegue a torre acesa dele{partner}, cada um a 1y do centro dela.";
         return $"{rotate} {tower}";
     }
 
     public static StratCue Towers(UmadP5CelestriadState state, int set) => new(
-        $"Celestriad set {set + 1} towers",
+        $"Celestriad: torres do grupo {set + 1}",
         role => TowerText(state, set, role)
-                + (state.AeroVariant[set] is null ? "" : " Hold there until Catastrophic Choice shows which half of the tower is safe."),
+                + (state.AeroVariant[set] is null ? "" : " Espere ali até o Catastrophic Choice mostrar qual metade da torre é segura."),
         Celestriad);
 
     public static StratCue CatastrophicChoiceHalf(UmadP5CelestriadState state, int set) => new(
-        $"Celestriad set {set + 1}: Catastrophic Choice",
+        $"Celestriad grupo {set + 1}: Catastrophic Choice",
         role =>
         {
             var target = Name(state.ElementForSet(role, set));
             return state.AeroVariant[set] == CatastrophicChoice.Aero
-                ? $"Kefka's choice is wind (green): a donut, so step to the inner half of your {target} tower, toward him."
-                : $"Kefka's choice is earth (brown): a point-blank AoE, so step to the outer half of your {target} tower.";
+                ? $"A escolha do Kefka é vento (verde): um donut, então vá para a metade de dentro da sua torre de {target}, na direção dele."
+                : $"A escolha do Kefka é terra (marrom): uma AoE em volta dele, então vá para a metade de fora da sua torre de {target}.";
         },
         Choice);
 }
