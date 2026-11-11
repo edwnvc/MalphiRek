@@ -116,17 +116,19 @@ public sealed class UmadP4KefkaSaysScenario : IMultiplayerReplayable
         
         float d = state.Wave1First ? 51f : 76f;
         float[] durationw1 = [51f, 76f, d, d];
-        world.Events.Add(20.36f, () => state.Wave1.ForEach((i, c) => c.AddStatus(debuffs[i%4], durationw1[i%4])));
-        world.Events.Add(20.36f, () => state.Wave1.Get(0)?.AddStatus(StatusId.CursedShriek, 60f));
-        world.Events.Add(20.36f, () => state.Wave1.Get(4)?.AddStatus(StatusId.CursedShriek, 60f));
+        // After Grand Cross lands (cast end 20.37 / 35.30): Splatoon reads each debuff against the
+        // last Grand Cross's truth, set by its ActionEffect, so debuffs before it get the previous answer.
+        world.Events.Add(20.41f, () => state.Wave1.ForEach((i, c) => c.AddStatus(debuffs[i%4], durationw1[i%4])));
+        world.Events.Add(20.41f, () => state.Wave1.Get(0)?.AddStatus(StatusId.CursedShriek, 60f));
+        world.Events.Add(20.41f, () => state.Wave1.Get(4)?.AddStatus(StatusId.CursedShriek, 60f));
         
         world.Events.Add(27.28f, () => party.ForEachActive(c => c.AddStatus(state.ChaosMysteries[0].Cast.Status, state.ChaosMysteries[0].Cast.DurationFirst)));
         
         d = state.Wave1First ? 61f : 36f;
         float[] durationw2 = [61f, 36f, d, d];
-        world.Events.Add(35.28f, () => state.Wave2.ForEach((i, c) => c.AddStatus(debuffs[i%4], durationw2[i%4])));
-        world.Events.Add(35.28f, () => state.Wave2.Get(0)?.AddStatus(StatusId.CursedShriek, 69f));
-        world.Events.Add(35.28f, () => state.Wave2.Get(4)?.AddStatus(StatusId.CursedShriek, 69f));
+        world.Events.Add(35.33f, () => state.Wave2.ForEach((i, c) => c.AddStatus(debuffs[i%4], durationw2[i%4])));
+        world.Events.Add(35.33f, () => state.Wave2.Get(0)?.AddStatus(StatusId.CursedShriek, 69f));
+        world.Events.Add(35.33f, () => state.Wave2.Get(4)?.AddStatus(StatusId.CursedShriek, 69f));
         
         world.Events.Add(40.99f, () => party.ForEachActive(c => c.AddStatus(state.ChaosMysteries[1].Cast.Status, state.ChaosMysteries[1].Cast.DurationSecond)));
         
@@ -142,17 +144,17 @@ public sealed class UmadP4KefkaSaysScenario : IMultiplayerReplayable
         // Acceleration Bomb is a "don't move" debuff, but Kefka Says: that wave's lie can flip it
         // to "must move". At detonation the local player dies if they did the wrong thing. The
         // player's bomb is from whichever wave tagged their role at an AccelerationBomb slot
-        // (debuffs[0]/[1]); Wave2 (35.28) re-stamps over Wave1 (20.36), so Wave2 wins. Each bomb's
+        // (debuffs[0]/[1]); Wave2 (35.33) re-stamps over Wave1 (20.41), so Wave2 wins. Each bomb's
         // lie is its source wave's truth (Wave1 -> Wave1True, Wave2 -> Wave2True). Times mirror
         // Run_OtherDebuffs (apply + duration).
         bombHelper = world.SpawnEnemy(new EnemySpawnConfig(BNpcBaseId: BNpcBaseId.KefkaHelper, NameId: BNpcNameId.Kefka, Level: 1, Targetable: false, EnemyList: EnemyListMode.Never, Visibility: SpawnVisibility.InvisibleHelper, Placement: new Placement(new Vector3(0f, 0f, 0f), 0f)));
         int w1 = Array.IndexOf(state.Wave1.List, party.PlayerRole) % 4;
         int w2 = Array.IndexOf(state.Wave2.List, party.PlayerRole) % 4;
 
-        if (w2 == 0)      world.Events.Add(96.28f, () => ResolveAccelerationBomb(state.Wave2True)); // 35.28+61
-        else if (w2 == 1) world.Events.Add(71.28f, () => ResolveAccelerationBomb(state.Wave2True)); // 35.28+36
-        else if (w1 == 0) world.Events.Add(71.36f, () => ResolveAccelerationBomb(state.Wave1True)); // 20.36+51
-        else if (w1 == 1) world.Events.Add(96.36f, () => ResolveAccelerationBomb(state.Wave1True)); // 20.36+76
+        if (w2 == 0)      world.Events.Add(96.33f, () => ResolveAccelerationBomb(state.Wave2True)); // 35.33+61
+        else if (w2 == 1) world.Events.Add(71.33f, () => ResolveAccelerationBomb(state.Wave2True)); // 35.33+36
+        else if (w1 == 0) world.Events.Add(71.41f, () => ResolveAccelerationBomb(state.Wave1True)); // 20.41+51
+        else if (w1 == 1) world.Events.Add(96.41f, () => ResolveAccelerationBomb(state.Wave1True)); // 20.41+76
     }
 
     private void ResolveAccelerationBomb(bool real)

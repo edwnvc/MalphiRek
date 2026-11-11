@@ -66,7 +66,7 @@ public sealed class UmadP4KefkaSaysAi(UmadP4KefkaSaysAi.GazeLayout gazeLayout) :
         // Elemental wave 2 (~96.5s) folded into Mystery[3]'s Blizzard-safe wedges (~97.4s).
         // Leaves now rather than as late as arrives by 96.0: after a chariot the step is short
         // enough that a late departure lands on the fake Acceleration Bomb's wiggle (95.68) and
-        // cancels it, and arriving early still clears the real bomb's check at 96.28.
+        // cancels it, and arriving early still clears the real bomb's check at 96.33.
         ai.Move(92.5f, () => ResolveElementsUnderBlizzard(state.ElemRoles[1], state.ElemTrue[1], state.Mystery[3]), cue: UmadP4KefkaSaysPlaybook.Elements(state, 1));
 
         // Wave2 Death Shriek (~104.4s): a pure positioning+facing solve in the middle,
@@ -93,10 +93,10 @@ public sealed class UmadP4KefkaSaysAi(UmadP4KefkaSaysAi.GazeLayout gazeLayout) :
         var w2 = Array.IndexOf(state.Wave2.List, role) % 4;
 
         (float resolveTime, bool real)? bomb =
-            w2 == 0 ? (96.28f, state.Wave2True) :
-            w2 == 1 ? (71.28f, state.Wave2True) :
-            w1 == 0 ? (71.36f, state.Wave1True) :
-            w1 == 1 ? (96.36f, state.Wave1True) :
+            w2 == 0 ? (96.33f, state.Wave2True) :
+            w2 == 1 ? (71.33f, state.Wave2True) :
+            w1 == 0 ? (71.41f, state.Wave1True) :
+            w1 == 1 ? (96.41f, state.Wave1True) :
             null;
 
         DiagnosticLog.Info($"[AccelerationBombDodge] role={role} w1={w1} w2={w2} bomb={(bomb is { } b ? $"resolve={b.resolveTime:F2} real={b.real}" : "none")}.");
