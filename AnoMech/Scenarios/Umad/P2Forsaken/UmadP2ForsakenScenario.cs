@@ -34,6 +34,7 @@ public sealed class UmadP2ForsakenScenario : IMultiplayerReplayable
 {
     public string Name => "Forsaken";
     public IPhase Phase => UmadZone.P2;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(1, 0x01010000);
     public bool SupportsMultiplayer => true;
     public bool SupportsMitigationPractice => true;
 

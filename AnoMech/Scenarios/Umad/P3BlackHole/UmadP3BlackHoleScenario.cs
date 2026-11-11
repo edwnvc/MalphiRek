@@ -575,7 +575,7 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
         SimEnemy? black_Hole_40004166 = null;
         SimTether? tether = null;
         world.Events.Add(spawnTime, () => black_Hole_40004166 = world.SpawnEnemy(new EnemySpawnConfig(BNpcBaseId: BNpcBaseId.BlackHole, NameId: BNpcNameId.BlackHole, Level: 100, Targetable: false, EnemyList: EnemyListMode.Never, Visibility: SpawnVisibility.Visible, LayoutId: BNpcLayoutId.BlackHole, Placement: FacingCentre(pos))));
-        world.Events.Add(tetherTime, () => tether = world.Tether(black_Hole_40004166!, End.Passable(), TetherId.GrabbyTether));
+        world.Events.Add(tetherTime, () => tether = world.Tether(black_Hole_40004166!, End.Passable(seedClosest: true), TetherId.GrabbyTether));
         
         var fadeOutDelay = 1.05f;
         var shootCooldown = 5.1f;

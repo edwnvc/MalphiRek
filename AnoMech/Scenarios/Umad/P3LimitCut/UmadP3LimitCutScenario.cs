@@ -24,6 +24,7 @@ public sealed class UmadP3LimitCutScenario : IMultiplayerReplayable
 {
     public string Name => "Limit Cut";
     public IPhase Phase => UmadZone.P3;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(2, 0x02020000);
     public float BgmSecondsAtStart => 108.67f;
     public bool SupportsSolo => true;
     public bool SupportsMultiplayer => true;

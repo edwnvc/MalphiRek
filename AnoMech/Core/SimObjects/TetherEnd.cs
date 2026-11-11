@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AnoMech.Core.Game;
 using AnoMech.Scenarios;
 
@@ -66,7 +67,9 @@ public abstract class DynamicEnd : ITetherEnd
 // same id coordinate without an external shared set.
 //
 // The initial holder is the seed passed to End.Passable(member); with no seed
-// (End.Passable()) a random alive party member is chosen on the first resolve.
+// (End.Passable()) a random alive party member is chosen on the first resolve, or with
+// seedClosest the member closest to the anchor (UMAD black holes: each player stands by the hole
+// they take, so a new tether lands on them with no grab).
 // The seeding resolve (self = null) never migrates: parallel tethers created in
 // the same frame only shield each other's holders once all of them exist.
 public sealed class PassableEnd : DynamicEnd
@@ -80,11 +83,13 @@ public sealed class PassableEnd : DynamicEnd
 
     private readonly SimCharacter? initial;
     private readonly float halfWidth;
+    private readonly bool seedClosest;
 
-    internal PassableEnd(SimCharacter? initial, float halfWidth)
+    internal PassableEnd(SimCharacter? initial, float halfWidth, bool seedClosest)
     {
         this.initial = initial;
         this.halfWidth = halfWidth;
+        this.seedClosest = seedClosest;
     }
 
     public override SimCharacter? Resolve(SimCharacter? self, SimCharacter? other, TetherContext ctx)
@@ -92,7 +97,14 @@ public sealed class PassableEnd : DynamicEnd
         // Parallel tethers seed onto different members: when the anchor hosts the VFX (black
         // holes) HasTetherInSlot0 can't see the holder, so nothing else keeps one member from
         // starting out with several.
-        if (self is null) return initial ?? ctx.Party.RandomMember(ctx.Rng, c => !ctx.HoldsTether(c));
+        if (self is null)
+        {
+            if (initial is not null) return initial;
+            if (seedClosest && other is not null)
+                return ctx.Party.ClosestN(other.Position, int.MaxValue).FirstOrDefault(c => !ctx.HoldsTether(c))
+                       ?? ctx.Party.Closest(other.Position);
+            return ctx.Party.RandomMember(ctx.Rng, c => !ctx.HoldsTether(c));
+        }
         var holder = self;
         if (!holder.IsAlive()) return holder;
         if (other is null || !other.IsAlive()) return holder;   // anchor gone → don't migrate
@@ -153,7 +165,7 @@ public static class End
 {
     internal static FixedEnd Fixed(SimCharacter? character) => new(character);
     // initial = null → a random alive party member is chosen on the first resolve.
-    public static PassableEnd Passable(SimCharacter? initial = null, float halfWidth = 0.5f) => new(initial, halfWidth);
+    public static PassableEnd Passable(SimCharacter? initial = null, float halfWidth = 0.5f, bool seedClosest = false) => new(initial, halfWidth, seedClosest);
     public static FarthestPlayerEnd FarthestPlayer() => new();
     public static ClosestPlayerEnd ClosestPlayer() => new();
 }

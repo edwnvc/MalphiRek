@@ -23,6 +23,7 @@ public sealed class UmadP2TrinesScenario : IMultiplayerReplayable
 {
     public string Name => "Trines";
     public IPhase Phase => UmadZone.P2;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(1, 0x01020000);
     public float BgmSecondsAtStart => Constants.BgmSecondsAtStart;
     public bool SupportsSolo => true;
     public bool SupportsMultiplayer => true;

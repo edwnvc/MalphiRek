@@ -178,6 +178,8 @@ public sealed class ScenarioSession
                 throw;
             }
             if (Plugin.Config.EnableMechanicResultMarks) markHelper = world.SpawnEnemy(MarkHelper);
+            if (Plugin.Config.SplatoonCompat && Plugin.Config.SyncBossModModule && Scenario.BossModStart?.AnchorBaseId is { } anchor)
+                world.SpawnEnemy(new EnemySpawnConfig(BNpcBaseId: anchor, Level: 1, EnemyList: EnemyListMode.Never, Visibility: SpawnVisibility.InvisibleHelper));
         }
         // Both host and peer: RunInstanceEvents carries no RNG/AI/damage-check dependency.
         Scenario.RunInstanceEvents(world);

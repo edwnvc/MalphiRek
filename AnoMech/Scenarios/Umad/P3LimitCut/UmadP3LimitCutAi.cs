@@ -134,6 +134,10 @@ public sealed class UmadP3LimitCutAi : IScenarioAi<UmadP3LimitCutState>
             if (world.Party.Get(i) is not { } member || !member.IsAlive()) continue;
             var offset = Flat(member.Position) - bossPos;
             if (offset.LengthSquared() >= ThunderClearDistance * ThunderClearDistance) continue;
+            // Already walking out (e.g. crossing past Exdeath to the far side): redirecting them
+            // radially strands them at the wall, inside the next Thunder.
+            if (member.MoveDestination is { } dest
+                && (Flat(dest) - bossPos).LengthSquared() >= ThunderClearDistance * ThunderClearDistance) continue;
             var dir = offset.LengthSquared() > 1e-4f ? Vector2.Normalize(offset) : new Vector2(1f, 0f);
             var target = bossPos + dir * ThunderClearDistance;
             var clearRadius = 19f;

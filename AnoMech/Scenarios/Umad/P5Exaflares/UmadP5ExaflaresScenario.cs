@@ -23,6 +23,7 @@ public sealed class UmadP5ExaflaresScenario : IMultiplayerReplayable
 {
     public string Name => "Exaflares";
     public IPhase Phase => UmadZone.P5;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(4, 0x04040000);
     public bool SupportsSolo => true;
     public bool SupportsMultiplayer => true;
     public bool SupportsMitigationPractice => true;

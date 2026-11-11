@@ -23,6 +23,7 @@ public sealed class UmadP5FloodScenario : IMultiplayerReplayable
 {
     public string Name => "Flood";
     public IPhase Phase => UmadZone.P5;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(4, 0x04010000);
     // The real track starts 39.83s before the Flood cast.
     public float BgmSecondsAtStart => 38.83f;
     public bool SupportsSolo => true;

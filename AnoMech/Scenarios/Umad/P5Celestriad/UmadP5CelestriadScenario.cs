@@ -29,6 +29,7 @@ public sealed class UmadP5CelestriadScenario : IMultiplayerReplayable
 {
     public string Name => "Celestriad";
     public IPhase Phase => UmadZone.P5;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(4, 0x04030000);
     public bool SupportsSolo => false;
     public bool SupportsMultiplayer => true;
     public bool SupportsMitigationPractice => true;

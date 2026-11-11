@@ -24,6 +24,7 @@ public sealed class UmadP1GravenImage2Scenario : IMultiplayerReplayable
 {
     public string Name => "Graven Image 2";
     public IPhase Phase => UmadZone.P1;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(0, 0x00040000);
     public ushort Bgm => Constants.Bgm.Middle;
     // The track starts 59.97s into the pull.
     public float BgmSecondsAtStart => 15.63f;

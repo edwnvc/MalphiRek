@@ -28,6 +28,7 @@ public sealed class UmadP1TeleTrouncingScenario : IMultiplayerReplayable
 {
     public string Name => "Tele-trouncing";
     public IPhase Phase => UmadZone.P1;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(0, 0x00070000);
     public float BgmSecondsAtStart => 17.73f;
     public bool SupportsSolo => true;
     public bool SupportsMultiplayer => true;

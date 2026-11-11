@@ -59,6 +59,22 @@ public class TetherEndTests
     }
 
     [Test]
+    public void ClosestSeededTethersStartOnTheMemberNearestEachHole()
+    {
+        var west = world.Party.Get(PartyRole.MeleeDpsA)!;
+        var north = world.Party.Get(PartyRole.MainTank)!;
+        west.SetPosition(new Vector3(-10f, 0f, 0f));
+        north.SetPosition(new Vector3(0f, 0f, -10f));
+        var a = world.Tether(Hole(-17f, 0f), End.Passable(seedClosest: true), UmadConstants.TetherId.GrabbyTether);
+        var b = world.Tether(Hole(0f, -17f), End.Passable(seedClosest: true), UmadConstants.TetherId.GrabbyTether);
+        // The west member is also nearest this third hole, but already holds one.
+        var c = world.Tether(Hole(-17f, 2f), End.Passable(seedClosest: true), UmadConstants.TetherId.GrabbyTether);
+        Assert.That(a.B, Is.SameAs(west));
+        Assert.That(b.B, Is.SameAs(north));
+        Assert.That(c.B, Is.Not.SameAs(west).And.Not.SameAs(north));
+    }
+
+    [Test]
     public void AMemberHoldingOneBlackHoleTetherTakesASecondBySteppingIntoItsLine()
     {
         var holder = world.Party.Get(PartyRole.MainTank)!;

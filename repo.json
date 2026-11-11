@@ -5,7 +5,7 @@
         "Punchline": "Eu amo treinar ultimates.",
         "Description": "Plugin para treinar as mecânicas mais cabulosas desse jogo lindo.",
         "InternalName": "AnoMech",
-        "AssemblyVersion": "0.5.3.8",
+        "AssemblyVersion": "0.5.3.9",
         "RepoUrl": "https://github.com/edwnvc/MalphiRek",
         "ApplicableVersion": "any",
         "Tags": [
@@ -27,6 +27,6 @@
         "IsTestingExclusive": false,
         "DownloadLinkTesting": "https://github.com/edwnvc/MalphiRek/raw/master/dist/latest.zip",
         "DownloadLinkUpdate": "https://github.com/edwnvc/MalphiRek/raw/master/dist/latest.zip",
-        "LastUpdate": "1794401261"
+        "LastUpdate": "1794411444"
     }
 ]

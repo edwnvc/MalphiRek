@@ -24,6 +24,7 @@ public sealed class UmadP4KefkaSaysScenario : IMultiplayerReplayable
 {
     public string Name => "Kefka Says";
     public IPhase Phase => UmadZone.P4;
+    public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } = UmadBossMod.At(3, 0x03000010);
     public bool SupportsMultiplayer => true;
     public bool SupportsMitigationPractice => true;
 
