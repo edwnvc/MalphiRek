@@ -26,6 +26,17 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
     public string Name => "Black Hole";
     public IPhase Phase => UmadZone.P3;
 
+    // Where UmadP3StompAMoleScenario picks this timeline up: in the last wave's tail, whose final
+    // laser goes with its hole, with Kefka's fall and rise into the stomps left in.
+    internal const float StompAMoleStartsAt = 137.2f;
+
+    private readonly bool fromStompAMole;
+    public float StartsAt => fromStompAMole ? StompAMoleStartsAt : 0f;
+
+    public UmadP3BlackHoleScenario() : this(fromStompAMole: false) { }
+
+    internal UmadP3BlackHoleScenario(bool fromStompAMole) => this.fromStompAMole = fromStompAMole;
+
     // Boss Mod's UMADStates P3Earthquake: 0x200 activates the Earthquake raidwide, Nothingness and
     // Earth hints components, 0x210 waits for the Earthquake cast this scenario opens with.
     public AnoMech.Integrations.BossMod.BossModStart BossModStart { get; } =
@@ -65,6 +76,8 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
     // Events dispatch after the tick, so two shots landing together on one player (Modified DSA's
     // double tether) both read the crust as spent; each player has only the one.
     private readonly HashSet<SimCharacter> spentCrusts = [];
+    // A run started past a wave never spawns its holes, so its window can't hurt anyone.
+    private readonly bool[] waveInPlay = new bool[4];
     private float CleanseCooldown;
     SimEnemy? CleanseHelper;
 
@@ -87,6 +100,7 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
 
         PrimodialCrustsToResolve = 0;
         spentCrusts.Clear();
+        Array.Clear(waveInPlay);
         if (!cast.Chained)
             world.MitPractice.Begin(UmadP3BlackHoleMitigation.Plan(), new Dictionary<MitSource, Func<SimCharacter?>>
             {
@@ -236,7 +250,7 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
             > 126.24f and <139.83f => 3,
             _ => -1
        };
-       if (wave != -1)
+       if (wave != -1 && waveInPlay[wave])
        {
            foreach (var bh in BlackHolePositions[wave])
            {
@@ -314,6 +328,11 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
         });
         world.Events.Add(121.30f, () => chaos_4000414D?.Follow(party.Get(PartyRole.MainTank)));
         world.Events.Add(124.41f, () => chaos_4000414D?.Cast(UmadActions.AutoAttack, party.Get(PartyRole.MainTank)));
+        if (fromStompAMole)
+        {
+            world.Events.Add(137.30f, () => chaos_4000414D?.AddStatus(StatusId.EpicVillain));
+            world.Events.Add(137.30f, () => chaos_4000414D?.Follow(party.Get(PartyRole.MainTank)));
+        }
         world.Events.Add(141.47f, () => chaos_4000414D?.Cast(UmadActions.AutoAttack, party.Get(PartyRole.MainTank)));
         // Both bosses hold the middle from here: the tanks leave them to preposition for Stomp-a-Mole.
         world.Events.Add(143.40f, () => chaos_4000414D?.Follow());
@@ -378,6 +397,11 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
         world.Events.Add(113.38f, () => exdeath_4000414C?.Cast(UmadActions.WhiteHole));
         world.Events.Add(122.45f, () => exdeath_4000414C?.Cast(UmadActions.ExdeathAutoAttack, party.Get(PartyRole.OffTank)));
         world.Events.Add(125.48f, () => exdeath_4000414C?.Cast(UmadActions.ExdeathAutoAttack, party.Get(PartyRole.OffTank)));
+        if (fromStompAMole)
+        {
+            world.Events.Add(137.30f, () => exdeath_4000414C?.AddStatus(StatusId.FatedVillain));
+            world.Events.Add(137.30f, () => exdeath_4000414C?.Follow(party.Get(PartyRole.OffTank)));
+        }
         world.Events.Add(141.51f, () => exdeath_4000414C?.Cast(UmadActions.ExdeathAutoAttack, party.Get(PartyRole.OffTank)));
         world.Events.Add(143.40f, () => exdeath_4000414C?.Follow());
         world.Events.Add(143.61f, () => exdeath_4000414C?.Cast(ActionId.BlizzardIII_Cast, animationLock: 3.1f));
@@ -406,7 +430,8 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
         var kefkaPos = new Placement(new Vector3(0.000f, 0.000f, 0.000f), 0); 
         SimEnemy? kefka_40004141 = cast.Kefka;
         if (kefka_40004141 == null)
-            world.Events.Add(0f, () => kefka_40004141 = cast.Kefka = world.SpawnEnemy(new EnemySpawnConfig(BNpcBaseId: BNpcBaseId.KefkaP3, NameId: BNpcNameId.Kefka, Level: 100, Targetable: false, EnemyList: EnemyListMode.Always, Visibility: SpawnVisibility.HiddenUntilShown, LayoutId: BNpcLayoutId.KefkaP3, Placement: new Placement(new Vector3(0.000f, 0.000f, 0.000f), 0.000f))));
+            // A run from Stomp-a-Mole skips the opening reveal; the show timeline played right after the spawn left Kefka hidden in game.
+            world.Events.Add(0f, () => kefka_40004141 = cast.Kefka = world.SpawnEnemy(new EnemySpawnConfig(BNpcBaseId: BNpcBaseId.KefkaP3, NameId: BNpcNameId.Kefka, Level: 100, Targetable: false, EnemyList: EnemyListMode.Always, Visibility: fromStompAMole ? SpawnVisibility.Visible : SpawnVisibility.HiddenUntilShown, LayoutId: BNpcLayoutId.KefkaP3, Placement: new Placement(new Vector3(0.000f, 0.000f, 0.000f), 0.000f))));
         world.Events.Add(5.88f, () => kefka_40004141?.AddStatus(StatusId.Max, stacks: (ushort)506, overrideStacks: true));
         world.Events.Add(5.88f, () => kefka_40004141?.SetModelState((byte)0x05));
         world.Events.Add(5.88f, () => kefka_40004141?.SetPosition(kefkaPos));
@@ -444,6 +469,11 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
         world.Events.Add(130.18f, () => kefka_40004141?.PlayActionTimeline(ActionTimelineId.WarpEnd2));
         
         world.Events.Add(132.26f, () => kefka_40004141?.Cast(ActionId.LookUponMeAndDespair2, animationLock: 3.1f));
+        if (fromStompAMole)
+        {
+            world.Events.Add(137.30f, () => kefka_40004141?.AddStatus(StatusId.Max, stacks: (ushort)506, overrideStacks: true));
+            world.Events.Add(137.30f, () => kefka_40004141?.SetPosition(state.KefkaPosition[4].Apply(kefkaPos)));
+        }
         world.Events.Add(137.40f, () => kefka_40004141?.SetModelState((byte)0x07));
         world.Events.Add(139.41f, () => kefka_40004141?.Cast(ActionId.StandUp_Levitate, animationLock: 4.1f));
         world.Events.Add(140.22f, () => kefka_40004141?.SetModelState((byte)0x06));
@@ -645,6 +675,7 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
     {
         world.Events.Add(avoidStart, () =>
         {
+            waveInPlay[wave] = true;
             foreach (var bh in BlackHolePositions[wave])
                 world.Obstacles.Add(new CircleObstacle(new Vector2(bh.X, bh.Z), BlackHoleAvoidRadius));
         });

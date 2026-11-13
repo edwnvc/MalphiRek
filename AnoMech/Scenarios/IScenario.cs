@@ -33,6 +33,10 @@ public interface IScenario : IWorldEventListener
     // How far into that track the real fight is when this scenario starts.
     float BgmSecondsAtStart => 0f;
 
+    // Seconds into its timeline a run begins, for a scenario that picks a long one up partway
+    // (see EventScheduler.BeginRun). It re-establishes what the skipped part would have left.
+    float StartsAt => 0f;
+
     // Where this scenario begins in BossMod's module for the fight; null leaves BossMod alone.
     AnoMech.Integrations.BossMod.BossModStart? BossModStart => null;
 
