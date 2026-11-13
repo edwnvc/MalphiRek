@@ -40,7 +40,8 @@ public sealed class UmadP3BlackHoleState
     private readonly PartyRole subject;
     private readonly bool slapAllOnSubject;
 
-    public UmadP3BlackHoleState(SimWorld world, UmadP3BlackHoleStateOverrides overrides)
+    // playerAvoidsAccretion: the Accretion – Healer practice, where the player heals the two holders.
+    public UmadP3BlackHoleState(SimWorld world, UmadP3BlackHoleStateOverrides overrides, bool playerAvoidsAccretion = false)
     {
         rng = world.Rng;
         var party = world.Party;
@@ -50,7 +51,7 @@ public sealed class UmadP3BlackHoleState
         subject = slapSeats.FirstOrDefault(s => s.Value).Role;
         slapAllOnSubject = slapSeats.Any(s => s.Value);
         ScenarioObjects = new UmadP3BlackHoleScenarioObjects(world);
-        Roles = BuildRoles(party, overrides);
+        Roles = BuildRoles(party, overrides, playerAvoidsAccretion);
         ThunderSet1 = overrides.ThunderSet1;
         ThunderSet2 = overrides.ThunderSet2;
 
@@ -114,12 +115,14 @@ public sealed class UmadP3BlackHoleState
     // never a tank. Both Accretion slots (3 and 7) sit in different blocks, so which seats can
     // hold Accretion depends on that swap -- hence solving for both and taking the first that
     // satisfies everyone.
-    private RoleList BuildRoles(SimParty party, UmadP3BlackHoleStateOverrides overrides)
+    private RoleList BuildRoles(SimParty party, UmadP3BlackHoleStateOverrides overrides, bool playerAvoidsAccretion)
     {
         if (overrides.SeatLinesInRoleOrder)
             return new RoleList(party, PerRole.All);
 
         var requests = overrides.Requests(party.PlayerRole);
+        if (playerAvoidsAccretion)
+            requests[party.PlayerRole] = (requests.GetValueOrDefault(party.PlayerRole).Line, false);
 
         var swapFirst = rng.NextBool();
         foreach (var swap in new[] { swapFirst, !swapFirst })

@@ -108,5 +108,6 @@ public sealed class ScenarioCatalog
         new UcobP5ExaflaresScenario(),
         // Last, so every other scenario keeps upstream's catalog index, which multiplayer sends.
         new UmadP3StompAMoleScenario(),
+        new UmadP3AccretionHealerScenario(),
     ]);
 }

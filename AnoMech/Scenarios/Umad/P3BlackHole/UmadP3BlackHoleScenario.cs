@@ -33,9 +33,16 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
     private readonly bool fromStompAMole;
     public float StartsAt => fromStompAMole ? StompAMoleStartsAt : 0f;
 
+    // Set for the Accretion – Healer practice: the player's heals, not the pull's times, pop each Accretion.
+    private readonly UmadP3AccretionHealing? accretionHealing;
+
     public UmadP3BlackHoleScenario() : this(fromStompAMole: false) { }
 
-    internal UmadP3BlackHoleScenario(bool fromStompAMole) => this.fromStompAMole = fromStompAMole;
+    internal UmadP3BlackHoleScenario(bool fromStompAMole, UmadP3AccretionHealing? accretionHealing = null)
+    {
+        this.fromStompAMole = fromStompAMole;
+        this.accretionHealing = accretionHealing;
+    }
 
     // Boss Mod's UMADStates P3Earthquake: 0x200 activates the Earthquake raidwide, Nothingness and
     // Earth hints components, 0x210 waits for the Earthquake cast this scenario opens with.
@@ -86,7 +93,7 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
 
     public void Run(SimWorld worldParam, int? selectedAi) => Play(worldParam, selectedAi, Roll(worldParam), new UmadP3Cast());
 
-    internal UmadP3BlackHoleState Roll(SimWorld worldParam) => new(worldParam, settingsWindow.Overrides);
+    internal UmadP3BlackHoleState Roll(SimWorld worldParam) => new(worldParam, settingsWindow.Overrides, playerAvoidsAccretion: accretionHealing != null);
 
     internal void Play(SimWorld worldParam, int? selectedAi, UmadP3BlackHoleState stateParam, UmadP3Cast cast)
     {
@@ -101,7 +108,10 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
         PrimodialCrustsToResolve = 0;
         spentCrusts.Clear();
         Array.Clear(waveInPlay);
-        if (!cast.Chained)
+        // The healer practice keeps its own HP, which mitigation practice's would overwrite.
+        if (accretionHealing != null)
+            accretionHealing.Begin(world, () => state.Roles.Get(3), () => state.Roles.Get(7));
+        else if (!cast.Chained)
             world.MitPractice.Begin(UmadP3BlackHoleMitigation.Plan(), new Dictionary<MitSource, Func<SimCharacter?>>
             {
                 [UmadMitigation.Chaos] = () => state.ScenarioObjects.Chaos,
@@ -226,10 +236,13 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
 
     public void OnActionResolved(ActionResolved resolved)
     {
+        accretionHealing?.OnActionResolved(resolved);
         // UNVERIFIED delay: no pull leaves a Stomp-a-Mole unsoaked.
         Towers.ResolveTower(world, resolved, ActionId.StompAMole, UmadActions.UnmitigatedImpact, minSoakers: 1);
         QueueCleansesForSpentCrusts(resolved);
     }
+
+    public void OnStatusLost(StatusLost lost) => accretionHealing?.OnStatusLost(lost);
 
     public void Tick(float delta, float elapsed)
     {
@@ -418,8 +431,13 @@ public sealed class UmadP3BlackHoleScenario : IMultiplayerReplayable
         SimEnemy? chaos_400040E9_1 = null;
         world.Events.Add(0.75f, () => chaos_400040E9_1 = world.SpawnEnemy(new EnemySpawnConfig(BNpcBaseId: BNpcBaseId.KefkaHelper, NameId: BNpcNameId.Chaos, Level: 1, Targetable: false, EnemyList: EnemyListMode.Never, Visibility: SpawnVisibility.InvisibleHelper, Placement: new Placement(new Vector3(0.000f, 0.000f, 0.000f), 0.000f))));
         world.Events.Add(0.98f, () => chaos_400040E9_1?.Cast(ActionId.Earthquake_Visual, animationLock: 1.1f));
-        world.Events.Add(12.38f, () => state.Roles.Get(7)?.RemoveStatus(StatusId.Accretion));
         world.Events.Add(13.33f, () => chaos_400040E9_1?.SetPosition(new Placement(new Vector3(0.000f, 0.000f, 4.000f), 0.000f)));
+        if (accretionHealing != null)
+        {
+            accretionHealing.CleanseCaster = () => chaos_400040E9_1;
+            return;
+        }
+        world.Events.Add(12.38f, () => state.Roles.Get(7)?.RemoveStatus(StatusId.Accretion));
         world.Events.Add(13.40f, () => chaos_400040E9_1?.Cast(UmadActions.EarthquakeCleanse, state.Roles.Get(7)));
         world.Events.Add(16.30f, () => state.Roles.Get(3)?.RemoveStatus(StatusId.Accretion));
         world.Events.Add(17.32f, () => chaos_400040E9_1?.Cast(UmadActions.EarthquakeCleanse, state.Roles.Get(3)));

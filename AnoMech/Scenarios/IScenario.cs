@@ -37,6 +37,10 @@ public interface IScenario : IWorldEventListener
     // (see EventScheduler.BeginRun). It re-establishes what the skipped part would have left.
     float StartsAt => 0f;
 
+    // Where on its timeline a run stops, for a scenario that practises only the start of a long
+    // one; null plays it all.
+    float? EndsAt => null;
+
     // Where this scenario begins in BossMod's module for the fight; null leaves BossMod alone.
     AnoMech.Integrations.BossMod.BossModStart? BossModStart => null;
 

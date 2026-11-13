@@ -125,4 +125,26 @@ public class EventSchedulerTests
         events.Tick(50.1f);
         Assert.That(fired, Is.EqualTo(new[] { "full run" }));
     }
+
+    [Test]
+    public void ARunWithAnEndSkipsWhatItsTimelineSchedulesPastIt()
+    {
+        var events = new EventScheduler();
+        var fired = new List<string>();
+        events.BeginRun(startsAt: 0f, endsAt: 20f);
+        events.FromRunStart(() =>
+        {
+            events.Add(10f, () =>
+            {
+                fired.Add("kept");
+                events.Add(15f, () => fired.Add("added while running"));
+            });
+            events.Add(25f, () => fired.Add("skipped"));
+        });
+
+        events.Tick(10f);
+        events.Tick(15f);
+        Assert.That(fired, Is.EqualTo(new[] { "kept", "added while running" }));
+        Assert.That(events.IsEmpty);
+    }
 }

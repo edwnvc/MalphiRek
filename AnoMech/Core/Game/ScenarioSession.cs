@@ -145,7 +145,7 @@ public sealed class ScenarioSession
 #endif
         // The run's clock starts at 0, as EventScheduler.FromRunStart's offsets assume: a stay's
         // first run follows no End to have cleared it.
-        world.Events.BeginRun(Scenario.StartsAt);
+        world.Events.BeginRun(Scenario.StartsAt, Scenario.EndsAt);
         var phase = Scenario.Phase;
         var zone = phase.Zone;
         world.PlaceWaymarks(ResolveWaymarks(zone, run.SelectedWaymark));

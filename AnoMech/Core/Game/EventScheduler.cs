@@ -15,6 +15,7 @@ public sealed class EventScheduler
     private readonly List<Entry> entries = new();
     private float elapsed;
     private float startsAt;
+    private float endsAt = float.PositiveInfinity;
     private bool authoring;
 
     public float Elapsed => elapsed;
@@ -24,11 +25,12 @@ public sealed class EventScheduler
 
     // A run that begins `startsAt` into its scenario's timeline (IScenario.StartsAt): what
     // FromRunStart schedules before that is skipped, t=0 setup aside, and the rest plays that much
-    // sooner.
-    public void BeginRun(float startsAt)
+    // sooner. What it schedules past `endsAt` (IScenario.EndsAt) is skipped too, so the run ends there.
+    public void BeginRun(float startsAt, float? endsAt = null)
     {
         Clear();
         this.startsAt = MathF.Max(0f, startsAt);
+        this.endsAt = endsAt ?? float.PositiveInfinity;
     }
 
     // Add offsets inside `schedule` count from t=0 on the scenario's timeline, not now: an Ai
@@ -68,11 +70,11 @@ public sealed class EventScheduler
     {
         var time = elapsed + MathF.Max(0f, offset);
         var source = $"{Path.GetFileName(file)}:{line}";
-        if (authoring && startsAt > 0f && time > 0f)
+        if (authoring && time > 0f)
         {
-            if (time < startsAt)
+            if (time < startsAt || time > endsAt)
             {
-                Plugin.Log.Verbose($"[EventScheduler] skipped {source} (due {time:F2}, before the run's start at {startsAt:F2})");
+                Plugin.Log.Verbose($"[EventScheduler] skipped {source} (due {time:F2}, outside the run's {startsAt:F2}-{endsAt:F2})");
                 return;
             }
             time -= startsAt;
@@ -116,6 +118,7 @@ public sealed class EventScheduler
         entries.Clear();
         elapsed = 0f;
         startsAt = 0f;
+        endsAt = float.PositiveInfinity;
     }
 
     private readonly record struct Entry(float Time, Action Action, string Source);
